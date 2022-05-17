@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Region.associate = (models) => {
         Region.hasMany(models.Population)
+        Region.hasMany(models.Death)
     }
 
     return Region
