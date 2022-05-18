@@ -8,11 +8,21 @@ $form-foreground-color: white;
 // fonts
 $form-header-text-font: 1.5rem;
 
+@mixin tablet {
+    @media(max-width:768px) {
+        @content
+    }
+}
+
 .login-container {
     display: flex;
     justify-content: center;
     min-height: 100vh;
     align-items: center;
+
+    @include tablet {
+        min-height: 80vh;
+    }
 
     .login-form {
         min-height: $form-min-height;
@@ -20,6 +30,11 @@ $form-header-text-font: 1.5rem;
         box-shadow: 0 0 10px black;
         border-radius: 5px;
         overflow: hidden;
+
+        @include tablet {
+            min-width: calc(#{$form-min-width} - 150px);
+            min-height: calc(#{$form-min-height} - 150px);
+        }
 
         .header {
             background-color: $form-accent-color;
