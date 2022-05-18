@@ -1,0 +1,50 @@
+// dimensions
+$form-min-width: 600px;
+$form-min-height: 700px;
+$form-header-height: 100px;
+// colors
+$form-accent-color: #1f1f1f;
+$form-foreground-color: white;
+// fonts
+$form-header-text-font: 1.5rem;
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    align-items: center;
+
+    .login-form {
+        min-height: $form-min-height;
+        min-width: $form-min-width;
+        box-shadow: 0 0 10px black;
+        border-radius: 5px;
+        overflow: hidden;
+
+        .header {
+            background-color: $form-accent-color;
+            height: $form-header-height;
+            color: $form-foreground-color;
+            font-weight: bold;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: $form-header-text-font;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            position: relative;
+
+            span {
+                position: absolute;
+                top: -10%;
+            }
+        }
+    }
+}
