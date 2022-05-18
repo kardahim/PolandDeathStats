@@ -1,0 +1,15 @@
+// errors
+$error-message-color: red;
+// inputs
+$input-height: 40px;
+$input-width: 80%;
+
+span {
+    color: $error-message-color;
+}
+
+input {
+    width: $input-width;
+    height: $input-height;
+    text-indent: 20px;
+}
