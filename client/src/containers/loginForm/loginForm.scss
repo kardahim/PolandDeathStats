@@ -17,19 +17,15 @@ $form-header-text-font: 1.5rem;
 .login-container {
     display: flex;
     justify-content: center;
-    min-height: 100vh;
-    align-items: center;
-
-    @include tablet {
-        min-height: 80vh;
-    }
 
     .login-form {
+        margin: 80px 0;
         min-height: $form-min-height;
         min-width: $form-min-width;
         box-shadow: 0 0 10px black;
         border-radius: 5px;
         overflow: hidden;
+        z-index: -1;
 
         @include tablet {
             min-width: calc(#{$form-min-width} - 150px);
