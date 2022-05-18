@@ -1,0 +1,25 @@
+// dimensions
+$button-width: 80%;
+$button-height: 40px;
+// colors
+$button-background-color: #1f1f1f;
+$button-hover-color: #2f2f2f;
+$button-foreground-color: white;
+// fonts
+$button-font-size: 1rem;
+
+button {
+    width: $button-width;
+    height: $button-height;
+    outline: none;
+    border: none;
+    background-color: $button-background-color;
+    color: $button-foreground-color;
+    font-weight: bold;
+    font-size: $button-font-size;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $button-hover-color;
+    }
+}
