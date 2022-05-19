@@ -39,7 +39,7 @@ function RegisterForm() {
                 validationSchema={validationSchema}>
                 <Form className='register-form'>
                     <section className='header'>
-                        register
+                        rejestracja
                     </section>
                     {/* firstname */}
                     <TextField
