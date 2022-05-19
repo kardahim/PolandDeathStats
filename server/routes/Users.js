@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { User } = require("../models")
+const { User } = require("../db/models")
 const bcrypt = require("bcrypt")
 const { validateToken} = require("../middlewares/AuthMiddleware.js")
 const {sign} = require('jsonwebtoken')
