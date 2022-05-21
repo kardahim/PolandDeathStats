@@ -23,6 +23,7 @@ function Register() {
             .email("To nie jest email")
             .required('Pole jest wymagane'),
         password: Yup.string()
+            // TODO: add password regex
             .required('Pole jest wymagane')
     })
 
