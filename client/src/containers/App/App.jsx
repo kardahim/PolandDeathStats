@@ -1,9 +1,9 @@
 import './App.scss';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 // import containers
-import NavBar from './containers/navbar/NavBar'
-import Login from './containers/login/Login'
-import Register from './containers/register/Register'
+import NavBar from '../../containers/navbar/NavBar'
+import Login from '../../containers/login/Login'
+import Register from '../../containers/register/Register'
 
 function App() {
   return (
