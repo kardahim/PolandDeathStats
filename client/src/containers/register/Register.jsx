@@ -1,11 +1,11 @@
 import React from 'react'
-import './registerForm.scss'
+import './register.scss'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextField from '../../components/textField/TextField'
 import Button from '../../components/button/Button'
 
-function RegisterForm() {
+function Register() {
     const initialValues = {
         firstname: '',
         lastname: '',
@@ -23,6 +23,7 @@ function RegisterForm() {
             .email("To nie jest email")
             .required('Pole jest wymagane'),
         password: Yup.string()
+            // TODO: add password regex
             .required('Pole jest wymagane')
     })
 
@@ -77,4 +78,4 @@ function RegisterForm() {
     )
 }
 
-export default RegisterForm
+export default Register

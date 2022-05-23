@@ -3,9 +3,9 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextField from '../../components/textField/TextField'
 import Button from '../../components/button/Button'
-import './loginForm.scss'
+import './login.scss'
 
-function LoginForm() {
+function Login() {
     const initialValues = {
         email: '',
         password: ''
@@ -59,4 +59,4 @@ function LoginForm() {
     )
 }
 
-export default LoginForm
+export default Login
