@@ -26,6 +26,8 @@ app.use("/deaths", deathsRouter);
 const deathscausesRouter = require('./routes/DeathCauses');
 app.use("/deathscauses", deathscausesRouter);
 
+const filesRouter = require('./routes/Files')
+app.use("/files", filesRouter);
 
 db.sequelize.sync().then(() => {
     app.listen(port, () => console.log(`Server listening on port ${port}!`))
