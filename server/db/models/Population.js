@@ -8,6 +8,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         }
+    }, {
+        tableName: 'populations'
     })
 
     Population.associate = (models) => {

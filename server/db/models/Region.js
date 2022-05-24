@@ -4,6 +4,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         }
+    }, {
+        tableName: 'regions'
     })
 
     Region.associate = (models) => {

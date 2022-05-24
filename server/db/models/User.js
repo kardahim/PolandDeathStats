@@ -17,11 +17,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         }
+    }, {
+        tableName: 'users'
     })
 
     User.associate = (models) => {
         User.belongsToMany(models.Role, {
-            through: "Users_Roles"
+            through: "users_roles",
         })
     }
 
