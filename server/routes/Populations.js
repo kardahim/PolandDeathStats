@@ -1,40 +1,20 @@
 const express = require('express')
 const router = express.Router()
-const { Population } = require("../db/models")
+const controller = require('../controllers/PopulationController')
 
 // Get all Populations
-router.get("/", async (req, res) => {
-    const listOfPopulations = await Population.findAll();
-    res.json(listOfPopulations);
-});
+router.get("/", controller.getPopulations)
 
 // Get Population by id
-router.get("/:id", async (req, res) => {
-    const id = req.params.id
-    const population = await Population.findByPk(id);
-    res.json(population);
-});
+router.get("/:id", controller.getById)
 
 // Get Populations by year
-router.get("/year/:year", async (req, res) => {
-    const year = req.params.year
-    const populations = await Population.findAll({where: {year: year}});
-    res.json(populations);
-});
+router.get("/year/:year", controller.getByYear)
 
 // Get Populations by RegionId
-router.get("/region/:regionid", async (req, res) => {
-    const regionid = req.params.regionid
-    const populations = await Population.findAll({where: {RegionId: regionid}});
-    res.json(populations);
-});
+router.get("/region/:regionid", controller.getByRegionId)
 
 // Get Population by year and RegionId      // jakoś ładniej można tą ścieżkę nazwać, żeby było krócej, ale na razie niczego innego nie wymyślałem xd
-router.get("/yearandregion/:year/:regionid", async (req, res) => {
-    const year = req.params.year
-    const regionid = req.params.regionid
-    const population = await Population.findOne({where: {year: year, RegionId: regionid}});
-    res.json(population);
-});
+router.get("/yearandregion/:year/:regionid", controller.getByYearAndRegionId)
 
 module.exports = router

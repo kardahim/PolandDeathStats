@@ -1,25 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const { Role } = require("../db/models")
+const controller = require('../controllers/RoleController')
 
-// Get all Roles
-router.get("/", async (req, res) => {
-    const roles = await Role.findAll();
-    res.json(roles);
-});
+// get all Roles
+router.get('/', controller.getRoles)
 
 // Get Role by id
-router.get("/:id", async (req, res) => {
-    const id = req.params.id
-    const role = await Role.findByPk(id);
-    res.json(role);
-});
+router.get('/:id', controller.getById)
 
 // Get Role by name
-router.get("/name/:name", async (req, res) => {
-    const name = req.params.name
-    const role = await Role.findOne({where: {name: name}});
-    res.json(role);
-});
+router.get("/name/:name", controller.getByName)
 
 module.exports = router
