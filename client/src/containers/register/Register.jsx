@@ -2,16 +2,26 @@ import React from 'react'
 import './register.scss'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 import TextField from '../../components/textField/TextField'
 import Button from '../../components/button/Button'
 
 function Register() {
+    let navigate = useNavigate();
+    const [emailRegistered, setEmailRegistered] = useState("false")
+
     const initialValues = {
         firstname: '',
         lastname: '',
         email: '',
         password: ''
     }
+
+    useEffect(()=>{
+        document.title = "Rejestracja"
+      })
 
     // TODO: add validation
     const validationSchema = Yup.object().shape({
@@ -29,7 +39,19 @@ function Register() {
 
     const onSubmit = (data) => {
         // TODO: submit to server
-        console.log("register submit button pressed")
+        //console.log("register submit button pressed")
+
+        axios.get(`http://localhost:3001/users/email/${data.email}`).then((response) => {
+            if(response.data !== null)
+            {
+                setEmailRegistered("true");
+            }
+            else {
+                axios.post("http://localhost:3001/users/register", data).then(() => {
+                navigate(`/login`)
+                })
+            }
+        });
     }
 
     return (
