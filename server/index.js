@@ -24,7 +24,7 @@ const deathsRouter = require('./routes/Deaths');
 app.use("/deaths", deathsRouter);
 
 const deathscausesRouter = require('./routes/DeathCauses');
-app.use("/deathscauses", deathscausesRouter);
+app.use("/deathcauses", deathscausesRouter);
 
 const filesRouter = require('./routes/Files')
 app.use("/files", filesRouter);

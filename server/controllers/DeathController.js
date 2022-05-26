@@ -35,7 +35,7 @@ module.exports = {
     },
 
     // get Deaths by Year, RegionId and DeathCauseId
-    getByYearRegionIdAndDeathCaudeId: async (req, res) => {
+    getByYearRegionIdAndDeathCauseId: async (req, res) => {
         const year = req.params.year
         const regionid = req.params.regionid
         const deathcauseid = req.params.deathcauseid

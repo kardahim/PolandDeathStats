@@ -18,6 +18,6 @@ router.get("/region/:regionid", controller.getByRegionId)
 router.get("/deathcause/:deathcauseid", controller.getBydeathCauseId)
 
 // Get Death by year, RegionId and DeathCauseId
-router.get("/yrdc/:year/:regionid/:deathcauseid", controller.getByYearRegionIdAndDeathCaudeId)
+router.get("/yrdc/:year/:regionid/:deathcauseid", controller.getByYearRegionIdAndDeathCauseId)
 
 module.exports = router

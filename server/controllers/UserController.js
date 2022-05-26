@@ -12,9 +12,11 @@ module.exports = {
 
     // register
     register: async (req, res) => {
-        const { email, password } = req.body;
+        const { email, password, firstname, lastname } = req.body;
         bcrypt.hash(password, 10).then((hash) => {
             User.create({
+                firstname: firstname,
+                lastname: lastname,
                 email: email,
                 password: hash
             })
@@ -59,7 +61,7 @@ module.exports = {
 
     // get users by email
     getByEmail: async (req, res) => {
-        const email = req.params.username
+        const email = req.params.email
         const user = await User.findOne({ where: { email: email }, attributes: { exclude: ['password'] } });
         res.json(user);
     }

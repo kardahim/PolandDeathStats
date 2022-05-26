@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/UserController')
+const { validateToken} = require("../middlewares/AuthMiddleware")
 
 // get all Users
 router.get('/', controller.getUsers)
@@ -12,7 +13,7 @@ router.post('/register', controller.register)
 router.post('/login', controller.login)
 
 // validate login
-router.get('/auth', controller.validateToken)
+router.get('/auth',validateToken, controller.validateToken)
 
 // get Users by id
 router.get('/:id', controller.getById)
