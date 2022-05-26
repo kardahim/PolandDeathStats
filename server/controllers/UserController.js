@@ -13,15 +13,22 @@ module.exports = {
     // register
     register: async (req, res) => {
         const { email, password, firstname, lastname } = req.body;
-        bcrypt.hash(password, 10).then((hash) => {
-            User.create({
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
-                password: hash
+
+        const user = await User.findOne({ where: { email: email } });
+        if (user) {
+            res.json({ error: "User with given email already exists." });
+        }
+        else {
+            bcrypt.hash(password, 10).then((hash) => {
+                User.create({
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    password: hash
+                })
             })
-        })
-        res.json("success");
+            res.json("success");
+        }
     },
 
     // login
