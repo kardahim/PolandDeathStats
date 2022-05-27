@@ -14,6 +14,9 @@ app.use("/users", usersRouter);
 const rolesRouter = require('./routes/Roles');
 app.use("/roles", rolesRouter);
 
+const userRolesRouter = require('./routes/UserRoles');
+app.use("/userroles", userRolesRouter);
+
 const regionsRouter = require('./routes/Regions');
 app.use("/regions", regionsRouter);
 
