@@ -10,7 +10,7 @@ import Button from '../../components/button/Button'
 
 function Register() {
     let navigate = useNavigate();
-    const [emailRegistered, setEmailRegistered] = useState("false")
+    const [emailRegistered, setEmailRegistered] = useState("")
 
     const initialValues = {
         firstname: '',
@@ -19,36 +19,33 @@ function Register() {
         password: ''
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         document.title = "Rejestracja"
-      })
+    }, [])
 
-    // TODO: add validation
     const validationSchema = Yup.object().shape({
         firstname: Yup.string()
-            .required('Pole jest wymagane'),
+            .required('Pole jest wymagane')
+            .matches(/^[A-ZĄĆĘŁŃÓŚŻŹ][a-ząćęłńóśżź]{2,}$/, "Musi zaczynać się wielką literą i mieć min. 3 znaki"),
         lastname: Yup.string()
-            .required('Pole jest wymagane'),
+            .required('Pole jest wymagane')
+            .matches(/^[A-ZĄĆĘŁŃÓŚŻŹ][a-ząćęłńóśżź]{2,}$/, "Musi zaczynać się wielką literą i mieć min. 3 znaki"),
         email: Yup.string()
             .email("To nie jest email")
             .required('Pole jest wymagane'),
         password: Yup.string()
-            // TODO: add password regex
             .required('Pole jest wymagane')
+            .matches(/^(?=.*?[A-ZĄĆĘŁŃÓŚŻŹ])(?=.*?[a-ząćęłńóśżź])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/, "Musi zawierać 8 znaków, wielką i małą literę, liczbę oraz znak specjalny")
     })
 
     const onSubmit = (data) => {
-        // TODO: submit to server
-        //console.log("register submit button pressed")
-
         axios.get(`http://localhost:3001/users/email/${data.email}`).then((response) => {
-            if(response.data !== null)
-            {
-                setEmailRegistered("true");
+            if (response.data !== null) {
+                setEmailRegistered("Konto o podanym adresie email już istnieje");
             }
             else {
                 axios.post("http://localhost:3001/users/register", data).then(() => {
-                navigate(`/login`)
+                    navigate(`/login`)
                 })
             }
         });
@@ -60,11 +57,15 @@ function Register() {
                 initialValues={initialValues}
                 onSubmit={onSubmit}
                 validationSchema={validationSchema}>
-                <Form className='register-form'>
+                <Form className='register-form'
+                    onChange={() => setEmailRegistered("")}>
                     <section className='header'>
                         rejestracja
                     </section>
                     {/* firstname */}
+                    <div>
+                        <span className='email-error'>{emailRegistered}</span>
+                    </div>
                     <TextField
                         name='firstname'
                         className='register-input'

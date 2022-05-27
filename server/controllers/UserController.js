@@ -37,12 +37,12 @@ module.exports = {
         const user = await User.findOne({ where: { email: email } });
 
         if (!user) {
-            res.json({ error: "User with given email does not exist." });
+            res.json({ error: "Użytkownik nie istnieje" });
         }
         else {
             bcrypt.compare(password, user.password).then((match) => {
                 if (!match) {
-                    res.json({ error: "Password incorrect!" });
+                    res.json({ error: "Hasło jest niepoprawne" });
                 }
                 else {
                     const accessToken = sign({ email: user.email, id: user.id }, "34qwereawdq4we3w3eqf7y6uhesecerttoken");
