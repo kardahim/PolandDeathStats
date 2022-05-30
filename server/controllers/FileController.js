@@ -1,6 +1,6 @@
 const deathCausesJSON = require('../static/json/death_causes.json')
 const populationJSON = require('../static/json/population.json')
-const { Region, DeathCause, Population, Death } = require('../db/models')
+const { Region, DeathCause, Population, Death, Role } = require('../db/models')
 
 module.exports = {
     fill: async (req, res) => {
@@ -9,6 +9,10 @@ module.exports = {
         const death_causes = new Set()
         const populations = new Set()
         const deaths = new Set()
+        const roles = new Set()
+
+        roles.add("user")
+        roles.add("admin")
 
         // add to sets
         deathCausesJSON.forEach((value) => {
@@ -302,6 +306,16 @@ module.exports = {
                 Death.create(death)
             }
         })
+
+        // fill roles causes if empty
+        all = await Role.findAndCountAll()
+        roles.forEach((value) => {
+            if (all.count === 0) {
+                const role = { 'name': value }
+                Role.create(role)
+            }
+        })
+        
         res.json("success")
     }
 }
