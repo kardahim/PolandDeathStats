@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
 import { useContext, useEffect } from 'react';
 import { Formik, Form } from 'formik'
@@ -10,7 +10,7 @@ import Button from '../../components/button/Button'
 import './login.scss'
 
 function Login() {
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
     const { setAuthState } = useContext(AuthContext);
     
     const initialValues = {
@@ -20,7 +20,7 @@ function Login() {
 
     useEffect(()=>{
         document.title = "Logowanie"
-      })
+    })
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
@@ -45,7 +45,8 @@ function Login() {
                     id: response.data.id,
                     status: true
                 });
-                navigate(`/`)
+                // navigate(`/`)
+                window.location.pathname = "/"
             }
         }).catch(error => console.error(error))
 
