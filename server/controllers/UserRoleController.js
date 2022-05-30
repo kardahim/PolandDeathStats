@@ -23,7 +23,7 @@ module.exports = {
     deleteUserRole: async (req, res) => {
         const { RoleId, UserId } = req.body;
 
-        Recipes.destroy({
+        User_Role.destroy({
             where: {
                 RoleId: RoleId,
                 UserId: UserId

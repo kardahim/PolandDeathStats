@@ -19,5 +19,22 @@ module.exports = {
         const name = req.params.name
         const region = await Region.findOne({ where: { name: name } });
         res.json(region);
-    }
+    },
+
+    // // add Region
+    // addRegion: async (req, res) => {
+    //     const { name } = req.body;
+
+    //     const region = await Region.findOne({ where: { name: name } });
+    //     if (region) {
+    //         res.json({ error: "A region with given name already exists." });
+    //     }
+    //     else {
+    //         Region.create({
+    //             name:name
+    //         })
+            
+    //         res.json("Region added successfully.");
+    //     }
+    // }
 }

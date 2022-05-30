@@ -176,6 +176,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Add Role",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
@@ -598,6 +606,43 @@
 								"auth"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User_Roles",
+			"item": [
+				{
+					"name": "Add User_Role",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  User_Role",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get User_Roles by UserId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get User_Roles by RoleId",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
