@@ -14,9 +14,27 @@ module.exports = {
         roles.add("user")
         roles.add("admin")
 
+        regions.add("POLSKA")
+        regions.add("DOLNOŚLĄSKIE")
+        regions.add("KUJAWSKO-POMORSKIE")
+        regions.add("LUBELSKIE")
+        regions.add("LUBUSKIE")
+        regions.add("ŁÓDZKIE")
+        regions.add("MAŁOPOLSKIE")
+        regions.add("MAZOWIECKIE")
+        regions.add("OPOLSKIE")
+        regions.add("PODKARPACKIE")
+        regions.add("PODLASKIE")
+        regions.add("POMORSKIE")
+        regions.add("ŚLĄSKIE")
+        regions.add("ŚWIĘTOKRZYSKIE")
+        regions.add("WARMIŃSKO-MAZURSKIE")
+        regions.add("WIELKOPOLSKIE")
+        regions.add("ZACHODNIOPOMORSKIE")
+
         // add to sets
         deathCausesJSON.forEach((value) => {
-            regions.add(value.Nazwa)
+            // regions.add(value.Nazwa)
             death_causes.add(value['Przyczyny zgonów'])
 
             let regionId
@@ -27,10 +45,10 @@ module.exports = {
                 case "DOLNOŚLĄSKIE":
                     regionId = 2
                     break
-                case "LUBELSKIE":
+                case "KUJAWSKO-POMORSKIE":
                     regionId = 3
                     break
-                case "KUJAWSKO-POMORSKIE":
+                case "LUBELSKIE":
                     regionId = 4
                     break
                 case "LUBUSKIE":
@@ -39,25 +57,25 @@ module.exports = {
                 case "ŁÓDZKIE":
                     regionId = 6
                     break
-                case "PODKARPACKIE":
+                case "MAŁOPOLSKIE":
                     regionId = 7
                     break
-                case "PODLASKIE":
+                case "MAZOWIECKIE":
                     regionId = 8
                     break
-                case "MAŁOPOLSKIE":
+                case "OPOLSKIE":
                     regionId = 9
                     break
-                case "MAZOWIECKIE":
+                case "PODKARPACKIE":
                     regionId = 10
                     break
-                case "POMORSKIE":
+                case "PODLASKIE":
                     regionId = 11
                     break
-                case "ŚLĄSKIE":
+                case "POMORSKIE":
                     regionId = 12
                     break
-                case "OPOLSKIE":
+                case "ŚLĄSKIE":
                     regionId = 13
                     break
                 case "ŚWIĘTOKRZYSKIE":
@@ -265,7 +283,7 @@ module.exports = {
         let all = await Region.findAndCountAll()
         regions.forEach((value) => {
             if (all.count === 0) {
-                const region = { 'name': value }
+                const region = { 'id': value.id,'name': value }
                 Region.create(region)
             }
         })

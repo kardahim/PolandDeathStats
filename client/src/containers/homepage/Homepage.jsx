@@ -19,18 +19,19 @@ function Homepage() {
     useEffect(()=>{
         document.title = "Homepage"
 
+        axios.get("http://localhost:3001/regions").then((response) => {
+            setRegions(response.data)
+        })
         axios.get("http://localhost:3001/deathcauses").then((response) => {
             setDeathCauses(response.data)
-        })
-        axios.get("http://localhost:3001/deaths").then((response) => {
-            setDeaths(response.data)
         })
         axios.get("http://localhost:3001/populations").then((response) => {
             setPopulations(response.data)
         })
-        axios.get("http://localhost:3001/regions").then((response) => {
-            setRegions(response.data)
+        axios.get("http://localhost:3001/deaths").then((response) => {
+            setDeaths(response.data)
         })
+        
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -72,6 +73,7 @@ function Homepage() {
                 </div>
                 <div className='data-container'>
                     <table className='table'>
+                        <thead>
                         <tr className='table-header'>
                             <th>Rok</th>
                             <th>Region</th>
@@ -79,10 +81,12 @@ function Homepage() {
                             <th>Śmierci</th>
                             <th>Przyczyna śmierci</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         {deaths.map((value,key) => {
 
                             return (
-                                <tr className='table-row'>
+                                <tr className='table-row' key={key}>
                                     <td className='table-cell'>{value.year}</td>
                                     <td className='table-cell'>{regions.find((element) => {return element.id === value.RegionId}).name}</td>
                                     <td className='table-cell'>{populations.find((element) => {return element.RegionId === value.RegionId && element.year === value.year}).value}</td>
@@ -91,6 +95,7 @@ function Homepage() {
                                 </tr>
                             )
                         })}
+                        </tbody>
                     </table>
 
                 </div>
