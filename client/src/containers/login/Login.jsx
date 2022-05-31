@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextField from '../../components/textField/TextField'
@@ -12,13 +12,14 @@ import './login.scss'
 function Login() {
     // let navigate = useNavigate();
     const { setAuthState } = useContext(AuthContext);
-    
+    const [error, setError] = useState("")
+
     const initialValues = {
         email: '',
         password: ''
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         document.title = "Logowanie"
     })
 
@@ -31,12 +32,9 @@ function Login() {
     })
 
     const onSubmit = (data) => {
-        // TODO: submit to server
-        //console.log("login submit button pressed")
-
         axios.post("http://localhost:3001/users/login", data).then((response) => {
             if (response.data.error) {
-                alert(response.data.error);
+                setError(response.data.error)
             }
             else {
                 localStorage.setItem("accessToken", response.data.token)
@@ -59,11 +57,17 @@ function Login() {
                 initialValues={initialValues}
                 onSubmit={onSubmit}
                 validationSchema={validationSchema}>
-                <Form className='login-form'>
+                <Form className='login-form'
+                    onChange={() => setError("")}>
                     <section className='header'>
                         login
                     </section>
                     {/* email */}
+                    <div>
+                        <span className='error'>
+                            {error}
+                        </span>
+                    </div>
                     <TextField
                         autoComplete='username'
                         name='email'
