@@ -8,21 +8,30 @@ import './homepage.scss'
 
 function Homepage() {
     // let navigate = useNavigate();
-    // const { setAuthState } = useContext(AuthContext);
-    // const [deathCauses, setDeathCauses] = useState([]);
-    // const [deaths, setDeaths] = useState([]);
-    // const [populations, stPopulations] = useState([]);
-    // const [regions, setRegions] = useState([]);
-    const [userRoles, setUserRoles] = useState([]);
+    const { setAuthState } = useContext(AuthContext);
+    const [deathCauses, setDeathCauses] = useState([]);
+    const [deaths, setDeaths] = useState([]);
+    const [populations, setPopulations] = useState([]);
+    const [regions, setRegions] = useState([]);
 
     const { authState } = useContext(AuthContext);
 
     useEffect(()=>{
         document.title = "Homepage"
 
-
+        axios.get("http://localhost:3001/deathcauses").then((response) => {
+            setDeathCauses(response.data)
+        })
+        axios.get("http://localhost:3001/deaths").then((response) => {
+            setDeaths(response.data)
+        })
+        axios.get("http://localhost:3001/populations").then((response) => {
+            setPopulations(response.data)
+        })
+        axios.get("http://localhost:3001/regions").then((response) => {
+            setRegions(response.data)
+        })
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 
 
     const exportToJSON = () => {
@@ -62,7 +71,28 @@ function Homepage() {
                     chart
                 </div>
                 <div className='data-container'>
-                    data
+                    <table className='table'>
+                        <tr className='table-header'>
+                            <th>Rok</th>
+                            <th>Region</th>
+                            <th>Populacja</th>
+                            <th>Śmierci</th>
+                            <th>Przyczyna śmierci</th>
+                        </tr>
+                        {deaths.map((value,key) => {
+
+                            return (
+                                <tr className='table-row'>
+                                    <td className='table-cell'>{value.year}</td>
+                                    <td className='table-cell'>{regions.find((element) => {return element.id === value.RegionId}).name}</td>
+                                    <td className='table-cell'>{populations.find((element) => {return element.RegionId === value.RegionId && element.year === value.year}).value}</td>
+                                    <td className='table-cell'>{value.value}</td>
+                                    <td className='table-cell'>{deathCauses.find((element) => {return element.id === value.DeathCauseId}).name}</td>
+                                </tr>
+                            )
+                        })}
+                    </table>
+
                 </div>
             </div>
             <div className='side-container'>
