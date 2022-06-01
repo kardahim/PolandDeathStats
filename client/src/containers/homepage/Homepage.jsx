@@ -8,11 +8,12 @@ import './homepage.scss'
 
 function Homepage() {
     // let navigate = useNavigate();
-    const { setAuthState } = useContext(AuthContext);
+    // const { setAuthState } = useContext(AuthContext);
     const [deathCauses, setDeathCauses] = useState([]);
     const [deaths, setDeaths] = useState([]);
     const [populations, setPopulations] = useState([]);
     const [regions, setRegions] = useState([]);
+    const [jsonData, setJsonData] = useState([])
 
     const { authState } = useContext(AuthContext);
 
@@ -34,9 +35,55 @@ function Homepage() {
         
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // combine all data into customized array of objects
+    const combineData = () => {
+        var data = deaths
+        // removing id, createdAt, updatedAt attribs
+        data = data.map(({id,createdAt,updatedAt, ...keepAttrs}) => keepAttrs)
+        // adding Population(count) attrib
+        data.forEach(obj => {
+            obj.population = populations.filter(function(obj2) {
+                return obj.RegionId === obj2.RegionId && obj.year === obj2.year
+            })[0].value
+        })
+        // adding Region(name) attrib
+        data.forEach(obj => {
+            obj.region = regions.filter((obj2)=>{
+                return obj.RegionId === obj2.id
+            })[0].name
+            // obj.region = regions.find( ({id}) => id = obj.RegionId).name
+        })
+        // removing RegionId attrib
+        data = data.map(({RegionId, ...keepAttrs}) => keepAttrs)
+        // adding DeathCause(name) attrib
+        data.forEach(obj => {
+            obj.deathCause = deathCauses.filter((obj2)=>{
+                return obj.DeathCauseId === obj2.id
+            })[0].name
+            // obj.deathCause = deathCauses.find( ({id}) => id = obj.DeathCauseId).name
+        })
+        // removing DeathCauseId attrib
+        data = data.map(({DeathCauseId, ...keepAttrs}) => keepAttrs)
+        
+        // console.log(data)
+        setJsonData(data)
+        
+        // console.log(jsonData[1])
+    }
 
     const exportToJSON = () => {
-
+        combineData()
+        
+        if (jsonData.length > 0) {
+            const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+                JSON.stringify(jsonData)
+            )}`;
+            const link = document.createElement("a");
+            link.href = jsonString;
+            link.download = "data.json";
+        
+            link.click();
+        }
     }
 
     const exportToXML = () => {
@@ -83,7 +130,11 @@ function Homepage() {
                         </tr>
                         </thead>
                         <tbody>
-                        {deaths.map((value,key) => {
+                        {deaths
+                        // .filter((obj) => {
+                        //     return obj.year === 2017
+                        // })
+                        .map((value,key) => {
 
                             return (
                                 <tr className='table-row' key={key}>
