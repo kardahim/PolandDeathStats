@@ -7,6 +7,7 @@ import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
 import Area from '../../components/area/Area'
+import Table from '../../components/table/Table'
 
 function Homepage() {
     // let navigate = useNavigate();
@@ -112,6 +113,7 @@ function Homepage() {
 
     }
 
+    // example area chart's dataset
     const dataset = [
         { x: new Date("2000"), y: 1000 },
         { x: new Date("2001"), y: 1367 },
@@ -130,6 +132,32 @@ function Homepage() {
         { x: new Date("2014"), y: 176 },
     ]
 
+    // example table's dataset
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'year', headerName: 'Rok', type: 'time' },
+        { field: 'region', headerName: 'Region', width: 150 },
+        { field: 'population', headerName: 'Populacja', type: 'number', width: 150 },
+        { field: 'deaths', headerName: 'Śmierci', type: 'number', width: 150 },
+        {
+            field: 'rate',
+            headerName: 'Współczynnik śmiertelności',
+            valueGetter: params => (`${(params.row.deaths / params.row.population * 100).toFixed(2)}%`),
+            width: 300
+        },
+        { field: 'causes', headerName: 'Przyczyna śmierci', width: 300 },
+    ]
+
+    const rows = [
+        { id: 1, year: 1999, region: 'Zadupie', population: 100, deaths: 35, causes: 'Syfilis' },
+        { id: 2, year: 2000, region: 'Zadupie', population: 100, deaths: 35, causes: 'Syfilis' },
+        { id: 3, year: 2001, region: 'Zadupie', population: 100, deaths: 35, causes: 'Syfilis' },
+        { id: 4, year: 2002, region: 'Zadupie', population: 100, deaths: 35, causes: 'Syfilis' },
+        { id: 5, year: 2003, region: 'Zadupie Dolne', population: 120, deaths: 45, causes: 'Syfilis' },
+        { id: 6, year: 2004, region: 'Zadupie Dolne', population: 120, deaths: 45, causes: 'Syfilis' },
+        { id: 7, year: 2005, region: 'Zadupie Górne', population: 150, deaths: 15, causes: 'Syfilis' },
+    ];
+
 
     return (
         <div className='home-container'>
@@ -139,8 +167,12 @@ function Homepage() {
                         title='Tytuł'
                         dataset={dataset} />
                 </div>
-                {/* <div className='data-container'>
-                    <table className='table'>
+                <div className='data-container'>
+                    <Table
+                        rows={rows}
+                        columns={columns}
+                        pageSize={20} />
+                    {/* <table className='table'>
                         <thead>
                             <tr className='table-header'>
                                 <th>Rok</th>
@@ -170,8 +202,8 @@ function Homepage() {
                                     )
                                 })}
                         </tbody>
-                    </table>
-                </div> */}
+                    </table> */}
+                </div>
             </div>
             <div className='side-container'>
                 {!authState.status && (
