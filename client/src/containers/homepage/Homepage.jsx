@@ -5,6 +5,8 @@ import { AuthContext } from '../../helpers/AuthContext'
 import { useContext, useEffect, useState } from 'react';
 import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
+// import components
+import Area from '../../components/area/Area'
 
 function Homepage() {
     // let navigate = useNavigate();
@@ -17,7 +19,7 @@ function Homepage() {
 
     const { authState } = useContext(AuthContext);
 
-    useEffect(()=>{
+    useEffect(() => {
         document.title = "Homepage"
 
         axios.get("http://localhost:3001/regions").then((response) => {
@@ -32,48 +34,48 @@ function Homepage() {
         axios.get("http://localhost:3001/deaths").then((response) => {
             setDeaths(response.data)
         })
-        
+
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // combine all data into customized array of objects
     const combineData = () => {
         var data = deaths
         // removing id, createdAt, updatedAt attribs
-        data = data.map(({id,createdAt,updatedAt, ...keepAttrs}) => keepAttrs)
+        data = data.map(({ id, createdAt, updatedAt, ...keepAttrs }) => keepAttrs)
         // adding Population(count) attrib
         data.forEach(obj => {
-            obj.population = populations.filter(function(obj2) {
+            obj.population = populations.filter(function (obj2) {
                 return obj.RegionId === obj2.RegionId && obj.year === obj2.year
             })[0].value
         })
         // adding Region(name) attrib
         data.forEach(obj => {
-            obj.region = regions.filter((obj2)=>{
+            obj.region = regions.filter((obj2) => {
                 return obj.RegionId === obj2.id
             })[0].name
             // obj.region = regions.find( ({id}) => id = obj.RegionId).name
         })
         // removing RegionId attrib
-        data = data.map(({RegionId, ...keepAttrs}) => keepAttrs)
+        data = data.map(({ RegionId, ...keepAttrs }) => keepAttrs)
         // adding DeathCause(name) attrib
         data.forEach(obj => {
-            obj.deathCause = deathCauses.filter((obj2)=>{
+            obj.deathCause = deathCauses.filter((obj2) => {
                 return obj.DeathCauseId === obj2.id
             })[0].name
             // obj.deathCause = deathCauses.find( ({id}) => id = obj.DeathCauseId).name
         })
         // removing DeathCauseId attrib
-        data = data.map(({DeathCauseId, ...keepAttrs}) => keepAttrs)
-        
+        data = data.map(({ DeathCauseId, ...keepAttrs }) => keepAttrs)
+
         // console.log(data)
         setJsonData(data)
-        
+
         // console.log(jsonData[1])
     }
 
     const exportToJSON = () => {
         combineData()
-        
+
         if (jsonData.length > 0) {
             const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
                 JSON.stringify(jsonData)
@@ -81,7 +83,7 @@ function Homepage() {
             const link = document.createElement("a");
             link.href = jsonString;
             link.download = "data.json";
-        
+
             link.click();
         }
     }
@@ -89,7 +91,7 @@ function Homepage() {
     const exportToXML = () => {
 
     }
-    
+
     const exportToCSV = () => {
 
     }
@@ -110,97 +112,117 @@ function Homepage() {
 
     }
 
+    const dataset = [
+        { x: new Date("2000"), y: 1000 },
+        { x: new Date("2001"), y: 1367 },
+        { x: new Date("2002"), y: 973 },
+        { x: new Date("2003"), y: 973 },
+        { x: new Date("2004"), y: 953 },
+        { x: new Date("2005"), y: 4173 },
+        { x: new Date("2006"), y: 973 },
+        { x: new Date("2007"), y: 332 },
+        { x: new Date("2008"), y: 973 },
+        { x: new Date("2009"), y: 7273 },
+        { x: new Date("2010"), y: 973 },
+        { x: new Date("2011"), y: 2373 },
+        { x: new Date("2012"), y: 913 },
+        { x: new Date("2013"), y: 1273 },
+        { x: new Date("2014"), y: 176 },
+    ]
 
-    
+
     return (
         <div className='home-container'>
             <div className='main-container'>
                 <div className='chart-container'>
-                    chart
+                    <Area
+                        title='Tytuł'
+                        dataset={dataset} />
                 </div>
-                <div className='data-container'>
+                {/* <div className='data-container'>
                     <table className='table'>
                         <thead>
-                        <tr className='table-header'>
-                            <th>Rok</th>
-                            <th>Region</th>
-                            <th>Populacja</th>
-                            <th>Śmierci</th>
-                            <th>Przyczyna śmierci</th>
-                        </tr>
+                            <tr className='table-header'>
+                                <th>Rok</th>
+                                <th>Region</th>
+                                <th>Populacja</th>
+                                <th>Śmierci</th>
+                                <th>Współczynnik śmiertelności</th>
+                                <th>Przyczyna śmierci</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {deaths
-                        // .filter((obj) => {
-                        //     return obj.year === 2017
-                        // })
-                        .map((value,key) => {
+                            {deaths
+                                // .filter((obj) => {
+                                //     return obj.year === 2017
+                                // })
+                                .map((value, key) => {
 
-                            return (
-                                <tr className='table-row' key={key}>
-                                    <td className='table-cell'>{value.year}</td>
-                                    <td className='table-cell'>{regions.find((element) => {return element.id === value.RegionId}).name}</td>
-                                    <td className='table-cell'>{populations.find((element) => {return element.RegionId === value.RegionId && element.year === value.year}).value}</td>
-                                    <td className='table-cell'>{value.value}</td>
-                                    <td className='table-cell'>{deathCauses.find((element) => {return element.id === value.DeathCauseId}).name}</td>
-                                </tr>
-                            )
-                        })}
+                                    return (
+                                        <tr className='table-row' key={key}>
+                                            <td className='table-cell'>{value.year}</td>
+                                            <td className='table-cell'>{regions.find((element) => { return element.id === value.RegionId }).name}</td>
+                                            <td className='table-cell'>{populations.find((element) => { return element.RegionId === value.RegionId && element.year === value.year }).value}</td>
+                                            <td className='table-cell'>{value.value}</td>
+                                            <td className='table-cell'>{(value.value / populations.find((element) => { return element.RegionId === value.RegionId && element.year === value.year }).value * 100).toFixed(2)}%</td>
+                                            <td className='table-cell'>{deathCauses.find((element) => { return element.id === value.DeathCauseId }).name}</td>
+                                        </tr>
+                                    )
+                                })}
                         </tbody>
                     </table>
-
-                </div>
+                </div> */}
             </div>
             <div className='side-container'>
                 {!authState.status && (
                     <>
-                    <div className='options-container'>
-                        <div className='option-group'>
-                        <h4>Zaloguj się aby uzyskać dostęp do zapisu prezentowanych danych</h4>
+                        <div className='options-container'>
+                            <div className='option-group'>
+                                <h4>Zaloguj się aby uzyskać dostęp do zapisu prezentowanych danych</h4>
+                            </div>
                         </div>
-                    </div>
                     </>
                 )}
                 {authState.status && (
                     <>
-                    <div className='options-container'>
-                        {authState.roles.some(e => e.RoleId === 3) && (
-                            <>
-                            <div className='option-group'>
-                                <h3>Opcje użytkownika</h3>
-                                <div className='option'>
-                                    <button className='option-button' onClick={exportToJSON}> Export to .json</button>
-                                </div>
-                                <div className='option'>
-                                    <button className='option-button' onClick={exportToXML}> Export to .xml</button>
-                                </div>
-                                <div className='option'>
-                                    <button className='option-button' onClick={exportToCSV}> Export to .csv</button>
-                                </div>
-                            </div>
-                            </>
-                        )}
-                        {authState.roles.some(e => e.RoleId === 4) &&  (
-                            <>
-                            <div className='option-group'>
-                                <h3>Opcje administratora</h3>
-                                <div className='option'>
-                                    <button className='option-button' onClick={fillDBWithDefaults}> Fill db with defaults</button>
-                                </div>
-                                <div className='option'>
-                                    <button className='option-button' onClick={importFromJSON}> Import from .json</button>
-                                </div>
-                                <div className='option'>
-                                    <button className='option-button' onClick={importFromXML}> Import from .xml</button>
-                                </div>
-                                <div className='option'>
-                                    <button className='option-button' onClick={importFromCSV}> Import from .csv</button>
-                                </div>
-                            </div>
-                            </>
-                        )}
+                        <div className='options-container'>
+                            {authState.roles.some(e => e.RoleId === 3) && (
+                                <>
+                                    <div className='option-group'>
+                                        <h3>Opcje użytkownika</h3>
+                                        <div className='option'>
+                                            <button className='option-button' onClick={exportToJSON}> Export to .json</button>
+                                        </div>
+                                        <div className='option'>
+                                            <button className='option-button' onClick={exportToXML}> Export to .xml</button>
+                                        </div>
+                                        <div className='option'>
+                                            <button className='option-button' onClick={exportToCSV}> Export to .csv</button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                            {authState.roles.some(e => e.RoleId === 4) && (
+                                <>
+                                    <div className='option-group'>
+                                        <h3>Opcje administratora</h3>
+                                        <div className='option'>
+                                            <button className='option-button' onClick={fillDBWithDefaults}> Fill db with defaults</button>
+                                        </div>
+                                        <div className='option'>
+                                            <button className='option-button' onClick={importFromJSON}> Import from .json</button>
+                                        </div>
+                                        <div className='option'>
+                                            <button className='option-button' onClick={importFromXML}> Import from .xml</button>
+                                        </div>
+                                        <div className='option'>
+                                            <button className='option-button' onClick={importFromCSV}> Import from .csv</button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
-                    </div>
+                        </div>
                     </>
                 )}
             </div>
