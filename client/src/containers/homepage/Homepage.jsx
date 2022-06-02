@@ -93,6 +93,7 @@ function Homepage() {
 
     }
 
+    // I think that table has export to csv (excel format is for enterprise)
     const exportToCSV = () => {
 
     }

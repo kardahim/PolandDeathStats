@@ -5,16 +5,17 @@
 
 .main-container {
     width: 70%;
-    background-color: aqua;
+    // background-color: aqua;
 
     .chart-container {
         min-height: 100px;
-        background-color: burlywood;
+        // background-color: burlywood;
         margin: 10px;
     }
+
     .data-container {
         min-height: 100px;
-        background-color: rgb(217, 202, 231);
+        // background-color: rgb(217, 202, 231);
         margin: 10px;
     }
 }
@@ -27,7 +28,7 @@
     .options-container {
         background-color: aquamarine;
         min-height: 100px;
-        margin:10px;
+        margin: 10px;
 
         .option-group {
             background-color: brown;
@@ -36,6 +37,7 @@
             margin-bottom: 10px;
             padding-bottom: 10px;
             min-width: 180px;
+
             .option {
                 margin: 10px;
 
@@ -47,6 +49,7 @@
     }
 }
 
-.table, .table-cell {
+.table,
+.table-cell {
     border: 1px solid;
 }
