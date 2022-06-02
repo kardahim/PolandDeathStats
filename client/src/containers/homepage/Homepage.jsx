@@ -6,7 +6,8 @@ import { useContext, useEffect, useState } from 'react';
 import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
-import Area from '../../components/area/Area'
+import Area from '../../components/charts/area/Area'
+import Pie from '../../components/charts/pie/Pie'
 import Table from '../../components/table/Table'
 
 function Homepage() {
