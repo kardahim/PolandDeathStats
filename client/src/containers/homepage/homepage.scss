@@ -3,6 +3,18 @@
     padding: 1% 1% 1% 1%;
 }
 
+.filter-container {
+    // width: 100%;
+    // display: flex;
+
+    .filters {
+        min-height: 60px;
+    }
+}
+
+.black {
+    background-color: black;
+}
 .main-container {
     width: 70%;
     // background-color: aqua;
