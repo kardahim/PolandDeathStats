@@ -319,7 +319,7 @@ function Homepage() {
         setJsonData(data)
 
         const dataXml = json2xml(jsonData)
-        console.log(dataXml)
+        // console.log(dataXml)
 
         if(dataXml.length>0) {
             const xmlString = `data:text/xml;chatset=utf-8,${encodeURIComponent(
