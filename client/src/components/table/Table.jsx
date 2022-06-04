@@ -4,8 +4,11 @@ import { DataGrid, plPL } from '@mui/x-data-grid';
 function Table(props) {
 
     return (
-        <div style={{ height: props.rows.length * 52 + 150 }}>
+        <div>
             <DataGrid
+                autoHeight
+                disableSelectionOnClick
+                disableColumnMenu
                 rows={props.rows}
                 columns={props.columns}
                 pageSize={props.pageSize}

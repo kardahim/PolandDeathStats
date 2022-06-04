@@ -369,14 +369,14 @@ function Homepage() {
         { field: 'year', headerName: 'Rok', type: 'string', width: 60 },
         { field: 'region', headerName: 'Region', width: 180 },
         { field: 'population', headerName: 'Populacja', type: 'number', width: 90 },
-        { field: 'deaths', headerName: 'Śmierci', type: 'number', width: 90 },
+        { field: 'deaths', headerName: 'Śmierci', type: 'number', width: 200 },
         {
             field: 'rate',
             headerName: 'Współczynnik śmiertelności',
             valueGetter: params => (`${(params.row.deaths / params.row.population * 100).toFixed(2)}%`),
             width: 200
         },
-        { field: 'deathCause', headerName: 'Przyczyna śmierci', width: 300 },
+        { field: 'deathCause', headerName: 'Przyczyna śmierci', width: 450 },
     ]
 
     // const rows = [
