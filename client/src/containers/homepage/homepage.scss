@@ -15,6 +15,19 @@
 .black {
     background-color: black;
 }
+
+.single-filter-button {
+    font-weight: 100;
+    font-size: small;
+    background-color: transparent;
+    color: rgb(64, 75, 221);
+
+}
+.single-filter-button:hover {
+    background-color: rgb(99, 248, 198);
+}
+
+
 .main-container {
     width: 70%;
     // background-color: aqua;

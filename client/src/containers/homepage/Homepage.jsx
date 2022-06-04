@@ -290,6 +290,39 @@ function Homepage() {
 
     }
 
+    const changeSelectedYearFilters = () => {
+        if(year.length < 22)
+        {
+            setYear(years)
+        }
+        else if(year.length === 22)
+        {
+            setYear([])
+        }
+    }
+
+    const changeSelectedRegionFilters = () => {
+        if(regionName.length < 17)
+        {
+            setRegionName(regionNames)
+        }
+        else if(regionName.length === 17)
+        {
+            setRegionName([])
+        }
+    }
+
+    const changeSelectedDeathCauseFilters = () => {
+        if(deathCauseName.length < 38)
+        {
+            setDeathCauseName(deathCauseNames)
+        }
+        else if(deathCauseName.length === 38)
+        {
+            setDeathCauseName([])
+        }
+    }
+
     // combine all data into customized array of objects
     const combineData = async () => {
         var data = deaths
@@ -442,7 +475,7 @@ function Homepage() {
             <div className='side-container'>
 
                 <div className='options-container'>
-                    <div className=''>
+                    <div className='filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="year-multiple-checkbox-label">Year</InputLabel>
                             <Select
@@ -482,9 +515,12 @@ function Homepage() {
                                     </MenuItem>
                                 ))}
                             </Select>
+                            <div className=''>
+                                <button className='single-filter-button' onClick={changeSelectedYearFilters}>» zaznacz/odznacz wszystkie</button>
+                            </div>
                         </FormControl>
                     </div>
-                    <div className=''>
+                    <div className='filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="region-multiple-checkbox-label">Region</InputLabel>
                             <Select
@@ -504,9 +540,12 @@ function Homepage() {
                                     </MenuItem>
                                 ))}
                             </Select>
+                            <div className=''>
+                                <button className='single-filter-button' onClick={changeSelectedRegionFilters}>» zaznacz/odznacz wszystkie</button>
+                            </div>
                         </FormControl>
                     </div>
-                    <div className=''>
+                    <div className='filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="region-multiple-checkbox-label">DeathCause</InputLabel>
                             <Select
@@ -526,6 +565,9 @@ function Homepage() {
                                     </MenuItem>
                                 ))}
                             </Select>
+                            <div className=''>
+                                <button className='single-filter-button' onClick={changeSelectedDeathCauseFilters}>» zaznacz/odznacz wszystkie</button>
+                            </div>
                         </FormControl>
                     </div>
                     <div className=''>
