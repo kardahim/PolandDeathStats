@@ -2,13 +2,14 @@ import React from 'react'
 import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
-import { useContext, useEffect, useState, useLayoutEffect} from 'react';
+import { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
 // import Area from '../../components/charts/area/Area'
 // import Pie from '../../components/charts/pie/Pie'
 import Table from '../../components/table/Table'
+import { CircularProgress } from '@mui/material';
 
 // import { useStyles, options } from "./utils";
 // import ListItemIcon from "@mui/material/ListItemIcon";
@@ -28,12 +29,12 @@ import { Button } from '@mui/material';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
-  },
 };
 
 function Homepage() {
@@ -63,13 +64,12 @@ function Homepage() {
         function fetchData() {
             axios.get("http://localhost:3001/deaths").then((response) => {
                 setDeaths(response.data)
-                
-                setTimeout(function(){
+
+                setTimeout(function () {
                     setLoading(false);
                     // console.log('deaths[0]',deaths[0])
                 }, 1000);
-                if (!deaths)
-                {
+                if (!deaths) {
                     setLoading(true)
                 }
                 else {
@@ -85,10 +85,10 @@ function Homepage() {
             axios.get("http://localhost:3001/populations").then((response) => {
                 setPopulations(response.data)
             })
-            
+
         }
         fetchData()
-        
+
     }, [isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // const isAllYearSelected =
@@ -97,9 +97,9 @@ function Homepage() {
     var handleYearChange = async function (event) {
         var value = event.target.value;
         setYear(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value);
-        setTimeout(function(){
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value);
+        setTimeout(function () {
             //do what you need here
         }, 2000);
         // await filterData()
@@ -108,9 +108,9 @@ function Homepage() {
     var handleRegionChange = async function (event) {
         var value = event.target.value;
         setRegionName(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value);
-        setTimeout(function(){
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value);
+        setTimeout(function () {
             //do what you need here
         }, 2000);
         // await filterData()
@@ -119,9 +119,9 @@ function Homepage() {
     var handleDeathCauseNameChange = async function (event) {
         var value = event.target.value;
         setDeathCauseName(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value);
-        setTimeout(function(){
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value);
+        setTimeout(function () {
             //do what you need here
         }, 2000);
         // await filterData()
@@ -129,7 +129,7 @@ function Homepage() {
 
     // ustawia w 'filteredData' domyślne dane - wszystkie dane dla chorób na 1999 dla POLSKI
     const setDefaultData = async () => {
-        
+
         var data = deaths
 
         // removing id, createdAt, updatedAt attribs
@@ -173,8 +173,8 @@ function Homepage() {
         })
 
         // renaming 'value' field to 'deaths'
-        data = data.map(({value, ...rest}) => ({...rest, deaths: value}));
-            
+        data = data.map(({ value, ...rest }) => ({ ...rest, deaths: value }));
+
         // adding 'id' field ... data order not considered
         var id = 1
         data.forEach(obj => {
@@ -190,8 +190,7 @@ function Homepage() {
     // zatwierdza ustawione filtry do połączonych danych zapisanych w 'filteredData'
     const applyFilters = async () => {
 
-        if(year.length < 1 || regionName.length < 1 || deathCauseName < 1)
-        {
+        if (year.length < 1 || regionName.length < 1 || deathCauseName < 1) {
             console.log("some filter is empty")
         }
         else {
@@ -245,8 +244,8 @@ function Homepage() {
             })
 
             // renaming 'value' field to 'deaths'
-            data = data.map(({value, ...rest}) => ({...rest, deaths: value}));
-            
+            data = data.map(({ value, ...rest }) => ({ ...rest, deaths: value }));
+
             // adding 'id' field ... data order not considered
             var id = 1
             data.forEach(obj => {
@@ -266,7 +265,7 @@ function Homepage() {
 
             // console.log(filteredData)
         }
-        
+
     }
 
     // combine all data into customized array of objects
@@ -367,7 +366,7 @@ function Homepage() {
     // example table's dataset
     const columns = [
         { field: 'id', headerName: 'ID', width: 60 },
-        { field: 'year', headerName: 'Rok', type: 'string', width:60 },
+        { field: 'year', headerName: 'Rok', type: 'string', width: 60 },
         { field: 'region', headerName: 'Region', width: 180 },
         { field: 'population', headerName: 'Populacja', type: 'number', width: 90 },
         { field: 'deaths', headerName: 'Śmierci', type: 'number', width: 90 },
@@ -391,13 +390,15 @@ function Homepage() {
     // ];
 
     if (isLoading) {
-        return <div className="home-container">Loading...</div>;
-      }
+        return <div className="home-container">
+            <div className='loading'><CircularProgress size={80} /></div>
+        </div>;
+    }
     return (
         <div className='home-container'>
             <div className='filter-container'>
                 <div className='filters'>
-                    
+
 
                 </div>
             </div>
@@ -452,14 +453,14 @@ function Homepage() {
                         <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="year-multiple-checkbox-label">Year</InputLabel>
                             <Select
-                            labelId="year-multiple-checkbox-label"
-                            id="year-multiple-checkbox"
-                            multiple
-                            value={year}
-                            onChange={handleYearChange}
-                            input={<OutlinedInput label="Year" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
+                                labelId="year-multiple-checkbox-label"
+                                id="year-multiple-checkbox"
+                                multiple
+                                value={year}
+                                onChange={handleYearChange}
+                                input={<OutlinedInput label="Year" />}
+                                renderValue={(selected) => selected.join(', ')}
+                                MenuProps={MenuProps}
                             >
                                 {/* <MenuItem
                                     value="all"
@@ -481,56 +482,56 @@ function Homepage() {
                                         primary="Select All"
                                     />
                                 </MenuItem> */}
-                            {years.map((name) => (
-                                <MenuItem key={name} value={name}>
-                                <Checkbox checked={year.indexOf(name) > -1} />
-                                <ListItemText primary={name} />
-                                </MenuItem>
-                            ))}
+                                {years.map((name) => (
+                                    <MenuItem key={name} value={name}>
+                                        <Checkbox checked={year.indexOf(name) > -1} />
+                                        <ListItemText primary={name} />
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </div>
                     <div className=''>
-                    <FormControl sx={{ m: 1, width: 300 }}>
+                        <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="region-multiple-checkbox-label">Region</InputLabel>
                             <Select
-                            labelId="region-multiple-checkbox-label"
-                            id="region-multiple-checkbox"
-                            multiple
-                            value={regionName}
-                            onChange={handleRegionChange}
-                            input={<OutlinedInput label="Region" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
+                                labelId="region-multiple-checkbox-label"
+                                id="region-multiple-checkbox"
+                                multiple
+                                value={regionName}
+                                onChange={handleRegionChange}
+                                input={<OutlinedInput label="Region" />}
+                                renderValue={(selected) => selected.join(', ')}
+                                MenuProps={MenuProps}
                             >
-                            {regionNames.map((name) => (
-                                <MenuItem key={name} value={name}>
-                                <Checkbox checked={regionName.indexOf(name) > -1} />
-                                <ListItemText primary={name} />
-                                </MenuItem>
-                            ))}
+                                {regionNames.map((name) => (
+                                    <MenuItem key={name} value={name}>
+                                        <Checkbox checked={regionName.indexOf(name) > -1} />
+                                        <ListItemText primary={name} />
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </div>
                     <div className=''>
-                    <FormControl sx={{ m: 1, width: 300 }}>
+                        <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="region-multiple-checkbox-label">DeathCause</InputLabel>
                             <Select
-                            labelId="deathcause-multiple-checkbox-label"
-                            id="deathcause-multiple-checkbox"
-                            multiple
-                            value={deathCauseName}
-                            onChange={handleDeathCauseNameChange}
-                            input={<OutlinedInput label="DeathCause" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
+                                labelId="deathcause-multiple-checkbox-label"
+                                id="deathcause-multiple-checkbox"
+                                multiple
+                                value={deathCauseName}
+                                onChange={handleDeathCauseNameChange}
+                                input={<OutlinedInput label="DeathCause" />}
+                                renderValue={(selected) => selected.join(', ')}
+                                MenuProps={MenuProps}
                             >
-                            {deathCauseNames.map((name) => (
-                                <MenuItem key={name} value={name}>
-                                <Checkbox checked={deathCauseName.indexOf(name) > -1} />
-                                <ListItemText primary={name} />
-                                </MenuItem>
-                            ))}
+                                {deathCauseNames.map((name) => (
+                                    <MenuItem key={name} value={name}>
+                                        <Checkbox checked={deathCauseName.indexOf(name) > -1} />
+                                        <ListItemText primary={name} />
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </div>

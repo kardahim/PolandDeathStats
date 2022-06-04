@@ -7,7 +7,7 @@ import axios from 'axios';
 import NavBar from '../../containers/navbar/NavBar'
 import Login from '../../containers/login/Login'
 import Register from '../../containers/register/Register'
-import { CircularProgress } from '@mui/material';
+
 
 // imoer lazy containers
 const Homepage = lazy(() => import('../../containers/homepage/Homepage'))
@@ -59,15 +59,12 @@ function App() {
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
-          {/* Suspene not working for this little shit */}
-          <Suspense fallback={<div className='loading'><CircularProgress size={100} /></div>}>
-            <NavBar />
-            <Routes>
-              <Route path='/' element={<Homepage />}></Route>
-              <Route path='/login' element={<Login />}></Route>
-              <Route path='/register' element={<Register />}></Route>
-            </Routes>
-          </Suspense>
+          <NavBar />
+          <Routes>
+            <Route path='/' element={<Homepage />}></Route>
+            <Route path='/login' element={<Login />}></Route>
+            <Route path='/register' element={<Register />}></Route>
+          </Routes>
         </Router>
       </AuthContext.Provider>
     </div >
