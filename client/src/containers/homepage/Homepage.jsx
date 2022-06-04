@@ -7,7 +7,6 @@ import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
 import Area from '../../components/charts/area/Area'
-// import Pie from '../../components/charts/pie/Pie'
 import Table from '../../components/table/Table'
 import { CircularProgress } from '@mui/material';
 
