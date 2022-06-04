@@ -10,9 +10,6 @@ import Area from '../../components/charts/area/Area'
 import Table from '../../components/table/Table'
 import { CircularProgress } from '@mui/material';
 
-// import { useStyles, options } from "./utils";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,9 +18,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 
-import { years, regionNames, deathCauseNames } from './filter_conf'
 import { Button } from '@mui/material';
-// import { idID } from '@mui/material/locale';
+
+import { years, regionNames, deathCauseNames } from './filter_conf'
+import json2xml from './functions/json2xml'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -46,11 +44,6 @@ function Homepage() {
     const [jsonData, setJsonData] = useState([])    //all data ready for export
     const [filteredData, setFilteredData] = useState([]) // all data combined after filtration
     const { authState } = useContext(AuthContext);
-    // const classes = useStyles();
-
-    // const [filteredDeathCauses, setFilteredDeathCauses] = useState([]);
-    // const [filteredDeaths, setFilteredDeaths] = useState([]);
-    // const [filteredRegions, setFilteredRegions] = useState([]);
 
     const [year, setYear] = useState(years);
     const [regionName, setRegionName] = useState(['POLSKA']);
@@ -305,6 +298,7 @@ function Homepage() {
 
         //removing id attrib
         data = data.map(({ id, ...keepAttrs }) => keepAttrs)
+        setJsonData(data)
 
         if (jsonData.length > 0) {
             const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
@@ -319,6 +313,24 @@ function Homepage() {
     }
 
     const exportToXML = () => {
+        var data = filteredData
+        //removing id attrib
+        data = data.map(({ id, ...keepAttrs }) => keepAttrs)
+        setJsonData(data)
+
+        const dataXml = json2xml(jsonData)
+        console.log(dataXml)
+
+        if(dataXml.length>0) {
+            const xmlString = `data:text/xml;chatset=utf-8,${encodeURIComponent(
+                dataXml
+            )}`;
+            const link = document.createElement("a");
+            link.href = xmlString;
+            link.download = "data.xml";
+
+            link.click();
+        }
 
     }
 
