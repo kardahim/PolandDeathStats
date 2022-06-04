@@ -52,30 +52,7 @@ function Homepage() {
     // const [filteredDeaths, setFilteredDeaths] = useState([]);
     // const [filteredRegions, setFilteredRegions] = useState([]);
 
-    const [year, setYear] = useState([
-        '1999',
-        '2000',
-        '2001',
-        '2002',
-        '2003',
-        '2004',
-        '2005',
-        '2006',
-        '2007',
-        '2008',
-        '2009',
-        '2010',
-        '2011',
-        '2012',
-        '2013',
-        '2014',
-        '2015',
-        '2016',
-        '2017',
-        '2018',
-        '2019',
-        '2020'
-    ]);
+    const [year, setYear] = useState(years);
     const [regionName, setRegionName] = useState(['POLSKA']);
     const [deathCauseName, setDeathCauseName] = useState(['razem']);
     const [isLoading, setLoading] = useState(true);
@@ -325,7 +302,7 @@ function Homepage() {
 
     const exportToJSON = () => {
         var data = filteredData
-        
+
         //removing id attrib
         data = data.map(({ id, ...keepAttrs }) => keepAttrs)
 
