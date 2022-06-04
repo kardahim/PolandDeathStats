@@ -323,48 +323,15 @@ function Homepage() {
         }
     }
 
-    // combine all data into customized array of objects
-    const combineData = async () => {
-        var data = deaths
-
-        // removing id, createdAt, updatedAt attribs
-        data = data.map(({ id, createdAt, updatedAt, ...keepAttrs }) => keepAttrs)
-
-        // adding Population(count) attrib
-        data.forEach(obj => {
-            obj.population = populations.filter(function (obj2) {
-                return obj.RegionId === obj2.RegionId && obj.year === obj2.year
-            })[0].value
-        })
-        // adding Region(name) attrib
-        data.forEach(obj => {
-            obj.region = regions.filter((obj2) => {
-                return obj.RegionId === obj2.id
-            })[0].name
-        })
-        // removing RegionId attrib
-        data = data.map(({ RegionId, ...keepAttrs }) => keepAttrs)
-
-        // adding DeathCause(name) attrib
-        data.forEach(obj => {
-            obj.deathCause = deathCauses.filter((obj2) => {
-                return obj.DeathCauseId === obj2.id
-            })[0].name
-        })
-
-        // removing DeathCauseId attrib
-        data = data.map(({ DeathCauseId, ...keepAttrs }) => keepAttrs)
-
-        await setJsonData(data)
-
-    }
-
     const exportToJSON = () => {
-        combineData()
+        var data = filteredData
+        
+        //removing id attrib
+        data = data.map(({ id, ...keepAttrs }) => keepAttrs)
 
         if (jsonData.length > 0) {
             const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-                JSON.stringify(jsonData)
+                JSON.stringify(data)
             )}`;
             const link = document.createElement("a");
             link.href = jsonString;
