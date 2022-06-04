@@ -4,16 +4,15 @@ import { AuthContext } from '../../helpers/AuthContext'
 import { useState, useEffect, Suspense, lazy } from "react"
 import axios from 'axios';
 // import containers
-// import NavBar from '../../containers/navbar/NavBar'
+import NavBar from '../../containers/navbar/NavBar'
 import Login from '../../containers/login/Login'
 import Register from '../../containers/register/Register'
+import { CircularProgress } from '@mui/material';
 
 // imoer lazy containers
 const Homepage = lazy(() => import('../../containers/homepage/Homepage'))
-const NavBar = lazy(() => import('../../containers/navbar/NavBar'))
 
 function App() {
-
   const [authState, setAuthState] = useState({
     email: "",
     id: "0",
@@ -54,14 +53,15 @@ function App() {
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  console.log(authState)
 
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
           {/* Suspene not working for this little shit */}
-          <NavBar />
-          <Suspense>
+          <Suspense fallback={<div className='loading'><CircularProgress size={100} /></div>}>
+            <NavBar />
             <Routes>
               <Route path='/' element={<Homepage />}></Route>
               <Route path='/login' element={<Login />}></Route>
