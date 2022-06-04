@@ -1,15 +1,21 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect, useCallback, Suspense } from 'react'
 import {
     YAxis,
     XAxis,
     HorizontalGridLines,
     VerticalGridLines,
     AreaSeries,
+    LineSeries,
     Crosshair,
     FlexibleWidthXYPlot,
 } from "react-vis";
-
 import "react-vis/dist/style.css";
+// mui
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 
 function Area(props) {
 
@@ -21,18 +27,79 @@ function Area(props) {
     }
 
     const _onNearestX = ({ x, y }, e) => {
-        setCrosshair({ crosshairValues: [props.dataset[e.index]] })
+        setCrosshair({ crosshairValues: [data1[e.index]] })
     };
 
-    return (
+    const handleChangeRegion = (event) => {
+        setCurrentRegion(event.target.value)
+    };
 
-        // <CanvasJSChart options={options} />
+    const handleChangeCause = (event) => {
+        setCurrentCause(event.target.value)
+    };
+
+    const [currentCause, setCurrentCause] = useState('razem')
+    const [currentRegion, setCurrentRegion] = useState('POLSKA')
+
+    const [data1, setData1] = useState([])
+    // const [data2, setData2] = useState([])
+    useEffect(() => {
+        setTimeout(() => {
+            let data1 = []
+            // let data2 = []
+            props.dataset.map((v, k) => {
+                if (v.region === currentRegion && v.deathCause == currentCause && props.years.includes(`${v.year}`)) {
+                    data1.push({ x: (`${v.year}`), y: v.deaths })
+                    // data2.push({ x: (`${v.year}`), y: v.population })
+                }
+            })
+            // console.log(props.years)
+            // console.log(data2)
+            // console.log(`array length: ${data.length}}`)
+            // console.log(props.dataset)
+            if (data1.length > 0) {
+                // console.log("R")`
+                setData1(data1)
+                // setData2(data2)
+            }
+            // console.log('crash?')
+        }, 300)
+    })
+
+    return (
         <div>
-            <h1 style={{ textAlign: 'center' }}>{props.title}</h1>
+            <div style={{ display: 'flex' }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Region</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={currentRegion}
+                        label="Region"
+                        onChange={handleChangeRegion}>
+                        {props.regions.map((v, k) => {
+                            return (<MenuItem value={v} key={k}>{v}</MenuItem>)
+                        })}
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Przyczyna</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={currentCause}
+                        label="Przyczyna"
+                        onChange={handleChangeCause}>
+                        {props.causes.map((v, k) => {
+                            return (<MenuItem value={v}>{v}</MenuItem>)
+                        })}
+                    </Select>
+                </FormControl>
+            </div>
             <FlexibleWidthXYPlot
                 onMouseLeave={_onMouseLeave}
                 height={400}
-                xType='time'>
+                xType='ordinal'>
                 <VerticalGridLines />
                 <HorizontalGridLines />
                 <XAxis
@@ -53,14 +120,21 @@ function Area(props) {
                 }} />
                 <AreaSeries
                     onNearestX={_onNearestX}
-                    data={props.dataset}
+                    data={data1}
                     color="black"
                     opacity={0.5}
                     curve="curveMonotoneX"
                 />
+                {/* <AreaSeries
+                    onNearestX={_onNearestX}
+                    data={data2}
+                    color="black"
+                    opacity={0.5}
+                    curve="curveMonotoneX"
+                /> */}
                 <Crosshair values={crosshair.crosshairValues} />
             </FlexibleWidthXYPlot>
-        </div>
+        </div >
     )
 }
 export default Area

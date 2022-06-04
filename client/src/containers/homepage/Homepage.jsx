@@ -6,7 +6,7 @@ import { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
-// import Area from '../../components/charts/area/Area'
+import Area from '../../components/charts/area/Area'
 // import Pie from '../../components/charts/pie/Pie'
 import Table from '../../components/table/Table'
 import { CircularProgress } from '@mui/material';
@@ -53,9 +53,32 @@ function Homepage() {
     // const [filteredDeaths, setFilteredDeaths] = useState([]);
     // const [filteredRegions, setFilteredRegions] = useState([]);
 
-    const [year, setYear] = useState([]);
-    const [regionName, setRegionName] = useState([]);
-    const [deathCauseName, setDeathCauseName] = useState([]);
+    const [year, setYear] = useState([
+        '1999',
+        '2000',
+        '2001',
+        '2002',
+        '2003',
+        '2004',
+        '2005',
+        '2006',
+        '2007',
+        '2008',
+        '2009',
+        '2010',
+        '2011',
+        '2012',
+        '2013',
+        '2014',
+        '2015',
+        '2016',
+        '2017',
+        '2018',
+        '2019',
+        '2020'
+    ]);
+    const [regionName, setRegionName] = useState(['POLSKA']);
+    const [deathCauseName, setDeathCauseName] = useState(['razem']);
     const [isLoading, setLoading] = useState(true);
 
     useLayoutEffect(() => {
@@ -345,23 +368,23 @@ function Homepage() {
     }
 
     // example area chart's dataset
-    const dataset = [
-        { x: new Date("2000"), y: 1000 },
-        { x: new Date("2001"), y: 1367 },
-        { x: new Date("2002"), y: 973 },
-        { x: new Date("2003"), y: 973 },
-        { x: new Date("2004"), y: 953 },
-        { x: new Date("2005"), y: 4173 },
-        { x: new Date("2006"), y: 973 },
-        { x: new Date("2007"), y: 332 },
-        { x: new Date("2008"), y: 973 },
-        { x: new Date("2009"), y: 7273 },
-        { x: new Date("2010"), y: 973 },
-        { x: new Date("2011"), y: 2373 },
-        { x: new Date("2012"), y: 913 },
-        { x: new Date("2013"), y: 1273 },
-        { x: new Date("2014"), y: 176 },
-    ]
+    // const dataset = [
+    //     { x: new Date("2000"), y: 1000 },
+    //     { x: new Date("2001"), y: 1367 },
+    //     { x: new Date("2002"), y: 973 },
+    //     { x: new Date("2003"), y: 973 },
+    //     { x: new Date("2004"), y: 953 },
+    //     { x: new Date("2005"), y: 4173 },
+    //     { x: new Date("2006"), y: 973 },
+    //     { x: new Date("2007"), y: 332 },
+    //     { x: new Date("2008"), y: 973 },
+    //     { x: new Date("2009"), y: 7273 },
+    //     { x: new Date("2010"), y: 973 },
+    //     { x: new Date("2011"), y: 2373 },
+    //     { x: new Date("2012"), y: 913 },
+    //     { x: new Date("2013"), y: 1273 },
+    //     { x: new Date("2014"), y: 176 },
+    // ]
 
     // example table's dataset
     const columns = [
@@ -404,46 +427,17 @@ function Homepage() {
             </div>
             <div className='main-container'>
                 <div className='chart-container'>
-                    {/* <Area
-                        title='Tytuł'
-                        dataset={dataset} /> */}
+                    <Area
+                        dataset={filteredData}
+                        regions={regionName}
+                        causes={deathCauseName}
+                        years={year} />
                 </div>
                 <div className='data-container'>
                     <Table
                         rows={filteredData}
                         columns={columns}
                         pageSize={20} />
-                    {/* <table className='table'>
-                        <thead>
-                            <tr className='table-header'>
-                                <th>Rok</th>
-                                <th>Region</th>
-                                <th>Populacja</th>
-                                <th>Śmierci</th>
-                                <th>Współczynnik śmiertelności</th>
-                                <th>Przyczyna śmierci</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData
-                                // .filter((obj) => {
-                                //     return obj.year === 2017
-                                // })
-                                .map((value, key) => {
-
-                                    return (
-                                        <tr className='table-row' key={key}>
-                                            <td className='table-cell'>{value.year}</td>
-                                            <td className='table-cell'>{value.region}</td>
-                                            <td className='table-cell'>{value.population}</td>
-                                            <td className='table-cell'>{value.value}</td>
-                                            <td className='table-cell'>{(value.value / value.population * 100).toFixed(2)}%</td>
-                                            <td className='table-cell'>{value.deathCause}</td>
-                                        </tr>
-                                    )
-                                })}
-                        </tbody>
-                    </table> */}
                 </div>
             </div>
             <div className='side-container'>
