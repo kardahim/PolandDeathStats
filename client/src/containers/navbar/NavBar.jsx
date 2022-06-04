@@ -33,8 +33,8 @@ function NavBar() {
             }
           )
         }
-      });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const logout = () => {
     localStorage.removeItem("accessToken");
