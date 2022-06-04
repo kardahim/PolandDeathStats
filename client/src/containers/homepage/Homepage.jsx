@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
-import { useContext, useEffect, useState} from 'react';
+import { useContext, useEffect, useState, useLayoutEffect} from 'react';
 import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
@@ -55,37 +55,41 @@ function Homepage() {
     const [year, setYear] = useState([]);
     const [regionName, setRegionName] = useState([]);
     const [deathCauseName, setDeathCauseName] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         document.title = "Homepage"
 
-        async function fetchData() {
+        function fetchData() {
+            axios.get("http://localhost:3001/deaths").then((response) => {
+                setDeaths(response.data)
+                
+                setTimeout(function(){
+                    setLoading(false);
+                    // console.log('deaths[0]',deaths[0])
+                }, 1000);
+                if (!deaths)
+                {
+                    setLoading(true)
+                }
+                else {
+                    setDefaultData()
+                }
+            })
             axios.get("http://localhost:3001/regions").then((response) => {
                 setRegions(response.data)
-                // setFilteredRegions(response.data)
             })
             axios.get("http://localhost:3001/deathcauses").then((response) => {
                 setDeathCauses(response.data)
-                // setFilteredDeathCauses(response.data)
             })
             axios.get("http://localhost:3001/populations").then((response) => {
                 setPopulations(response.data)
             })
-            axios.get("http://localhost:3001/deaths").then((response) => {
-                setDeaths(response.data)
-                // setFilteredDeaths(response.data)
-            })
-            
-            // Set default filtered data
-            await setDefaultData()          // <- z tym jest problem; jak funkcja się odpala, to 'deaths' jest jeszcze puste i nie ma czego filtrować
             
         }
         fetchData()
-        setTimeout(function(){
-            //do what you need here
-        }, 6000);
         
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // const isAllYearSelected =
     // years.length > 0 && year.length === years.length;
@@ -179,11 +183,7 @@ function Homepage() {
         })
 
         // console.log(data[0])
-        await setFilteredData(data)
-        
-        await setTimeout(function(){
-            //do what you need here
-        }, 6000);
+        setFilteredData(data)
         // console.log(filteredData)
     }
 
@@ -390,6 +390,9 @@ function Homepage() {
     //     { id: 7, year: 2005, region: 'Zadupie Górne', population: 150, deaths: 15, causes: 'Syfilis' },
     // ];
 
+    if (isLoading) {
+        return <div className="home-container">Loading...</div>;
+      }
     return (
         <div className='home-container'>
             <div className='filter-container'>
