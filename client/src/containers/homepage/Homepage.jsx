@@ -579,6 +579,12 @@ function Homepage() {
                                         </div>
                                         <div className='option'>
                                             <button className='option-button' onClick={importFromJSON}> Import from .json</button>
+                                            {/* <input id="myInput"
+                                            type="file"
+                                            ref={(ref) => this.upload = ref}
+                                            style={{display: 'none'}}
+                                            onChange={this.onChangeFile.bind(this)}
+                                            /> */}
                                         </div>
                                         <div className='option'>
                                             <button className='option-button' onClick={importFromXML}> Import from .xml</button>
