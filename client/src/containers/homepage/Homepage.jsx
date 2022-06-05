@@ -22,6 +22,8 @@ import { Button } from '@mui/material';
 
 import { years, regionNames, deathCauseNames } from './filter_conf'
 import json2xml from './functions/json2xml'
+import json2csv from './functions/json2csv'
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -331,12 +333,27 @@ function Homepage() {
 
             link.click();
         }
-
     }
 
     // I think that table has export to csv (excel format is for enterprise)
     const exportToCSV = () => {
+        var data = filteredData
+        //removing id attrib
+        data = data.map(({ id, ...keepAttrs }) => keepAttrs)
+        setJsonData(data)
 
+        const dataCsv = json2csv(jsonData)
+
+        if(dataCsv.length>0) {
+            const csvString = `data:text/csv;chatset=utf-8,${encodeURIComponent(
+                dataCsv
+            )}`;
+            const link = document.createElement("a");
+            link.href = csvString;
+            link.download = "data.csv";
+
+            link.click();
+        }
     }
 
     const fillDBWithDefaults = () => {
