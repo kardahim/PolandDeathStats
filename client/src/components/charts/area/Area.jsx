@@ -53,6 +53,9 @@ function Area(props) {
                     // data2.push({ x: (`${v.year}`), y: v.population })
                 }
             })
+            data1.sort((a, b) => {
+                return a.x - b.x;
+            });
             // console.log(props.years)
             // console.log(data2)
             // console.log(`array length: ${data.length}}`)
