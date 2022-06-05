@@ -56,7 +56,7 @@ function Homepage() {
         document.title = "Homepage"
 
         function fetchData() {
-            axios.get("http://localhost:3001/deaths").then((response) => {
+            axios.get("http://localhost:3001"+"/deaths").then((response) => {
                 setDeaths(response.data)
 
                 setTimeout(function () {
@@ -560,7 +560,7 @@ function Homepage() {
                 {authState.status && (
                     <>
                         <div className='options-container'>
-                            {authState.roles.some(e => e.RoleId === 3) && (
+                            {authState.roles.some(e => e.RoleId === 1) && (
                                 <>
                                     <div className='option-group'>
                                         <h3>Opcje użytkownika</h3>
@@ -576,7 +576,7 @@ function Homepage() {
                                     </div>
                                 </>
                             )}
-                            {authState.roles.some(e => e.RoleId === 4) && (
+                            {authState.roles.some(e => e.RoleId === 2) && (
                                 <>
                                     <div className='option-group'>
                                         <h3>Opcje administratora</h3>
