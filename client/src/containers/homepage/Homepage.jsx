@@ -263,34 +263,28 @@ function Homepage() {
     }
 
     const changeSelectedYearFilters = () => {
-        if(year.length < 22)
-        {
+        if (year.length < 22) {
             setYear(years)
         }
-        else if(year.length === 22)
-        {
+        else if (year.length === 22) {
             setYear([])
         }
     }
 
     const changeSelectedRegionFilters = () => {
-        if(regionName.length < 17)
-        {
+        if (regionName.length < 17) {
             setRegionName(regionNames)
         }
-        else if(regionName.length === 17)
-        {
+        else if (regionName.length === 17) {
             setRegionName([])
         }
     }
 
     const changeSelectedDeathCauseFilters = () => {
-        if(deathCauseName.length < 38)
-        {
+        if (deathCauseName.length < 38) {
             setDeathCauseName(deathCauseNames)
         }
-        else if(deathCauseName.length === 38)
-        {
+        else if (deathCauseName.length === 38) {
             setDeathCauseName([])
         }
     }
@@ -323,7 +317,7 @@ function Homepage() {
         const dataXml = json2xml(jsonData)
         // console.log(dataXml)
 
-        if(dataXml.length>0) {
+        if (dataXml.length > 0) {
             const xmlString = `data:text/xml;chatset=utf-8,${encodeURIComponent(
                 dataXml
             )}`;
@@ -344,7 +338,7 @@ function Homepage() {
 
         const dataCsv = json2csv(jsonData)
 
-        if(dataCsv.length>0) {
+        if (dataCsv.length > 0) {
             const csvString = `data:text/csv;chatset=utf-8,${encodeURIComponent(
                 dataCsv
             )}`;
@@ -560,7 +554,7 @@ function Homepage() {
                 {authState.status && (
                     <>
                         <div className='options-container'>
-                            {authState.roles.some(e => e.RoleId === 3) && (
+                            {authState.roles.some(e => e.RoleId === 1) && (
                                 <>
                                     <div className='option-group'>
                                         <h3>Opcje użytkownika</h3>
@@ -576,7 +570,7 @@ function Homepage() {
                                     </div>
                                 </>
                             )}
-                            {authState.roles.some(e => e.RoleId === 4) && (
+                            {authState.roles.some(e => e.RoleId === 2) && (
                                 <>
                                     <div className='option-group'>
                                         <h3>Opcje administratora</h3>
