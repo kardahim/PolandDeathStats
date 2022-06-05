@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useCallback, Suspense } from 'react'
+import { React, useState, useEffect } from 'react'
 import {
     YAxis,
     XAxis,
@@ -125,13 +125,13 @@ function Area(props) {
                     opacity={0.5}
                     curve="curveMonotoneX"
                 />
-                {/* <AreaSeries
+                <LineSeries
                     onNearestX={_onNearestX}
-                    data={data2}
+                    data={data1}
                     color="black"
-                    opacity={0.5}
+                    opacity={0.3}
                     curve="curveMonotoneX"
-                /> */}
+                />
                 <Crosshair values={crosshair.crosshairValues} />
             </FlexibleWidthXYPlot>
         </div >
