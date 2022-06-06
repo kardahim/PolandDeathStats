@@ -75,7 +75,7 @@ function Homepage() {
             },4000)
         }).catch(err => {
             // console.log(err)
-            alert("Import się nie powiódł!\nSprawdź plik!\n\nPrzywracanie danych domyślnych...")
+            alert("Import się nie powiódł!\n\nSprawdź plik!\n\nPrzywracanie danych domyślnych...")
             restoreDefaultData()
         })
     }
