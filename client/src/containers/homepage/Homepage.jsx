@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
-import { useContext, useState, useLayoutEffect} from 'react';
+import { useContext, useState, useLayoutEffect } from 'react';
 import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
@@ -61,10 +61,10 @@ function Homepage() {
     const [importCsvButtonState, setImportCsvButtonState] = useState(true)
 
     const [file, setFile] = useState();
-    
+
     const send = event => {
         const data = new FormData();
-        data.append("file",file);
+        data.append("file", file);
         console.log(data)
 
         axios.post("http://localhost:3001/files/import", data).then((res) => {
@@ -111,7 +111,7 @@ function Homepage() {
             })
             axios.get("http://localhost:3001/deathcauses").then((response) => {
                 setDeathCauses(response.data)
-                setTimeout(()=> {
+                setTimeout(() => {
                     // let cont=true
                     // setTimeout(()=> {
                     //     let cause = Array.from(new Set(deathCauses.map(e => String(e.name))))
@@ -121,24 +121,24 @@ function Homepage() {
                     // console.log("dcN,",deathCauseName)
                     // console.log("cause", String(cause[0]))
                     // },100)
-                        // deathCauseNames.forEach(el => {
-                        //     if (el && cont && Array.from(new Set(deathCauses.map(e => String(e.name)))).sort().includes(el)){
-                        //         console.log(el)
-                        //         setDeathCauseName()
-                        //         cont=false
-                        //     }
-                        // })
-                    
+                    // deathCauseNames.forEach(el => {
+                    //     if (el && cont && Array.from(new Set(deathCauses.map(e => String(e.name)))).sort().includes(el)){
+                    //         console.log(el)
+                    //         setDeathCauseName()
+                    //         cont=false
+                    //     }
+                    // })
+
                     // setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))).sort())
-                },100)
+                }, 100)
             })
             axios.get("http://localhost:3001/populations").then((response) => {
                 setPopulations(response.data)
-                setTimeout(()=> {
+                setTimeout(() => {
                     setYear(Array.from(new Set(populations.map(e => String(e.year)))).sort())
-                },100)
+                }, 100)
             })
-            
+
 
         }
         fetchData()
@@ -377,7 +377,7 @@ function Homepage() {
         setJsonData(data)
 
         var dataXml = json2xml(jsonData)
-        dataXml = "<root>"+dataXml+"</root>"
+        dataXml = "<root>" + dataXml + "</root>"
         // console.log(dataXml)
 
         if (dataXml.length > 0) {
@@ -427,7 +427,7 @@ function Homepage() {
             console.log(err)
         })
     }
-    
+
     const importFromJSON = () => {
         openFileSelector()
 
@@ -438,9 +438,9 @@ function Homepage() {
     const importUploadedJSON = () => {
         if (filesContent[0]) {
             setUploadedJsonFile(filesContent[0].content)
-            setTimeout(function() {
+            setTimeout(function () {
                 console.log("uploadedJsonFile", uploadedJsonFile)
-            },2000)
+            }, 2000)
 
             console.log("button clicked - ok")
             // actual import to DB
@@ -460,11 +460,11 @@ function Homepage() {
     const importUploadedXML = () => {
         if (filesContent[0]) {
             setUploadedXmlFile(filesContent[0].content)
-            setTimeout(function() {
+            setTimeout(function () {
                 console.log("uploadedXmlFile", uploadedXmlFile)
-            },2000)
+            }, 2000)
 
-            
+
             console.log("button clicked - ok")
             // actual import to DB
             // ...
@@ -474,30 +474,29 @@ function Homepage() {
         }
     }
 
-    const updateButtons = function(ext) {
+    const updateButtons = function (ext) {
         setTimeout(function () {
-            switch(ext)
-            {
+            switch (ext) {
                 case '.json':
                     setImportJsonButtonState(false)
                     setImportXmlButtonState(true)
                     setImportCsvButtonState(true)
-                break;
+                    break;
                 case '.xml':
                     setImportJsonButtonState(true)
                     setImportXmlButtonState(false)
                     setImportCsvButtonState(true)
-                break;
+                    break;
                 case '.csv':
                     setImportJsonButtonState(true)
                     setImportXmlButtonState(true)
                     setImportCsvButtonState(false)
-                break;
+                    break;
                 default:
                     setImportJsonButtonState(true)
                     setImportXmlButtonState(true)
                     setImportCsvButtonState(true)
-                break;
+                    break;
             }
             // if(filesContent[0].name.includes('.json'))
             // {
@@ -529,9 +528,9 @@ function Homepage() {
     const importUploadedCSV = () => {
         if (filesContent[0]) {
             setUploadedCsvFile(filesContent[0].content)
-            setTimeout(function() {
+            setTimeout(function () {
                 console.log("uploadedCsvFile", uploadedCsvFile)
-            },2000)
+            }, 2000)
 
             console.log("button clicked - ok")
             // actual import to DB
@@ -596,8 +595,6 @@ function Homepage() {
         <div className='home-container'>
             <div className='filter-container'>
                 <div className='filters'>
-
-
                 </div>
             </div>
             <div className='main-container'>
@@ -616,7 +613,6 @@ function Homepage() {
                 </div>
             </div>
             <div className='side-container'>
-
                 <div className='options-container'>
                     <div className='filter first-filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
@@ -760,9 +756,9 @@ function Homepage() {
                                             <button id='import-json-button' className='import-confirm-button' onClick={importUploadedJSON} disabled={importJsonButtonState}>Zaimportuj</button>
                                         </div> */}
                                         <div className='option'>
-                                        <p className='option-label'>♦ Import z pliku .json / .xml / .csv</p>
+                                            <p className='option-label'>♦ Import z pliku .json / .xml / .csv</p>
                                             <input className='file-input' type="file" id="file" accept=".json, .xml, .csv" onChange={event => {
-                                                const file=event.target.files[0]; 
+                                                const file = event.target.files[0];
                                                 setFile(file);
                                                 setImportJsonButtonState(false)
                                             }} />
