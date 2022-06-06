@@ -5,6 +5,7 @@ const { Region, DeathCause, Population, Death, Role, User_Role,User, sequelize }
 var fs = require('fs')
 const UserController = require('./UserController')
 var convert = require('xml-js');
+const csv2json = require('./functions/csv2json')
 
 const createBuiltInRoles = async () => {
     const admin_role = await Role.findOne({ where: { name: "admin" } });
@@ -431,7 +432,7 @@ module.exports = {
                 var jsonData = JSON.parse(data)
 
                 console.log("--json--")
-                console.log(jsonData[0]) // year    population  region(name)  deathCause(name)  deaths
+                console.log(jsonData[0])
                 for(let i=0;i<jsonData.length;i++) {
                     console.log("* ", regions.includes(jsonData[i].region))
                     if(!regions.some(e => e.name === jsonData[i].region))
@@ -476,7 +477,6 @@ module.exports = {
                 // console.log(jsonData.root.deaths[0]._text)
                 // console.log(jsonData.root.deathCause[0]._text)
 
-                // dodawanie regionów i przyczyn zgonów
                 for(let i=0;i<jsonData.root.year.length;i++) {
                     if(!regions.some(e => e.name === jsonData.root.region[i]._text))
                     {
@@ -510,8 +510,8 @@ module.exports = {
             }
             else if(String(file.originalname).includes('.csv')) {
                 console.log("--csv--")
-
-                
+                var csvData = csv2json(data)
+                console.log(csvData)
             }
             else{
 
