@@ -2,11 +2,29 @@ const deathCausesJSON = require('../static/json/death_causes.json')
 const populationJSON = require('../static/json/population.json')
 const bcrypt = require("bcrypt")
 const { Region, DeathCause, Population, Death, Role, User_Role,User, sequelize } = require('../db/models')
-var fs = require('fs')
-const UserController = require('./UserController')
 var convert = require('xml-js');
-const csv2json = require('./functions/csv2json')
 
+const csv2json = (csv) => {
+
+    var lines=csv.split("\n");
+ 
+    var result = [];
+  
+    var headers=lines[0].split(",");
+  
+    for(var i=1;i<lines.length;i++){
+        var obj = {};
+        var currentline=lines[i].split(",");
+  
+        for(var j=0;j<headers.length;j++){
+            obj[headers[j]] = currentline[j];
+        }
+
+        result.push(obj);
+    }
+  
+    return JSON.stringify(result);
+}
 const createBuiltInRoles = async () => {
     const admin_role = await Role.findOne({ where: { name: "admin" } });
     const user_role = await Role.findOne({ where: { name: "user" } });
@@ -387,23 +405,22 @@ const fill = async () => {
 const clearDB = async () => {
     try {
         await sequelize.transaction(async (transaction) => {
-          const options = { transaction };
-          await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", options);
-          await sequelize.query("TRUNCATE TABLE deathcauses", options);
-          await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", options);
+            const options = { transaction };
+            await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", options);
+            await sequelize.query("TRUNCATE TABLE deathcauses", options);
+            await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", options);
         });
-      } catch (error) {
+    } catch (error) {
         console.log(error);
-      }
-    // await DeathCause.sequelize.query("SET FOREIGN_KEY_CHECKS = 0", null);
+    }
+
     await Region.sequelize.query("SET FOREIGN_KEY_CHECKS = 0", null);
-    // await DeathCause.truncate({cascase:true});
-    // DeathCause.truncate({cascase:true})
-    await Population.truncate({cascase:true})
     await Region.truncate({cascase:true})
-    await Death.truncate({cascase:true})
-    // await DeathCause.sequelize.query("SET FOREIGN_KEY_CHECKS = 1", null);
     await Region.sequelize.query("SET FOREIGN_KEY_CHECKS = 1", null);
+    
+    await Population.truncate({cascase:true})
+
+    await Death.truncate({cascase:true})
 }
 
 module.exports = {
@@ -415,166 +432,163 @@ module.exports = {
     },
 
     import: async (req, res) => {
-        if (req.file) {
+        if (req.file && req.file.size>0) {
             const file = req.file;
+            // console.log(file)
             var data = file.buffer.toString('utf8'); 
-            // console.log(data)
             
-            clearDB()                             // czyszczenie bazy wyłączne na razie
-
-            // sets
-            const regions = []
-            const death_causes = []
-            const populations = []
-            const deaths = []
-
-            if(String(file.originalname).includes('.json')) {
-                var jsonData = JSON.parse(data)
-
-                console.log("--json--")
-                console.log(jsonData[0])
-                for(let i=0;i<jsonData.length;i++) {
-                    console.log("* ", regions.includes(jsonData[i].region))
-                    if(!regions.some(e => e.name === jsonData[i].region))
-                    {
-                        // console.log("* ", regions.includes(jsonData[i].region))
-                        regions.push({
-                            "id":regions.length+1,
-                            "name": jsonData[i].region
-                        })
-                        // console.log("region= ", jsonData.root.region[i]._text)
+            try{
+                if(String(file.originalname).includes('.json') || String(file.originalname).includes('.xml') || String(file.originalname).includes('.csv')) {
+                    // clearing present data from database ( truncating tables: deaths, death causes, regions, populations)
+                    clearDB()
+                }
+    
+                // sets for keeping temporary objects
+                const regions = []
+                const death_causes = []
+                const populations = []
+                const deaths = []
+    
+                if(String(file.originalname).includes('.json') || String(file.originalname).includes('.csv')) {
+                    var jsonData = []
+                    if(String(file.originalname).includes('.json')) {  // the file in in .json format
+                        jsonData = JSON.parse(data)
                     }
-                    if(!death_causes.some(e => e.name === jsonData[i].deathCause)) {
-                        death_causes.push({
-                            "id":death_causes.length+1,
-                            "name":jsonData[i].deathCause
+                    else {  // the file in in .csv format
+                        jsonData = JSON.parse(csv2json(data))
+                    }
+    
+                    for(let i=0;i<jsonData.length;i++) {
+                        if(!regions.some(e => e.name === jsonData[i].region))
+                        {
+                            regions.push({
+                                "id":regions.length+1,
+                                "name": jsonData[i].region
+                            })
+                        }
+                        if(!death_causes.some(e => e.name === jsonData[i].deathCause)) {
+                            death_causes.push({
+                                "id":death_causes.length+1,
+                                "name":jsonData[i].deathCause
+                            })
+                        }
+                        if(!populations.some(e => e.value === jsonData[i].population)) {
+                            populations.push({
+                                "year": jsonData[i].year,
+                                "value": jsonData[i].population,
+                                "RegionId": regions.find(elem => elem.name==jsonData[i].region).id
+                            })
+                        }
+                        
+                        deaths.push({
+                            'year': jsonData[i].year,
+                            'value': jsonData[i].deaths,
+                            'RegionId': regions.find(elem => elem.name==jsonData[i].region).id,
+                            'DeathCauseId': death_causes.find(elem => elem.name==jsonData[i].deathCause).id
                         })
                     }
-                    if(!populations.some(e => e.value === jsonData[i].population)) {
-                        populations.push({
-                            "year": jsonData[i].year,
-                            "value": jsonData[i].population,
-                            "RegionId": regions.find(elem => elem.name==jsonData[i].region).id
+    
+                }
+                else if(String(file.originalname).includes('.xml')) {  // the file in in .xml format
+                    // console.log("--xml--")
+                    var jsonData = convert.xml2json(data, {compact:true, spaces: 4})
+                    jsonData = JSON.parse(jsonData)
+    
+                    for(let i=0;i<jsonData.root.year.length;i++) {
+                        if(!regions.some(e => e.name === jsonData.root.region[i]._text))
+                        {
+                            regions.push({
+                                "id":regions.length+1,
+                                "name": jsonData.root.region[i]._text
+                            })
+                        }
+                        if(!death_causes.some(e => e.name === jsonData.root.deathCause[i]._text)) {
+                            death_causes.push({
+                                "id":death_causes.length+1,
+                                "name":jsonData.root.deathCause[i]._text
+                            })
+                        }
+                        if(!populations.some(e => e.value === jsonData.root.population[i]._text)) {
+                            populations.push({
+                                "year": jsonData.root.year[i]._text,
+                                "value": jsonData.root.population[i]._text,
+                                "RegionId": regions.find(elem => elem.name==jsonData.root.region[i]._text).id
+                            })
+                        }
+                        deaths.push({
+                            'year': jsonData.root.year[i]._text,
+                            'value': jsonData.root.deaths[i]._text,
+                            'RegionId': regions.find(elem => elem.name==jsonData.root.region[i]._text).id,
+                            'DeathCauseId': death_causes.find(elem => elem.name==jsonData.root.deathCause[i]._text).id
                         })
                     }
-                    
-                    deaths.push({
-                        'year': jsonData[i].year,
-                        'value': jsonData[i].deaths,
-                        'RegionId': regions.find(elem => elem.name==jsonData[i].region).id,
-                        'DeathCauseId': death_causes.find(elem => elem.name==jsonData[i].deathCause).id
+    
+                }
+    
+                // adding Regions to db
+                setTimeout(async function () {
+                    var all = await Region.findAndCountAll()
+                if (all.count === 0) {
+                    regions.forEach((value) => {
+                        const region = { 'id': value.id,'name': value.name }
+                        Region.create(region)
                     })
                 }
-            }
-            else if(String(file.originalname).includes('.xml')) {
-                console.log("--xml--")
-                var jsonData = convert.xml2json(data, {compact:true, spaces: 4})
-                jsonData = JSON.parse(jsonData)
-                //console.log(jsonData.root)
-                // console.log(jsonData.root.year[0]._text)
-                // console.log(jsonData.root.region[0]._text)
-                // console.log(jsonData.root.population[0]._text)
-                // console.log(jsonData.root.deaths[0]._text)
-                // console.log(jsonData.root.deathCause[0]._text)
-
-                for(let i=0;i<jsonData.root.year.length;i++) {
-                    if(!regions.some(e => e.name === jsonData.root.region[i]._text))
-                    {
-                        // console.log("* ", regions.includes(jsonData.root.region[i]._text))
-                        regions.push({
-                            "id":regions.length+1,
-                            "name": jsonData.root.region[i]._text
-                        })
-                        // console.log("region= ", jsonData.root.region[i]._text)
-                    }
-                    if(!death_causes.some(e => e.name === jsonData.root.deathCause[i]._text)) {
-                        death_causes.push({
-                            "id":death_causes.length+1,
-                            "name":jsonData.root.deathCause[i]._text
-                        })
-                    }
-                    if(!populations.some(e => e.value === jsonData.root.population[i]._text)) {
-                        populations.push({
-                            "year": jsonData.root.year[i]._text,
-                            "value": jsonData.root.population[i]._text,
-                            "RegionId": regions.find(elem => elem.name==jsonData.root.region[i]._text).id
-                        })
-                    }
-                    deaths.push({
-                        'year': jsonData.root.year[i]._text,
-                        'value': jsonData.root.deaths[i]._text,
-                        'RegionId': regions.find(elem => elem.name==jsonData.root.region[i]._text).id,
-                        'DeathCauseId': death_causes.find(elem => elem.name==jsonData.root.deathCause[i]._text).id
+    
+                // adding DeathCauses to db
+                all = await DeathCause.findAndCountAll()
+                if (all.count === 0) {
+                    death_causes.forEach((value) => {
+                        const deathCause = { 'id': value.id,'name': value.name }
+                        DeathCause.create(deathCause)
                     })
                 }
+                
+                // adding Deaths to db
+                all = await Death.findAndCountAll()
+                if (all.count === 0) {
+                    deaths.forEach((value) => {
+                        const death = {
+                            'year': value.year,
+                            'value': value.value,
+                            'RegionId': value.RegionId,
+                            'DeathCauseId': value.DeathCauseId
+                        }
+                        Death.create(death)
+                    })
+                }
+    
+                // adding Populations to db
+                all = await Population.findAndCountAll()
+                if (all.count === 0) {
+                    populations.forEach((value) => {
+                        const population = {
+                            'year': value.year,
+                            'value': value.value,
+                            'RegionId': value.RegionId,
+                        }
+                        Population.create(population)
+                    })
+                }
+                },2000)
+                res.status(200).json({
+                    message:'import successful'
+                })
             }
-            else if(String(file.originalname).includes('.csv')) {
-                console.log("--csv--")
-                var csvData = csv2json(data)
-                console.log(csvData)
-            }
-            else{
-
-            }
-
-            console.log("deaths:", deaths)
-            console.log("populations:", populations)
-            console.log("regions:", regions)
-            console.log("death_causes:", death_causes)
-
-
-            setTimeout(async function () {
-                var all = await Region.findAndCountAll()
-            if (all.count === 0) {
-                regions.forEach((value) => {
-                    const region = { 'id': value.id,'name': value.name }
-                    Region.create(region)
+            catch (e){
+                res.status(400).json({
+                    message: 'file parsing error'
                 })
             }
 
-            all = await DeathCause.findAndCountAll()
-            if (all.count === 0) {
-                death_causes.forEach((value) => {
-                    const deathCause = { 'id': value.id,'name': value.name }
-                    DeathCause.create(deathCause)
-                })
-            }
             
-            all = await Death.findAndCountAll()
-            if (all.count === 0) {
-                deaths.forEach((value) => {
-                    const death = {
-                        'year': value.year,
-                        'value': value.value,
-                        'RegionId': value.RegionId,
-                        'DeathCauseId': value.DeathCauseId
-                    }
-                    Death.create(death)
-                })
-            }
-
-            all = await Population.findAndCountAll()
-            if (all.count === 0) {
-                populations.forEach((value) => {
-                    const population = {
-                        'year': value.year,
-                        'value': value.value,
-                        'RegionId': value.RegionId,
-                    }
-                    Population.create(population)
-                })
-            }
-            },2000)
-
         }
-        // console.log(file)
-        // console.log("file", file.buffer)
+        
     },
-
 
     fill: async (req, res) => {
         fill()
         
-        res.json("success")
+        return res.json("success")
     }
 }

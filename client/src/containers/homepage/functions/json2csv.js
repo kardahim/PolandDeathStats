@@ -10,7 +10,10 @@ function json2csv(objArray) {
             line += array[i][index];
         }
 
-        str += line + '\r\n';
+        str += line;
+        if(i < array.length-1){
+            str += '\n'
+        }
     }
 
     return str;

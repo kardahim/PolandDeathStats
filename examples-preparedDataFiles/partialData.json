@@ -1,0 +1,632 @@
+[
+ {
+  "year": 2011,
+  "population": 38538447,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 375501
+ },
+ {
+  "year": 2012,
+  "population": 38533299,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 384788
+ },
+ {
+  "year": 2013,
+  "population": 38495659,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 387312
+ },
+ {
+  "year": 2014,
+  "population": 38478602,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 376467
+ },
+ {
+  "year": 2015,
+  "population": 38437239,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 394921
+ },
+ {
+  "year": 2016,
+  "population": 38432992,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 388009
+ },
+ {
+  "year": 2017,
+  "population": 38433558,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 402852
+ },
+ {
+  "year": 2018,
+  "population": 38411148,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 414200
+ },
+ {
+  "year": 2019,
+  "population": 38382576,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 409709
+ },
+ {
+  "year": 2020,
+  "population": 38265013,
+  "region": "POLSKA",
+  "deathCause": "razem",
+  "deaths": 477355
+ },
+ {
+  "year": 2011,
+  "population": 38538447,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 92196
+ },
+ {
+  "year": 2012,
+  "population": 38533299,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 94740
+ },
+ {
+  "year": 2013,
+  "population": 38495659,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 94117
+ },
+ {
+  "year": 2014,
+  "population": 38478602,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 95565
+ },
+ {
+  "year": 2015,
+  "population": 38437239,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 100601
+ },
+ {
+  "year": 2016,
+  "population": 38432992,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 99959
+ },
+ {
+  "year": 2017,
+  "population": 38433558,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 99643
+ },
+ {
+  "year": 2018,
+  "population": 38411148,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 101386
+ },
+ {
+  "year": 2019,
+  "population": 38382576,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 100323
+ },
+ {
+  "year": 2020,
+  "population": 38265013,
+  "region": "POLSKA",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 99867
+ },
+ {
+  "year": 2011,
+  "population": 38538447,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 7124
+ },
+ {
+  "year": 2012,
+  "population": 38533299,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 7535
+ },
+ {
+  "year": 2013,
+  "population": 38495659,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 7829
+ },
+ {
+  "year": 2014,
+  "population": 38478602,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 7206
+ },
+ {
+  "year": 2015,
+  "population": 38437239,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 8634
+ },
+ {
+  "year": 2016,
+  "population": 38432992,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 8915
+ },
+ {
+  "year": 2017,
+  "population": 38433558,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 9451
+ },
+ {
+  "year": 2018,
+  "population": 38411148,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 9649
+ },
+ {
+  "year": 2019,
+  "population": 38382576,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 10007
+ },
+ {
+  "year": 2020,
+  "population": 38265013,
+  "region": "POLSKA",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 12947
+ },
+ {
+  "year": 2011,
+  "population": 1023158,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 9648
+ },
+ {
+  "year": 2012,
+  "population": 1023317,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 9607
+ },
+ {
+  "year": 2013,
+  "population": 1021470,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 10046
+ },
+ {
+  "year": 2014,
+  "population": 1020307,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 9553
+ },
+ {
+  "year": 2015,
+  "population": 1018075,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 10156
+ },
+ {
+  "year": 2016,
+  "population": 1017376,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 9955
+ },
+ {
+  "year": 2017,
+  "population": 1016832,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 10285
+ },
+ {
+  "year": 2018,
+  "population": 1014548,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 10981
+ },
+ {
+  "year": 2019,
+  "population": 1011592,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 11070
+ },
+ {
+  "year": 2020,
+  "population": 1007145,
+  "region": "LUBELSKIE",
+  "deathCause": "razem",
+  "deaths": 12625
+ },
+ {
+  "year": 2011,
+  "population": 1023158,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2480
+ },
+ {
+  "year": 2012,
+  "population": 1023317,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2505
+ },
+ {
+  "year": 2013,
+  "population": 1021470,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2426
+ },
+ {
+  "year": 2014,
+  "population": 1020307,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2489
+ },
+ {
+  "year": 2015,
+  "population": 1018075,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2556
+ },
+ {
+  "year": 2016,
+  "population": 1017376,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2599
+ },
+ {
+  "year": 2017,
+  "population": 1016832,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2722
+ },
+ {
+  "year": 2018,
+  "population": 1014548,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2689
+ },
+ {
+  "year": 2019,
+  "population": 1011592,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2748
+ },
+ {
+  "year": 2020,
+  "population": 1007145,
+  "region": "LUBELSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2717
+ },
+ {
+  "year": 2011,
+  "population": 1023158,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 215
+ },
+ {
+  "year": 2012,
+  "population": 1023317,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 246
+ },
+ {
+  "year": 2013,
+  "population": 1021470,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 290
+ },
+ {
+  "year": 2014,
+  "population": 1020307,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 159
+ },
+ {
+  "year": 2015,
+  "population": 1018075,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 186
+ },
+ {
+  "year": 2016,
+  "population": 1017376,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 277
+ },
+ {
+  "year": 2017,
+  "population": 1016832,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 281
+ },
+ {
+  "year": 2018,
+  "population": 1014548,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 305
+ },
+ {
+  "year": 2019,
+  "population": 1011592,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 327
+ },
+ {
+  "year": 2020,
+  "population": 1007145,
+  "region": "LUBELSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 421
+ },
+ {
+  "year": 2011,
+  "population": 3346796,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 9719
+ },
+ {
+  "year": 2012,
+  "population": 3354077,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 10180
+ },
+ {
+  "year": 2013,
+  "population": 3360581,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 10267
+ },
+ {
+  "year": 2014,
+  "population": 3368336,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 9808
+ },
+ {
+  "year": 2015,
+  "population": 3372618,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 10468
+ },
+ {
+  "year": 2016,
+  "population": 3382260,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 10006
+ },
+ {
+  "year": 2017,
+  "population": 3391380,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 10880
+ },
+ {
+  "year": 2018,
+  "population": 3400577,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 10707
+ },
+ {
+  "year": 2019,
+  "population": 3410901,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 10694
+ },
+ {
+  "year": 2020,
+  "population": 3410441,
+  "region": "OPOLSKIE",
+  "deathCause": "razem",
+  "deaths": 12716
+ },
+ {
+  "year": 2011,
+  "population": 3346796,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2320
+ },
+ {
+  "year": 2012,
+  "population": 3354077,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2457
+ },
+ {
+  "year": 2013,
+  "population": 3360581,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2432
+ },
+ {
+  "year": 2014,
+  "population": 3368336,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2374
+ },
+ {
+  "year": 2015,
+  "population": 3372618,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2390
+ },
+ {
+  "year": 2016,
+  "population": 3382260,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2011
+ },
+ {
+  "year": 2017,
+  "population": 3391380,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2369
+ },
+ {
+  "year": 2018,
+  "population": 3400577,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2497
+ },
+ {
+  "year": 2019,
+  "population": 3410901,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2560
+ },
+ {
+  "year": 2020,
+  "population": 3410441,
+  "region": "OPOLSKIE",
+  "deathCause": "nowotwory ogółem",
+  "deaths": 2472
+ },
+ {
+  "year": 2011,
+  "population": 3346796,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 254
+ },
+ {
+  "year": 2012,
+  "population": 3354077,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 239
+ },
+ {
+  "year": 2013,
+  "population": 3360581,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 260
+ },
+ {
+  "year": 2014,
+  "population": 3368336,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 223
+ },
+ {
+  "year": 2015,
+  "population": 3372618,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 232
+ },
+ {
+  "year": 2016,
+  "population": 3382260,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 199
+ },
+ {
+  "year": 2017,
+  "population": 3391380,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 254
+ },
+ {
+  "year": 2018,
+  "population": 3400577,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 323
+ },
+ {
+  "year": 2019,
+  "population": 3410901,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 350
+ },
+ {
+  "year": 2020,
+  "population": 3410441,
+  "region": "OPOLSKIE",
+  "deathCause": "zaburzenia psychiczne i zaburzenia zachowania",
+  "deaths": 407
+ }
+]

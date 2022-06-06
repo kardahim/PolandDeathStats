@@ -1,0 +1,91 @@
+year,population,region,deathCause,deaths
+2011,38538447,POLSKA,razem,375501
+2012,38533299,POLSKA,razem,384788
+2013,38495659,POLSKA,razem,387312
+2014,38478602,POLSKA,razem,376467
+2015,38437239,POLSKA,razem,394921
+2016,38432992,POLSKA,razem,388009
+2017,38433558,POLSKA,razem,402852
+2018,38411148,POLSKA,razem,414200
+2019,38382576,POLSKA,razem,409709
+2020,38265013,POLSKA,razem,477355
+2011,38538447,POLSKA,nowotwory ogółem,92196
+2012,38533299,POLSKA,nowotwory ogółem,94740
+2013,38495659,POLSKA,nowotwory ogółem,94117
+2014,38478602,POLSKA,nowotwory ogółem,95565
+2015,38437239,POLSKA,nowotwory ogółem,100601
+2016,38432992,POLSKA,nowotwory ogółem,99959
+2017,38433558,POLSKA,nowotwory ogółem,99643
+2018,38411148,POLSKA,nowotwory ogółem,101386
+2019,38382576,POLSKA,nowotwory ogółem,100323
+2020,38265013,POLSKA,nowotwory ogółem,99867
+2011,38538447,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,7124
+2012,38533299,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,7535
+2013,38495659,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,7829
+2014,38478602,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,7206
+2015,38437239,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,8634
+2016,38432992,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,8915
+2017,38433558,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,9451
+2018,38411148,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,9649
+2019,38382576,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,10007
+2020,38265013,POLSKA,zaburzenia psychiczne i zaburzenia zachowania,12947
+2011,1023158,LUBELSKIE,razem,9648
+2012,1023317,LUBELSKIE,razem,9607
+2013,1021470,LUBELSKIE,razem,10046
+2014,1020307,LUBELSKIE,razem,9553
+2015,1018075,LUBELSKIE,razem,10156
+2016,1017376,LUBELSKIE,razem,9955
+2017,1016832,LUBELSKIE,razem,10285
+2018,1014548,LUBELSKIE,razem,10981
+2019,1011592,LUBELSKIE,razem,11070
+2020,1007145,LUBELSKIE,razem,12625
+2011,1023158,LUBELSKIE,nowotwory ogółem,2480
+2012,1023317,LUBELSKIE,nowotwory ogółem,2505
+2013,1021470,LUBELSKIE,nowotwory ogółem,2426
+2014,1020307,LUBELSKIE,nowotwory ogółem,2489
+2015,1018075,LUBELSKIE,nowotwory ogółem,2556
+2016,1017376,LUBELSKIE,nowotwory ogółem,2599
+2017,1016832,LUBELSKIE,nowotwory ogółem,2722
+2018,1014548,LUBELSKIE,nowotwory ogółem,2689
+2019,1011592,LUBELSKIE,nowotwory ogółem,2748
+2020,1007145,LUBELSKIE,nowotwory ogółem,2717
+2011,1023158,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,215
+2012,1023317,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,246
+2013,1021470,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,290
+2014,1020307,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,159
+2015,1018075,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,186
+2016,1017376,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,277
+2017,1016832,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,281
+2018,1014548,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,305
+2019,1011592,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,327
+2020,1007145,LUBELSKIE,zaburzenia psychiczne i zaburzenia zachowania,421
+2011,3346796,OPOLSKIE,razem,9719
+2012,3354077,OPOLSKIE,razem,10180
+2013,3360581,OPOLSKIE,razem,10267
+2014,3368336,OPOLSKIE,razem,9808
+2015,3372618,OPOLSKIE,razem,10468
+2016,3382260,OPOLSKIE,razem,10006
+2017,3391380,OPOLSKIE,razem,10880
+2018,3400577,OPOLSKIE,razem,10707
+2019,3410901,OPOLSKIE,razem,10694
+2020,3410441,OPOLSKIE,razem,12716
+2011,3346796,OPOLSKIE,nowotwory ogółem,2320
+2012,3354077,OPOLSKIE,nowotwory ogółem,2457
+2013,3360581,OPOLSKIE,nowotwory ogółem,2432
+2014,3368336,OPOLSKIE,nowotwory ogółem,2374
+2015,3372618,OPOLSKIE,nowotwory ogółem,2390
+2016,3382260,OPOLSKIE,nowotwory ogółem,2011
+2017,3391380,OPOLSKIE,nowotwory ogółem,2369
+2018,3400577,OPOLSKIE,nowotwory ogółem,2497
+2019,3410901,OPOLSKIE,nowotwory ogółem,2560
+2020,3410441,OPOLSKIE,nowotwory ogółem,2472
+2011,3346796,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,254
+2012,3354077,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,239
+2013,3360581,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,260
+2014,3368336,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,223
+2015,3372618,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,232
+2016,3382260,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,199
+2017,3391380,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,254
+2018,3400577,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,323
+2019,3410901,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,350
+2020,3410441,OPOLSKIE,zaburzenia psychiczne i zaburzenia zachowania,407

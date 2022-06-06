@@ -94,7 +94,7 @@ function Area(props) {
                         label="Przyczyna"
                         onChange={handleChangeCause}>
                         {props.causes.map((v, k) => {
-                            return (<MenuItem value={v}>{v}</MenuItem>)
+                            return (<MenuItem key={k} value={v}>{v}</MenuItem>)
                         })}
                     </Select>
                 </FormControl>
