@@ -53,6 +53,9 @@ function Area(props) {
                     // data2.push({ x: (`${v.year}`), y: v.population })
                 }
             })
+            data1.sort((a, b) => {
+                return a.x - b.x;
+            });
             // console.log(props.years)
             // console.log(data2)
             // console.log(`array length: ${data.length}}`)
@@ -112,12 +115,15 @@ function Area(props) {
                         title: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold', fontSize: 20 },
 
                     }} />
-                <YAxis title="Zgony" style={{
-                    line: { stroke: 'black' },
-                    ticks: { stroke: 'black' },
-                    text: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold' },
-                    title: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold', fontSize: 20 },
-                }} />
+                <YAxis
+                    marginLeft={50}
+                    title="Zgony"
+                    style={{
+                        line: { stroke: 'black' },
+                        ticks: { stroke: 'black' },
+                        text: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold' },
+                        title: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold', fontSize: 20 },
+                    }} />
                 <AreaSeries
                     onNearestX={_onNearestX}
                     data={data1}

@@ -1,10 +1,20 @@
-const { Population } = require("../db/models")
+const { Population, sequelize } = require("../db/models")
+const { Transaction } = require('sequelize');
 
 module.exports = {
     // get all Populations
     getPopulations: async (req, res) => {
-        const listOfPopulations = await Population.findAll();
-        res.json(listOfPopulations);
+        const trans = await sequelize.transaction({
+            isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
+        });
+        try {
+            const listOfPopulations = await Population.findAll({ transaction: trans });
+            res.json(listOfPopulations);
+            trans.commit()
+        }
+        catch (e) {
+            await trans.rollback();
+        }
     },
 
     // get Populations by id

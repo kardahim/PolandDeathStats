@@ -1,10 +1,22 @@
-const { Death } = require("../db/models")
+const { Death, sequelize } = require("../db/models")
+const { Transaction } = require('sequelize');
 
 module.exports = {
     // get all Deaths
     getDeaths: async (req, res) => {
-        const deaths = await Death.findAll();
-        res.json(deaths);
+        // set isolation level
+        const trans = await sequelize.transaction({
+            isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
+        });
+        try {
+            const deaths = await Death.findAll({ transaction: trans });
+
+            await trans.commit();
+            res.json(deaths);
+        }
+        catch (e) {
+            await trans.rollback();
+        }
     },
 
     // get Deaths by id
