@@ -431,41 +431,56 @@ module.exports = {
                 var jsonData = JSON.parse(data)
 
                 console.log("--json--")
-                console.log(jsonData[0])
-
-                
-
-                // fill roles if empty
-                all_roles = await Role.findAndCountAll()
-                if (all_roles.count === 0) {
-                    createBuiltInRoles()
+                console.log(jsonData[0]) // year    population  region(name)  deathCause(name)  deaths
+                for(let i=0;i<jsonData.length;i++) {
+                    console.log("* ", regions.includes(jsonData[i].region))
+                    if(!regions.some(e => e.name === jsonData[i].region))
+                    {
+                        // console.log("* ", regions.includes(jsonData[i].region))
+                        regions.push({
+                            "id":regions.length+1,
+                            "name": jsonData[i].region
+                        })
+                        // console.log("region= ", jsonData.root.region[i]._text)
+                    }
+                    if(!death_causes.some(e => e.name === jsonData[i].deathCause)) {
+                        death_causes.push({
+                            "id":death_causes.length+1,
+                            "name":jsonData[i].deathCause
+                        })
+                    }
+                    if(!populations.some(e => e.value === jsonData[i].population)) {
+                        populations.push({
+                            "year": jsonData[i].year,
+                            "value": jsonData[i].population,
+                            "RegionId": regions.find(elem => elem.name==jsonData[i].region).id
+                        })
+                    }
+                    
+                    deaths.push({
+                        'year': jsonData[i].year,
+                        'value': jsonData[i].deaths,
+                        'RegionId': regions.find(elem => elem.name==jsonData[i].region).id,
+                        'DeathCauseId': death_causes.find(elem => elem.name==jsonData[i].deathCause).id
+                    })
                 }
-
-                // recreate built in users if any of them doesn't exist
-                createBuiltInUsers()
-
-
-
-
-
             }
             else if(String(file.originalname).includes('.xml')) {
                 console.log("--xml--")
                 var jsonData = convert.xml2json(data, {compact:true, spaces: 4})
                 jsonData = JSON.parse(jsonData)
                 //console.log(jsonData.root)
-                console.log(jsonData.root.year[0]._text)
-                console.log(jsonData.root.region[0]._text)
-                console.log(jsonData.root.population[0]._text)
-                console.log(jsonData.root.deaths[0]._text)
-                console.log(jsonData.root.deathCause[0]._text)
+                // console.log(jsonData.root.year[0]._text)
+                // console.log(jsonData.root.region[0]._text)
+                // console.log(jsonData.root.population[0]._text)
+                // console.log(jsonData.root.deaths[0]._text)
+                // console.log(jsonData.root.deathCause[0]._text)
 
                 // dodawanie regionów i przyczyn zgonów
-                let count = jsonData.root.year.length
-                for(let i=0;i<count;i++) {
+                for(let i=0;i<jsonData.root.year.length;i++) {
                     if(!regions.some(e => e.name === jsonData.root.region[i]._text))
                     {
-                        console.log("* ", regions.includes(jsonData.root.region[i]._text))
+                        // console.log("* ", regions.includes(jsonData.root.region[i]._text))
                         regions.push({
                             "id":regions.length+1,
                             "name": jsonData.root.region[i]._text
@@ -485,78 +500,13 @@ module.exports = {
                             "RegionId": regions.find(elem => elem.name==jsonData.root.region[i]._text).id
                         })
                     }
-                    
-                    
                     deaths.push({
                         'year': jsonData.root.year[i]._text,
                         'value': jsonData.root.deaths[i]._text,
                         'RegionId': regions.find(elem => elem.name==jsonData.root.region[i]._text).id,
                         'DeathCauseId': death_causes.find(elem => elem.name==jsonData.root.deathCause[i]._text).id
                     })
-
                 }
-
-                console.log("deaths:", deaths)
-                console.log("populations:", populations)
-                console.log("regions:", regions)
-                console.log("death_causes:", death_causes)
-
-
-                setTimeout(async function () {
-                    var all = await Region.findAndCountAll()
-                if (all.count === 0) {
-                    regions.forEach((value) => {
-                        const region = { 'id': value.id,'name': value.name }
-                        Region.create(region)
-                    })
-                }
-
-                all = await DeathCause.findAndCountAll()
-                if (all.count === 0) {
-                    death_causes.forEach((value) => {
-                        const deathCause = { 'id': value.id,'name': value.name }
-                        DeathCause.create(deathCause)
-                    })
-                }
-                
-                all = await Death.findAndCountAll()
-                if (all.count === 0) {
-                    deaths.forEach((value) => {
-                        const death = {
-                            'year': value.year,
-                            'value': value.value,
-                            'RegionId': value.RegionId,
-                            'DeathCauseId': value.DeathCauseId
-                        }
-                        Death.create(death)
-                    })
-                }
-
-                all = await Population.findAndCountAll()
-                if (all.count === 0) {
-                    populations.forEach((value) => {
-                        const population = {
-                            'year': value.year,
-                            'value': value.value,
-                            'RegionId': value.RegionId,
-                        }
-                        Population.create(population)
-                    })
-                }
-                },2000)
-                    
-
-
-
-
-
-
-
-
-
-
-
-
             }
             else if(String(file.originalname).includes('.csv')) {
                 console.log("--csv--")
@@ -567,15 +517,57 @@ module.exports = {
 
             }
 
+            console.log("deaths:", deaths)
+            console.log("populations:", populations)
+            console.log("regions:", regions)
+            console.log("death_causes:", death_causes)
 
 
+            setTimeout(async function () {
+                var all = await Region.findAndCountAll()
+            if (all.count === 0) {
+                regions.forEach((value) => {
+                    const region = { 'id': value.id,'name': value.name }
+                    Region.create(region)
+                })
+            }
+
+            all = await DeathCause.findAndCountAll()
+            if (all.count === 0) {
+                death_causes.forEach((value) => {
+                    const deathCause = { 'id': value.id,'name': value.name }
+                    DeathCause.create(deathCause)
+                })
+            }
+            
+            all = await Death.findAndCountAll()
+            if (all.count === 0) {
+                deaths.forEach((value) => {
+                    const death = {
+                        'year': value.year,
+                        'value': value.value,
+                        'RegionId': value.RegionId,
+                        'DeathCauseId': value.DeathCauseId
+                    }
+                    Death.create(death)
+                })
+            }
+
+            all = await Population.findAndCountAll()
+            if (all.count === 0) {
+                populations.forEach((value) => {
+                    const population = {
+                        'year': value.year,
+                        'value': value.value,
+                        'RegionId': value.RegionId,
+                    }
+                    Population.create(population)
+                })
+            }
+            },2000)
 
         }
         // console.log(file)
-
-        
-
-        
         // console.log("file", file.buffer)
     },
 

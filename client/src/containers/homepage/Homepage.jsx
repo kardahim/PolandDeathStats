@@ -325,28 +325,28 @@ function Homepage() {
     }
 
     const changeSelectedYearFilters = () => {
-        if (year.length < 22) {
+        if (year.length < years.length) {
             setYear(Array.from(new Set(populations.map(e => String(e.year)))).sort())
         }
-        else if (year.length === 22) {
+        else {
             setYear([])
         }
     }
 
     const changeSelectedRegionFilters = () => {
-        if (regionName.length < 17) {
+        if (regionName.length < regions.length) {
             setRegionName(Array.from(new Set(regions.map(e => e.name))).sort())
         }
-        else if (regionName.length === 17) {
+        else {
             setRegionName([])
         }
     }
 
     const changeSelectedDeathCauseFilters = () => {
-        if (deathCauseName.length < 38) {
+        if (deathCauseName.length < deathCauses.length) {
             setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))))
         }
-        else if (deathCauseName.length === 38) {
+        else {
             setDeathCauseName([])
         }
     }
@@ -398,14 +398,14 @@ function Homepage() {
 
     }
 
-    // I think that table has export to csv (excel format is for enterprise)
     const exportToCSV = () => {
         var data = filteredData
         //removing id attrib
         data = data.map(({ id, ...keepAttrs }) => keepAttrs)
         setJsonData(data)
 
-        const dataCsv = json2csv(jsonData)
+        var dataCsv = json2csv(jsonData)
+        dataCsv = "year,population,region,deathCause,deaths\n" + dataCsv
 
         if (dataCsv.length > 0) {
             const csvString = `data:text/csv;chatset=utf-8,${encodeURIComponent(
@@ -428,77 +428,77 @@ function Homepage() {
         })
     }
     
-    const importFromJSON = () => {
-        openFileSelector()
+    // const importFromJSON = () => {
+    //     openFileSelector()
 
-        updateButtons('.json')
+    //     updateButtons('.json')
 
-    }
+    // }
 
-    const importUploadedJSON = () => {
-        if (filesContent[0]) {
-            setUploadedJsonFile(filesContent[0].content)
-            setTimeout(function() {
-                console.log("uploadedJsonFile", uploadedJsonFile)
-            },2000)
+    // const importUploadedJSON = () => {
+    //     if (filesContent[0]) {
+    //         setUploadedJsonFile(filesContent[0].content)
+    //         setTimeout(function() {
+    //             console.log("uploadedJsonFile", uploadedJsonFile)
+    //         },2000)
 
-            console.log("button clicked - ok")
-            // actual import to DB
-            // ...
-        }
-        else {
-            console.log("button clicked - not ok")
-        }
-    }
+    //         console.log("button clicked - ok")
+    //         // actual import to DB
+    //         // ...
+    //     }
+    //     else {
+    //         console.log("button clicked - not ok")
+    //     }
+    // }
 
-    const importFromXML = () => {
-        openFileSelector()
+    // const importFromXML = () => {
+    //     openFileSelector()
 
-        updateButtons('.xml')
-    }
+    //     updateButtons('.xml')
+    // }
 
-    const importUploadedXML = () => {
-        if (filesContent[0]) {
-            setUploadedXmlFile(filesContent[0].content)
-            setTimeout(function() {
-                console.log("uploadedXmlFile", uploadedXmlFile)
-            },2000)
+    // const importUploadedXML = () => {
+    //     if (filesContent[0]) {
+    //         setUploadedXmlFile(filesContent[0].content)
+    //         setTimeout(function() {
+    //             console.log("uploadedXmlFile", uploadedXmlFile)
+    //         },2000)
 
             
-            console.log("button clicked - ok")
-            // actual import to DB
-            // ...
-        }
-        else {
-            console.log("button clicked - not ok")
-        }
-    }
+    //         console.log("button clicked - ok")
+    //         // actual import to DB
+    //         // ...
+    //     }
+    //     else {
+    //         console.log("button clicked - not ok")
+    //     }
+    // }
 
-    const updateButtons = function(ext) {
-        setTimeout(function () {
-            switch(ext)
-            {
-                case '.json':
-                    setImportJsonButtonState(false)
-                    setImportXmlButtonState(true)
-                    setImportCsvButtonState(true)
-                break;
-                case '.xml':
-                    setImportJsonButtonState(true)
-                    setImportXmlButtonState(false)
-                    setImportCsvButtonState(true)
-                break;
-                case '.csv':
-                    setImportJsonButtonState(true)
-                    setImportXmlButtonState(true)
-                    setImportCsvButtonState(false)
-                break;
-                default:
-                    setImportJsonButtonState(true)
-                    setImportXmlButtonState(true)
-                    setImportCsvButtonState(true)
-                break;
-            }
+    // const updateButtons = function(ext) {
+    //     setTimeout(function () {
+    //         switch(ext)
+    //         {
+    //             case '.json':
+    //                 setImportJsonButtonState(false)
+    //                 setImportXmlButtonState(true)
+    //                 setImportCsvButtonState(true)
+    //             break;
+    //             case '.xml':
+    //                 setImportJsonButtonState(true)
+    //                 setImportXmlButtonState(false)
+    //                 setImportCsvButtonState(true)
+    //             break;
+    //             case '.csv':
+    //                 setImportJsonButtonState(true)
+    //                 setImportXmlButtonState(true)
+    //                 setImportCsvButtonState(false)
+    //             break;
+    //             default:
+    //                 setImportJsonButtonState(true)
+    //                 setImportXmlButtonState(true)
+    //                 setImportCsvButtonState(true)
+    //             break;
+    //         }
             // if(filesContent[0].name.includes('.json'))
             // {
             //     setImportJsonButtonState(false)
@@ -517,30 +517,30 @@ function Homepage() {
             //     setImportXmlButtonState(true)
             //     setImportCsvButtonState(false)
             // }
-        }, 7000)
-    }
+    //     }, 7000)
+    // }
 
-    const importFromCSV = () => {
-        openFileSelector()
+    // const importFromCSV = () => {
+    //     openFileSelector()
 
-        updateButtons('.csv')
-    }
+    //     updateButtons('.csv')
+    // }
 
-    const importUploadedCSV = () => {
-        if (filesContent[0]) {
-            setUploadedCsvFile(filesContent[0].content)
-            setTimeout(function() {
-                console.log("uploadedCsvFile", uploadedCsvFile)
-            },2000)
+    // const importUploadedCSV = () => {
+    //     if (filesContent[0]) {
+    //         setUploadedCsvFile(filesContent[0].content)
+    //         setTimeout(function() {
+    //             console.log("uploadedCsvFile", uploadedCsvFile)
+    //         },2000)
 
-            console.log("button clicked - ok")
-            // actual import to DB
-            // ...
-        }
-        else {
-            console.log("button clicked - not ok")
-        }
-    }
+    //         console.log("button clicked - ok")
+    //         // actual import to DB
+    //         // ...
+    //     }
+    //     else {
+    //         console.log("button clicked - not ok")
+    //     }
+    // }
 
     // example area chart's dataset
     // const dataset = [
