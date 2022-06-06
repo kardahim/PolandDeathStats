@@ -115,12 +115,15 @@ function Area(props) {
                         title: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold', fontSize: 20 },
 
                     }} />
-                <YAxis title="Zgony" style={{
-                    line: { stroke: 'black' },
-                    ticks: { stroke: 'black' },
-                    text: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold' },
-                    title: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold', fontSize: 20 },
-                }} />
+                <YAxis
+                    marginLeft={50}
+                    title="Zgony"
+                    style={{
+                        line: { stroke: 'black' },
+                        ticks: { stroke: 'black' },
+                        text: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold' },
+                        title: { stroke: 'none', fill: '#6b6b76', fontWeight: 'bold', fontSize: 20 },
+                    }} />
                 <AreaSeries
                     onNearestX={_onNearestX}
                     data={data1}
