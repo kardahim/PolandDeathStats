@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     DeathCause.associate = (models) => {
-        DeathCause.hasMany(models.Death)
+        DeathCause.hasMany(models.Death, {onDelete: 'cascade'});
     }
 
     return DeathCause

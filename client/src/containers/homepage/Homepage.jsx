@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
-import { useContext, useEffect, useState, useLayoutEffect } from 'react';
+import { useContext, useState, useLayoutEffect} from 'react';
 import './homepage.scss'
 // import { resolveTo } from 'react-router/lib/router';
 // import components
@@ -22,8 +22,9 @@ import { Button } from '@mui/material';
 
 import { years, regionNames, deathCauseNames } from './filter_conf'
 import json2xml from './functions/json2xml'
+import xml2json from './functions/xml2json'
 import json2csv from './functions/json2csv'
-
+import { useFilePicker } from "use-file-picker";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -52,11 +53,43 @@ function Homepage() {
     const [deathCauseName, setDeathCauseName] = useState(['razem']);
     const [isLoading, setLoading] = useState(true);
 
+    const [uploadedJsonFile, setUploadedJsonFile] = useState([])
+    const [importJsonButtonState, setImportJsonButtonState] = useState(true)
+    const [uploadedXmlFile, setUploadedXmlFile] = useState([])
+    const [importXmlButtonState, setImportXmlButtonState] = useState(true)
+    const [uploadedCsvFile, setUploadedCsvFile] = useState([])
+    const [importCsvButtonState, setImportCsvButtonState] = useState(true)
+
+    const [file, setFile] = useState();
+    
+    const send = event => {
+        const data = new FormData();
+        data.append("file",file);
+        console.log(data)
+
+        axios.post("http://localhost:3001/files/import", data).then((res) => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    const [openFileSelector, { filesContent, loading }] = useFilePicker({
+        accept: ".json, .xml, .csv"
+    });
+    // const [openXmlFileSelector, { xmlFilesContent, xmlLoading }] = useFilePicker({
+    //     accept: ".xml"
+    // });
+    // const [openCsvFileSelector, { csvFilesContent, csvLoading }] = useFilePicker({
+    //     accept: ".xml"
+    // });
+
     useLayoutEffect(() => {
         document.title = "Homepage"
-
+        // console.log(Array.from(new Set(populations.map(e => String(e.year)))).sort())
+        // console.log(years)
         function fetchData() {
-            axios.get("http://localhost:3001"+"/deaths").then((response) => {
+            axios.get("http://localhost:3001/deaths").then((response) => {
                 setDeaths(response.data)
 
                 setTimeout(function () {
@@ -72,21 +105,50 @@ function Homepage() {
             })
             axios.get("http://localhost:3001/regions").then((response) => {
                 setRegions(response.data)
+                // setTimeout(()=> {
+                //     setRegionName(Array.from(new Set(regions.map(e => e.name))).sort()[0])
+                // },1000)
             })
             axios.get("http://localhost:3001/deathcauses").then((response) => {
                 setDeathCauses(response.data)
+                setTimeout(()=> {
+                    // let cont=true
+                    // setTimeout(()=> {
+                    //     let cause = Array.from(new Set(deathCauses.map(e => String(e.name))))
+                    //     if(String(cause[0])){
+                    //         setDeathCauseName(String(cause[0]))
+                    //     }
+                    // console.log("dcN,",deathCauseName)
+                    // console.log("cause", String(cause[0]))
+                    // },100)
+                        // deathCauseNames.forEach(el => {
+                        //     if (el && cont && Array.from(new Set(deathCauses.map(e => String(e.name)))).sort().includes(el)){
+                        //         console.log(el)
+                        //         setDeathCauseName()
+                        //         cont=false
+                        //     }
+                        // })
+                    
+                    // setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))).sort())
+                },100)
             })
             axios.get("http://localhost:3001/populations").then((response) => {
                 setPopulations(response.data)
+                setTimeout(()=> {
+                    setYear(Array.from(new Set(populations.map(e => String(e.year)))).sort())
+                },100)
             })
+            
 
         }
         fetchData()
+        // var y = Array.from(new Set(populations.map(e => e.year)))
+        // // console.log(y)
+        // setYear(y)
+        // setRegions(regions)
+        // setRegionName(regions[0])
 
     }, [isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    // const isAllYearSelected =
-    // years.length > 0 && year.length === years.length;
 
     var handleYearChange = async function (event) {
         var value = event.target.value;
@@ -264,7 +326,7 @@ function Homepage() {
 
     const changeSelectedYearFilters = () => {
         if (year.length < 22) {
-            setYear(years)
+            setYear(Array.from(new Set(populations.map(e => String(e.year)))).sort())
         }
         else if (year.length === 22) {
             setYear([])
@@ -273,7 +335,7 @@ function Homepage() {
 
     const changeSelectedRegionFilters = () => {
         if (regionName.length < 17) {
-            setRegionName(regionNames)
+            setRegionName(Array.from(new Set(regions.map(e => e.name))).sort())
         }
         else if (regionName.length === 17) {
             setRegionName([])
@@ -282,7 +344,7 @@ function Homepage() {
 
     const changeSelectedDeathCauseFilters = () => {
         if (deathCauseName.length < 38) {
-            setDeathCauseName(deathCauseNames)
+            setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))))
         }
         else if (deathCauseName.length === 38) {
             setDeathCauseName([])
@@ -298,7 +360,7 @@ function Homepage() {
 
         if (jsonData.length > 0) {
             const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-                JSON.stringify(data)
+                JSON.stringify(data, null, ' ')
             )}`;
             const link = document.createElement("a");
             link.href = jsonString;
@@ -314,7 +376,8 @@ function Homepage() {
         data = data.map(({ id, ...keepAttrs }) => keepAttrs)
         setJsonData(data)
 
-        const dataXml = json2xml(jsonData)
+        var dataXml = json2xml(jsonData)
+        dataXml = "<root>"+dataXml+"</root>"
         // console.log(dataXml)
 
         if (dataXml.length > 0) {
@@ -327,6 +390,12 @@ function Homepage() {
 
             link.click();
         }
+        // let parser = new DOMParser()
+        // var parsed = parser.parseFromString(dataXml,"text/xml")
+        // var reverse = xml2json(parsed," ")
+        // var reverse = xml2json(String(parsed))
+        // console.log(reverse)
+
     }
 
     // I think that table has export to csv (excel format is for enterprise)
@@ -350,20 +419,127 @@ function Homepage() {
         }
     }
 
-    const fillDBWithDefaults = () => {
+    const restoreDefaultData = () => {
+        let data = ""
+        axios.post("http://localhost:3001/files/restore", data).then((res) => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    
+    const importFromJSON = () => {
+        openFileSelector()
+
+        updateButtons('.json')
 
     }
 
-    const importFromJSON = () => {
+    const importUploadedJSON = () => {
+        if (filesContent[0]) {
+            setUploadedJsonFile(filesContent[0].content)
+            setTimeout(function() {
+                console.log("uploadedJsonFile", uploadedJsonFile)
+            },2000)
 
+            console.log("button clicked - ok")
+            // actual import to DB
+            // ...
+        }
+        else {
+            console.log("button clicked - not ok")
+        }
     }
 
     const importFromXML = () => {
+        openFileSelector()
 
+        updateButtons('.xml')
+    }
+
+    const importUploadedXML = () => {
+        if (filesContent[0]) {
+            setUploadedXmlFile(filesContent[0].content)
+            setTimeout(function() {
+                console.log("uploadedXmlFile", uploadedXmlFile)
+            },2000)
+
+            
+            console.log("button clicked - ok")
+            // actual import to DB
+            // ...
+        }
+        else {
+            console.log("button clicked - not ok")
+        }
+    }
+
+    const updateButtons = function(ext) {
+        setTimeout(function () {
+            switch(ext)
+            {
+                case '.json':
+                    setImportJsonButtonState(false)
+                    setImportXmlButtonState(true)
+                    setImportCsvButtonState(true)
+                break;
+                case '.xml':
+                    setImportJsonButtonState(true)
+                    setImportXmlButtonState(false)
+                    setImportCsvButtonState(true)
+                break;
+                case '.csv':
+                    setImportJsonButtonState(true)
+                    setImportXmlButtonState(true)
+                    setImportCsvButtonState(false)
+                break;
+                default:
+                    setImportJsonButtonState(true)
+                    setImportXmlButtonState(true)
+                    setImportCsvButtonState(true)
+                break;
+            }
+            // if(filesContent[0].name.includes('.json'))
+            // {
+            //     setImportJsonButtonState(false)
+            //     setImportXmlButtonState(true)
+            //     setImportCsvButtonState(true)
+            // }
+            // else if(filesContent[0].name.includes('.xml'))
+            // {
+            //     setImportJsonButtonState(true)
+            //     setImportXmlButtonState(false)
+            //     setImportCsvButtonState(true)
+            // }
+            // else if(filesContent[0].name.includes('.csv'))
+            // {
+            //     setImportJsonButtonState(true)
+            //     setImportXmlButtonState(true)
+            //     setImportCsvButtonState(false)
+            // }
+        }, 7000)
     }
 
     const importFromCSV = () => {
+        openFileSelector()
 
+        updateButtons('.csv')
+    }
+
+    const importUploadedCSV = () => {
+        if (filesContent[0]) {
+            setUploadedCsvFile(filesContent[0].content)
+            setTimeout(function() {
+                console.log("uploadedCsvFile", uploadedCsvFile)
+            },2000)
+
+            console.log("button clicked - ok")
+            // actual import to DB
+            // ...
+        }
+        else {
+            console.log("button clicked - not ok")
+        }
     }
 
     // example area chart's dataset
@@ -442,16 +618,16 @@ function Homepage() {
             <div className='side-container'>
 
                 <div className='options-container'>
-                    <div className='filter'>
+                    <div className='filter first-filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
-                            <InputLabel id="year-multiple-checkbox-label">Year</InputLabel>
+                            <InputLabel id="year-multiple-checkbox-label">Rok</InputLabel>
                             <Select
                                 labelId="year-multiple-checkbox-label"
                                 id="year-multiple-checkbox"
                                 multiple
                                 value={year}
                                 onChange={handleYearChange}
-                                input={<OutlinedInput label="Year" />}
+                                input={<OutlinedInput label="Rok" />}
                                 renderValue={(selected) => selected.join(', ')}
                                 MenuProps={MenuProps}
                             >
@@ -475,7 +651,7 @@ function Homepage() {
                                         primary="Select All"
                                     />
                                 </MenuItem> */}
-                                {years.map((name) => (
+                                {Array.from(new Set(populations.map(e => String(e.year)))).sort().map((name) => (
                                     <MenuItem key={name} value={name}>
                                         <Checkbox checked={year.indexOf(name) > -1} />
                                         <ListItemText primary={name} />
@@ -500,7 +676,7 @@ function Homepage() {
                                 renderValue={(selected) => selected.join(', ')}
                                 MenuProps={MenuProps}
                             >
-                                {regionNames.map((name) => (
+                                {Array.from(new Set(regions.map(e => e.name))).map((name) => (
                                     <MenuItem key={name} value={name}>
                                         <Checkbox checked={regionName.indexOf(name) > -1} />
                                         <ListItemText primary={name} />
@@ -514,18 +690,18 @@ function Homepage() {
                     </div>
                     <div className='filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
-                            <InputLabel id="region-multiple-checkbox-label">DeathCause</InputLabel>
+                            <InputLabel id="region-multiple-checkbox-label">Przyczyna zgonów</InputLabel>
                             <Select
                                 labelId="deathcause-multiple-checkbox-label"
                                 id="deathcause-multiple-checkbox"
                                 multiple
                                 value={deathCauseName}
                                 onChange={handleDeathCauseNameChange}
-                                input={<OutlinedInput label="DeathCause" />}
+                                input={<OutlinedInput label="Przyczyna zgonów" />}
                                 renderValue={(selected) => selected.join(', ')}
                                 MenuProps={MenuProps}
                             >
-                                {deathCauseNames.map((name) => (
+                                {Array.from(new Set(deathCauses.map(e => String(e.name)))).map((name) => (
                                     <MenuItem key={name} value={name}>
                                         <Checkbox checked={deathCauseName.indexOf(name) > -1} />
                                         <ListItemText primary={name} />
@@ -537,8 +713,8 @@ function Homepage() {
                             </div>
                         </FormControl>
                     </div>
-                    <div className=''>
-                        <Button className='black' onClick={applyFilters}>Apply filters</Button>
+                    <div className='option'>
+                        <button className='import-confirm-button' onClick={applyFilters}>Zastosuj filtry</button>
                     </div>
                 </div>
 
@@ -557,15 +733,15 @@ function Homepage() {
                             {authState.roles.some(e => e.RoleId === 1) && (
                                 <>
                                     <div className='option-group'>
-                                        <h3>Opcje użytkownika</h3>
+                                        <p className='option-group-header'>Opcje użytkownika</p>
                                         <div className='option'>
-                                            <button className='option-button' onClick={exportToJSON}> Export to .json</button>
+                                            <button className='option-button' onClick={exportToJSON}> Eksport do .json</button>
                                         </div>
                                         <div className='option'>
-                                            <button className='option-button' onClick={exportToXML}> Export to .xml</button>
+                                            <button className='option-button' onClick={exportToXML}> Eksport do .xml</button>
                                         </div>
                                         <div className='option'>
-                                            <button className='option-button' onClick={exportToCSV}> Export to .csv</button>
+                                            <button className='option-button' onClick={exportToCSV}> Eksport do .csv</button>
                                         </div>
                                     </div>
                                 </>
@@ -573,25 +749,35 @@ function Homepage() {
                             {authState.roles.some(e => e.RoleId === 2) && (
                                 <>
                                     <div className='option-group'>
-                                        <h3>Opcje administratora</h3>
+                                        <p className='option-group-header'>Opcje administratora</p>
                                         <div className='option'>
-                                            <button className='option-button' onClick={fillDBWithDefaults}> Fill db with defaults</button>
+                                            <p className='option-label'>♦ Przywróć domyślne dane</p>
+                                            <button className='option-button' onClick={restoreDefaultData}> Przywróć domyślne dane</button>
                                         </div>
+                                        {/* <div className='option'>
+                                            <p>Import z pliku .json / .xml / .csv</p>
+                                            <button className='option-button' onClick={importFromJSON}> Wybierz plik</button>
+                                            <button id='import-json-button' className='import-confirm-button' onClick={importUploadedJSON} disabled={importJsonButtonState}>Zaimportuj</button>
+                                        </div> */}
                                         <div className='option'>
-                                            <button className='option-button' onClick={importFromJSON}> Import from .json</button>
-                                            {/* <input id="myInput"
-                                            type="file"
-                                            ref={(ref) => this.upload = ref}
-                                            style={{display: 'none'}}
-                                            onChange={this.onChangeFile.bind(this)}
-                                            /> */}
+                                        <p className='option-label'>♦ Import z pliku .json / .xml / .csv</p>
+                                            <input className='file-input' type="file" id="file" accept=".json, .xml, .csv" onChange={event => {
+                                                const file=event.target.files[0]; 
+                                                setFile(file);
+                                                setImportJsonButtonState(false)
+                                            }} />
+                                            <button id='import-json-button' className='import-confirm-button' onClick={send} disabled={importJsonButtonState}>Zaimportuj</button>
                                         </div>
-                                        <div className='option'>
-                                            <button className='option-button' onClick={importFromXML}> Import from .xml</button>
-                                        </div>
-                                        <div className='option'>
-                                            <button className='option-button' onClick={importFromCSV}> Import from .csv</button>
-                                        </div>
+                                        {/* <div className='option'>
+                                            <p>Import z pliku .xml</p>
+                                            <button className='option-button' onClick={importFromXML}> Wybierz plik</button>
+                                            <button id='import-xml-button' className='import-confirm-button' onClick={importUploadedXML} disabled={importXmlButtonState}>Zaimportuj</button>
+                                        </div> */}
+                                        {/* <div className='option'>
+                                            <p>Import z pliku .csv</p>
+                                            <button className='option-button' onClick={importFromCSV}> Wybierz plik</button>
+                                            <button id='import-csv-button' className='import-confirm-button' onClick={importUploadedCSV} disabled={importCsvButtonState}>Zaimportuj</button>
+                                        </div> */}
                                     </div>
                                 </>
                             )}

@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     Region.associate = (models) => {
-        Region.hasMany(models.Population)
-        Region.hasMany(models.Death)
+        Region.hasMany(models.Population, {onDelete: 'cascade'})
+        Region.hasMany(models.Death, {onDelete: 'cascade'})
     }
 
     return Region

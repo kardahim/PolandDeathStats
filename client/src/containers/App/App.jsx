@@ -53,7 +53,7 @@ function App() {
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  console.log(authState)
+  // console.log(authState)
 
   return (
     <div className="App">

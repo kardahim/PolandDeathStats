@@ -1,4 +1,4 @@
-const { User } = require('../db/models')
+const { User, User_Role, Role } = require('../db/models')
 const bcrypt = require("bcrypt")
 const { validateToken } = require('../middlewares/AuthMiddleware')
 const { sign } = require('jsonwebtoken')
@@ -14,7 +14,8 @@ module.exports = {
     register: async (req, res) => {
         const { email, password, firstname, lastname } = req.body;
 
-        const user = await User.findOne({ where: { email: email } });
+        const user_role = await Role.findOne({ where: { name: "user" } });
+        var user = await User.findOne({ where: { email: email } });
         if (user) {
             res.json({ error: "User with given email already exists." });
         }
@@ -26,7 +27,17 @@ module.exports = {
                     email: email,
                     password: hash
                 })
+                
             })
+            setTimeout(async function () {
+                user = await User.findOne({ where: { email: email } });
+                // give user user privileges
+                User_Role.create({
+                    RoleId: user_role.id,
+                    UserId: user.id
+                })
+            }, 1000)
+
             res.json("success");
         }
     },
