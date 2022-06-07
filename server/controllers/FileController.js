@@ -516,7 +516,7 @@ module.exports = {
                     }
                 }
     
-                // adding Regions to db
+                // adding prepared data to db
                 setTimeout(async function () {
                     var all = await Region.findAndCountAll()
                     if (all.count === 0) {
