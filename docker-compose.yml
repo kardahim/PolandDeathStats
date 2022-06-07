@@ -1,38 +1,38 @@
 version: '3.8'
 services:
   db:
+    volumes: 
+      - db_volume:/var/lib/mysql
     image: mysql:latest
     restart: unless-stopped
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_DATABASE: poland_death_stats
-    ports:
-    - 3306:3306
     networks:
       - backend
-  
+
   express:
     depends_on:
       - db
     build:
       context: ./server
     ports:
-      - 3001:3001/tcp
+      - 3001:3001
     networks:
       - backend
       - frontend
-  
-  # react:
-  #   depends_on:
-  #     - express
-  #   build: 
-  #     context: ./client
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - frontend
+      
+  web:
+    image: nginx
+    volumes:
+    - ./client/build:/usr/share/nginx/html
+    ports:
+    - "3000:80"
     
 networks:
   backend:
     driver: bridge
   frontend:
+
+volumes:
+  db_volume:
