@@ -1,7 +1,7 @@
 const deathCausesJSON = require('../static/json/death_causes.json')
 const populationJSON = require('../static/json/population.json')
 const bcrypt = require("bcrypt")
-const { Region, DeathCause, Population, Death, Role, User_Role,User, sequelize } = require('../db/models')
+const { Region, DeathCause, Population, Death, Role, User_Role, User, sequelize } = require('../db/models')
 var XMLTOJSON = require('xml-js');
 
 const csv2json = (csv) => {
@@ -363,7 +363,7 @@ const fill = async () => {
     })
     // fill Populations if empty
     all = await Population.findAndCountAll()
-    console.log(populations)
+    // console.log(populations)
     populations.forEach((value) => {
         if (all.count === 0) {
             const population = {
@@ -419,8 +419,10 @@ const clearDB = async () => {
 module.exports = {
     // clears database and fills it with default data
     restoreDefaultData: async(req,res) => {
-        await clearDB()
+        await clearDB()              
         fill()
+        console.log("restoration started and done...")
+        res.status(200).json({ message: "Operation successful." })
     },
 
     // clears database and fills it with data from received file
@@ -557,16 +559,17 @@ module.exports = {
                         })
                     }
                 },2000)
-                res.status(200).json({
+                return res.status(200).json({
                     message:'import successful'
                 })
             }
             catch (e){
-                res.status(400).json({
+                return res.status(400).json({
                     message: 'file parsing error'
                 })
             }
         }
+        return res.json("import process finished")
     },
 
     // fills database with default data

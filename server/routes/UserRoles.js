@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/UserRoleController')
+const { validateAdmin } = require('../middlewares/AuthMiddleware')
 
 // get all User_Roles
 router.get('/', controller.getAllRoles)
 
 // Add new User_Role
-router.post('/', controller.addUserRole)
+router.post('/',validateAdmin, controller.addUserRole)
 
 // Delete User_Role
 router.delete('/', controller.deleteUserRole)

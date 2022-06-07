@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/UserController')
-const { validateToken} = require("../middlewares/AuthMiddleware")
+const { validateToken } = require("../middlewares/AuthMiddleware")
 
 // get all Users
 router.get('/', controller.getUsers)

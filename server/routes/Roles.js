@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/RoleController')
+const { validateAdmin } = require('../middlewares/AuthMiddleware')
 
 // get all Roles
 router.get('/', controller.getRoles)
@@ -12,6 +13,6 @@ router.get('/:id', controller.getById)
 router.get("/name/:name", controller.getByName)
 
 // Add new Role
-router.post("/", controller.addRole)
+router.post("/",validateAdmin,controller.addRole)
 
 module.exports = router
