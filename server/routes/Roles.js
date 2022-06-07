@@ -11,7 +11,7 @@ router.get('/:id', controller.getById)
 // Get Role by name
 router.get("/name/:name", controller.getByName)
 
-// Add Role
+// Add new Role
 router.post("/", controller.addRole)
 
 module.exports = router

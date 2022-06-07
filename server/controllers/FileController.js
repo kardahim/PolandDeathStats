@@ -2,7 +2,7 @@ const deathCausesJSON = require('../static/json/death_causes.json')
 const populationJSON = require('../static/json/population.json')
 const bcrypt = require("bcrypt")
 const { Region, DeathCause, Population, Death, Role, User_Role,User, sequelize } = require('../db/models')
-var convert = require('xml-js');
+var XMLTOJSON = require('xml-js');
 
 const csv2json = (csv) => {
 
@@ -345,8 +345,7 @@ const fill = async () => {
             "RegionId": regionId
         })
     })
-
-    // fill regions if empty
+    // fill Regions if empty
     let all = await Region.findAndCountAll()
     regions.forEach((value) => {
         if (all.count === 0) {
@@ -354,8 +353,7 @@ const fill = async () => {
             Region.create(region)
         }
     })
-
-    // fill deaths causes if empty
+    // fill DeathCauses if empty
     all = await DeathCause.findAndCountAll()
     death_causes.forEach((value) => {
         if (all.count === 0) {
@@ -363,8 +361,7 @@ const fill = async () => {
             DeathCause.create(deathCause)
         }
     })
-
-    // fill populations if empty
+    // fill Populations if empty
     all = await Population.findAndCountAll()
     console.log(populations)
     populations.forEach((value) => {
@@ -377,7 +374,6 @@ const fill = async () => {
             Population.create(population)
         }
     })
-
     // fill deaths if empty
     all = await Death.findAndCountAll()
     deaths.forEach((value) => {
@@ -391,17 +387,16 @@ const fill = async () => {
             Death.create(death)
         }
     })
-
     // fill roles if empty
     all_roles = await Role.findAndCountAll()
     if (all_roles.count === 0) {
         createBuiltInRoles()
     }
-
     // recreate built in users if any of them doesn't exist
     createBuiltInUsers()
 }
 
+// partly clears database (Deaths,Regions, Populations, DeathCauses)
 const clearDB = async () => {
     try {
         await sequelize.transaction(async (transaction) => {
@@ -417,20 +412,18 @@ const clearDB = async () => {
     await Region.sequelize.query("SET FOREIGN_KEY_CHECKS = 0", null);
     await Region.truncate({cascase:true})
     await Region.sequelize.query("SET FOREIGN_KEY_CHECKS = 1", null);
-    
     await Population.truncate({cascase:true})
-
     await Death.truncate({cascase:true})
 }
 
 module.exports = {
-
+    // clears database and fills it with default data
     restoreDefaultData: async(req,res) => {
-        
         await clearDB()
         fill()
     },
 
+    // clears database and fills it with data from received file
     import: async (req, res) => {
         if (req.file && req.file.size>0) {
             const file = req.file;
@@ -443,7 +436,7 @@ module.exports = {
                     clearDB()
                 }
     
-                // sets for keeping temporary objects
+                // creating sets for keeping temporary objects
                 const regions = []
                 const death_causes = []
                 const populations = []
@@ -479,7 +472,6 @@ module.exports = {
                                 "RegionId": regions.find(elem => elem.name==jsonData[i].region).id
                             })
                         }
-                        
                         deaths.push({
                             'year': jsonData[i].year,
                             'value': jsonData[i].deaths,
@@ -487,11 +479,9 @@ module.exports = {
                             'DeathCauseId': death_causes.find(elem => elem.name==jsonData[i].deathCause).id
                         })
                     }
-    
                 }
                 else if(String(file.originalname).includes('.xml')) {  // the file in in .xml format
-                    // console.log("--xml--")
-                    var jsonData = convert.xml2json(data, {compact:true, spaces: 4})
+                    var jsonData = XMLTOJSON.xml2json(data, {compact:true, spaces: 4})
                     jsonData = JSON.parse(jsonData)
     
                     for(let i=0;i<jsonData.root.year.length;i++) {
@@ -522,54 +512,50 @@ module.exports = {
                             'DeathCauseId': death_causes.find(elem => elem.name==jsonData.root.deathCause[i]._text).id
                         })
                     }
-    
                 }
     
                 // adding Regions to db
                 setTimeout(async function () {
                     var all = await Region.findAndCountAll()
-                if (all.count === 0) {
-                    regions.forEach((value) => {
-                        const region = { 'id': value.id,'name': value.name }
-                        Region.create(region)
-                    })
-                }
-    
-                // adding DeathCauses to db
-                all = await DeathCause.findAndCountAll()
-                if (all.count === 0) {
-                    death_causes.forEach((value) => {
-                        const deathCause = { 'id': value.id,'name': value.name }
-                        DeathCause.create(deathCause)
-                    })
-                }
-                
-                // adding Deaths to db
-                all = await Death.findAndCountAll()
-                if (all.count === 0) {
-                    deaths.forEach((value) => {
-                        const death = {
-                            'year': value.year,
-                            'value': value.value,
-                            'RegionId': value.RegionId,
-                            'DeathCauseId': value.DeathCauseId
-                        }
-                        Death.create(death)
-                    })
-                }
-    
-                // adding Populations to db
-                all = await Population.findAndCountAll()
-                if (all.count === 0) {
-                    populations.forEach((value) => {
-                        const population = {
-                            'year': value.year,
-                            'value': value.value,
-                            'RegionId': value.RegionId,
-                        }
-                        Population.create(population)
-                    })
-                }
+                    if (all.count === 0) {
+                        regions.forEach((value) => {
+                            const region = { 'id': value.id,'name': value.name }
+                            Region.create(region)
+                        })
+                    }
+                    // adding DeathCauses to db
+                    all = await DeathCause.findAndCountAll()
+                    if (all.count === 0) {
+                        death_causes.forEach((value) => {
+                            const deathCause = { 'id': value.id,'name': value.name }
+                            DeathCause.create(deathCause)
+                        })
+                    }
+                    // adding Deaths to db
+                    all = await Death.findAndCountAll()
+                    if (all.count === 0) {
+                        deaths.forEach((value) => {
+                            const death = {
+                                'year': value.year,
+                                'value': value.value,
+                                'RegionId': value.RegionId,
+                                'DeathCauseId': value.DeathCauseId
+                            }
+                            Death.create(death)
+                        })
+                    }
+                    // adding Populations to db
+                    all = await Population.findAndCountAll()
+                    if (all.count === 0) {
+                        populations.forEach((value) => {
+                            const population = {
+                                'year': value.year,
+                                'value': value.value,
+                                'RegionId': value.RegionId,
+                            }
+                            Population.create(population)
+                        })
+                    }
                 },2000)
                 res.status(200).json({
                     message:'import successful'
@@ -580,15 +566,12 @@ module.exports = {
                     message: 'file parsing error'
                 })
             }
-
-            
         }
-        
     },
 
+    // fills database with default data
     fill: async (req, res) => {
         fill()
-        
         return res.json("success")
     }
 }

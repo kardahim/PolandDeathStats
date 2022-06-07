@@ -9,7 +9,6 @@ module.exports = {
         const users = await User.findAll();
         res.json(users);
     },
-
     // register
     register: async (req, res) => {
         const { email, password, firstname, lastname } = req.body;
@@ -27,21 +26,18 @@ module.exports = {
                     email: email,
                     password: hash
                 })
-                
             })
             setTimeout(async function () {
                 user = await User.findOne({ where: { email: email } });
-                // give user user privileges
+                // give user 'user' privileges by assigning 'user' role
                 User_Role.create({
                     RoleId: user_role.id,
                     UserId: user.id
                 })
             }, 1000)
-
             res.json("success");
         }
     },
-
     // login
     login: async (req, res) => {
         const { email, password } = req.body;
@@ -67,7 +63,6 @@ module.exports = {
     validateToken: async (req, res) => {
         res.json(req.user)
     },
-
     // get users by id
     getById: async (req, res) => {
         const id = req.params.id
@@ -76,7 +71,6 @@ module.exports = {
         });
         res.json(user)
     },
-
     // get users by email
     getByEmail: async (req, res) => {
         const email = req.params.email

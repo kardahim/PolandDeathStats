@@ -10,7 +10,6 @@ module.exports = {
         });
         try {
             const deaths = await Death.findAll({ transaction: trans });
-
             await trans.commit();
             res.json(deaths);
         }
@@ -18,15 +17,13 @@ module.exports = {
             await trans.rollback();
         }
     },
-
     // get Deaths by id
     getById: async (req, res) => {
         const id = req.params.id
         const death = await Death.findByPk(id);
         res.json(death);
     },
-
-    // get deaths by year
+    // get Deaths by year
     getByYear: async (req, res) => {
         const year = req.params.year
         const deaths = await Death.findAll({ where: { year: year } });
@@ -38,14 +35,12 @@ module.exports = {
         const deaths = await Death.findAll({ where: { RegionId: regionid } });
         res.json(deaths);
     },
-
     // get Deaths by DeathCauseId
     getBydeathCauseId: async (req, res) => {
         const deathcauseid = req.params.deathcauseid
         const deaths = await Death.findAll({ where: { DeathCauseId: deathcauseid } });
         res.json(deaths);
     },
-
     // get Deaths by Year, RegionId and DeathCauseId
     getByYearRegionIdAndDeathCauseId: async (req, res) => {
         const year = req.params.year

@@ -14,7 +14,7 @@ router.get("/year/:year", controller.getByYear)
 // Get Populations by RegionId
 router.get("/region/:regionid", controller.getByRegionId)
 
-// Get Population by year and RegionId      // jakoś ładniej można tą ścieżkę nazwać, żeby było krócej, ale na razie niczego innego nie wymyślałem xd
+// Get Population by year and RegionId
 router.get("/yearandregion/:year/:regionid", controller.getByYearAndRegionId)
 
 module.exports = router
