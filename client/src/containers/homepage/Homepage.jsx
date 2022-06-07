@@ -64,7 +64,6 @@ function Homepage() {
 
     // comment to delete
 
-
     const send = event => {
         const data = new FormData();
         data.append("file", file);
