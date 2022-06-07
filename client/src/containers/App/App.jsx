@@ -1,18 +1,16 @@
 import './App.scss';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AuthContext } from '../../helpers/AuthContext'
-import { useState, useEffect, Suspense, lazy } from "react"
+import { useState, useEffect, lazy } from "react"
 import axios from 'axios';
 // import containers
+import Homepage from '../../containers/homepage/Homepage'
 import NavBar from '../../containers/navbar/NavBar'
 import Login from '../../containers/login/Login'
 import Register from '../../containers/register/Register'
 
-
-// imoer lazy containers
-const Homepage = lazy(() => import('../../containers/homepage/Homepage'))
-
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
   const [authState, setAuthState] = useState({
     email: "",
     id: "0",
@@ -29,31 +27,27 @@ function App() {
       .then((response) => {
         if (response.data.error) {
           setAuthState({ ...authState, status: false })
+          setIsLoading(false)
         }
         else {
-          // var tempRoles = []
-          // console.log(response.data.id)
           axios.get(`http://localhost:3001/userroles/user/${response.data.id}`).then((resp) => {
-            // tempRoles = response.data
-            // console.log(resp.data)
             setAuthState(
               {
                 email: response.data.email,
                 id: response.data.id,
                 status: true,
                 roles: resp.data
-              }
-            )
-            // console.log(authState)
+              })
+            setIsLoading(false)
           })
-          // console.log(tempRoles)
-
-
         }
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // console.log(authState)
+  function NotLoggedRoute({ children }) {
+    const auth = authState.status
+    return auth ? <Navigate to='/' /> : children
+  }
 
   return (
     <div className="App">
@@ -61,9 +55,13 @@ function App() {
         <Router>
           <NavBar />
           <Routes>
-            <Route path='/' element={<Homepage />}></Route>
-            <Route path='/login' element={<Login />}></Route>
-            <Route path='/register' element={<Register />}></Route>
+            {(!isLoading &&
+              <>
+                <Route path='/' element={<Homepage />}></Route>
+                <Route path='/login' element={<NotLoggedRoute><Login /></NotLoggedRoute>}></Route>
+                <Route path='/register' element={<NotLoggedRoute><Register /></NotLoggedRoute>}></Route>
+              </>
+            )}
           </Routes>
         </Router>
       </AuthContext.Provider>
