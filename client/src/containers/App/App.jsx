@@ -53,7 +53,7 @@ function App() {
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
-          <NavBar />
+          <NavBar isLoading={isLoading} />
           <Routes>
             {(!isLoading &&
               <>

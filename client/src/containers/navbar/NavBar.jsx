@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { AuthContext } from '../../helpers/AuthContext'
 import { useState, useEffect } from "react"
 
-function NavBar() {
+function NavBar(props) {
 
   const [authState, setAuthState] = useState({
     username: "",
@@ -62,7 +62,7 @@ function NavBar() {
       <nav className='navbar'>
         <Link to='/' className='navbar-branding'>&lt;Logo&gt; PolandDeathStats</Link>
         <ul className='navbar-menu'>
-          {!authState.status && (
+          {!authState.status && !props.isLoading && (
             <>
               <li className='navbar-item'>
                 <Link to='/login' className='navbar-link'>Zaloguj się</Link>
@@ -72,25 +72,13 @@ function NavBar() {
               </li>
             </>
           )}
-          {authState.status && (
+          {authState.status && !props.isLoading && (
             <>
               <li className='navbar-item'>
                 <Link to='/' onClick={logout} className='navbar-link'>Wyloguj się {authState.username}</Link>
               </li>
             </>
           )}
-
-
-
-          {/* <li className='navbar-item'>
-                        <Link to='#' className='navbar-link'>Empty</Link>
-                    </li>
-                    <li className='navbar-item'>
-                        <Link to='#' className='navbar-link'>Empty</Link>
-                    </li>
-                    <li className='navbar-item'>
-                        <Link to='#' className='navbar-link'>Empty</Link>
-                    </li> */}
         </ul>
         <div className='hamburger' onClick={() => toogle()}>
           <i className="fa-solid fa-bars"></i>
