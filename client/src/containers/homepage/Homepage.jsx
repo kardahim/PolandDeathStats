@@ -64,7 +64,7 @@ function Homepage() {
         const data = new FormData();
         data.append("file", file);
         console.log(data)
-
+        console.log(authState)
         axios.post("/files/import", data).then((res) => {
             console.log(res)
             setTimeout(() => {
