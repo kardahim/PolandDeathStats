@@ -9,9 +9,8 @@ function Table(props) {
         <div>
             <DataGrid
                 autoHeight
-                autoWidth
+                disableColumnMenu
                 disableSelectionOnClick
-                // disableColumnMenu
                 rows={props.rows}
                 columns={props.columns}
                 pageSize={pageSize}

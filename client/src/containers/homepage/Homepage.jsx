@@ -521,16 +521,16 @@ function Homepage() {
     const columns = [
         { field: 'id', headerName: 'ID', width: 60 },
         { field: 'year', headerName: 'Rok', type: 'string', width: 60 },
-        { field: 'region', headerName: 'Region', width: 180 },
-        { field: 'population', headerName: 'Populacja', type: 'number', width: 90 },
-        { field: 'deaths', headerName: 'Śmierci', type: 'number', width: 200 },
+        { field: 'region', headerName: 'Region', width: 200 },
+        { field: 'population', headerName: 'Populacja', type: 'number' },
+        { field: 'deaths', headerName: 'Śmierci', type: 'number', width: 100 },
         {
             field: 'rate',
             headerName: 'Współczynnik śmiertelności',
             valueGetter: params => (`${(params.row.deaths / params.row.population * 100).toFixed(2)}%`),
             width: 200
         },
-        { field: 'deathCause', headerName: 'Przyczyna śmierci', width: 450 },
+        { field: 'deathCause', headerName: 'Przyczyna śmierci', width: 1000 },
     ]
 
     if (isLoading) {
@@ -540,11 +540,11 @@ function Homepage() {
     }
     return (
         <div className='home-container'>
-            <Fab className='user-drawer-button' onClick={() => setIsUserDrawerOpen(true)}>
+            <Fab className='user-drawer-button' color='primary' onClick={() => setIsUserDrawerOpen(true)}>
                 <AddIcon />
             </Fab>
             {authState.roles.some(e => e.RoleId === 2) && (
-                <Fab className='admin-drawer-button' onClick={() => setIsAdminDrawerOpen(true)}>
+                <Fab className='admin-drawer-button' color='primary' onClick={() => setIsAdminDrawerOpen(true)}>
                     <SettingsIcon />
                 </Fab>
             )}
