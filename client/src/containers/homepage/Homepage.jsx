@@ -12,11 +12,22 @@ import { CircularProgress } from '@mui/material';
 
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import Stack from '@mui/material/Stack';
+import Download from '@mui/icons-material/Download';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { Drawer, Box, Typography } from '@mui/material'
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Input from '@mui/material/Input';
+
 
 import { Button } from '@mui/material';
 
@@ -62,9 +73,11 @@ function Homepage() {
 
     const [file, setFile] = useState();
 
+    // drawer
+    const [isAdminDrawerOpen, setIsAdminDrawerOpen] = useState(false)
+    const [isUserDrawerOpen, setIsUserDrawerOpen] = useState(false)
+
     // comment to delete
-
-
     const send = event => {
         const data = new FormData();
         data.append("file", file);
@@ -72,10 +85,10 @@ function Homepage() {
 
         axios.post("http://localhost:3001/files/import", data).then((res) => {
             console.log(res)
-            setTimeout(()=> {
+            setTimeout(() => {
                 // alert("Import zakończony.");
                 window.location.reload(false);
-            },4000)
+            }, 4000)
         }).catch(err => {
             // console.log(err)
             alert("Import się nie powiódł!\n\nSprawdź plik!\n\nPrzywracanie danych domyślnych...")
@@ -123,24 +136,24 @@ function Homepage() {
             axios.get("http://localhost:3001/deathcauses").then((response) => {
                 setDeathCauses(response.data)
                 // setTimeout(() => {
-                    // let cont=true
-                    // setTimeout(()=> {
-                    //     let cause = Array.from(new Set(deathCauses.map(e => String(e.name))))
-                    //     if(String(cause[0])){
-                    //         setDeathCauseName(String(cause[0]))
-                    //     }
-                    // console.log("dcN,",deathCauseName)
-                    // console.log("cause", String(cause[0]))
-                    // },100)
-                    // deathCauseNames.forEach(el => {
-                    //     if (el && cont && Array.from(new Set(deathCauses.map(e => String(e.name)))).sort().includes(el)){
-                    //         console.log(el)
-                    //         setDeathCauseName()
-                    //         cont=false
-                    //     }
-                    // })
+                // let cont=true
+                // setTimeout(()=> {
+                //     let cause = Array.from(new Set(deathCauses.map(e => String(e.name))))
+                //     if(String(cause[0])){
+                //         setDeathCauseName(String(cause[0]))
+                //     }
+                // console.log("dcN,",deathCauseName)
+                // console.log("cause", String(cause[0]))
+                // },100)
+                // deathCauseNames.forEach(el => {
+                //     if (el && cont && Array.from(new Set(deathCauses.map(e => String(e.name)))).sort().includes(el)){
+                //         console.log(el)
+                //         setDeathCauseName()
+                //         cont=false
+                //     }
+                // })
 
-                    // setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))).sort())
+                // setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))).sort())
                 // }, 100)
             })
             axios.get("http://localhost:3001/populations").then((response) => {
@@ -256,62 +269,62 @@ function Homepage() {
 
     const combineAllData = async () => {
         var data = deaths
-            // // filtering by years
-            // data = data.filter(function (obj) {
-            //     return year.includes(String(obj.year))
-            // })
+        // // filtering by years
+        // data = data.filter(function (obj) {
+        //     return year.includes(String(obj.year))
+        // })
 
-            // removing id, createdAt, updatedAt attribs
-            data = data.map(({ id, createdAt, updatedAt, ...keepAttrs }) => keepAttrs)
+        // removing id, createdAt, updatedAt attribs
+        data = data.map(({ id, createdAt, updatedAt, ...keepAttrs }) => keepAttrs)
 
-            // adding Population(count) attrib
-            data.forEach(obj => {
-                obj.population = populations.filter(function (obj2) {
-                    return obj.RegionId === obj2.RegionId && obj.year === obj2.year
-                })[0].value
-            })
+        // adding Population(count) attrib
+        data.forEach(obj => {
+            obj.population = populations.filter(function (obj2) {
+                return obj.RegionId === obj2.RegionId && obj.year === obj2.year
+            })[0].value
+        })
 
-            // adding Region(name) attrib
-            data.forEach(obj => {
-                obj.region = regions.filter((obj2) => {
-                    return obj.RegionId === obj2.id
-                })[0].name
-            })
+        // adding Region(name) attrib
+        data.forEach(obj => {
+            obj.region = regions.filter((obj2) => {
+                return obj.RegionId === obj2.id
+            })[0].name
+        })
 
-            // removing RegionId attrib
-            data = data.map(({ RegionId, ...keepAttrs }) => keepAttrs)
+        // removing RegionId attrib
+        data = data.map(({ RegionId, ...keepAttrs }) => keepAttrs)
 
-            // // filtering by regionName
-            // data = data.filter(function (obj) {
-            //     return regionName.includes(String(obj.region))
-            // })
+        // // filtering by regionName
+        // data = data.filter(function (obj) {
+        //     return regionName.includes(String(obj.region))
+        // })
 
-            // adding DeathCause(name) attrib
-            data.forEach(obj => {
-                obj.deathCause = deathCauses.filter((obj2) => {
-                    return obj.DeathCauseId === obj2.id
-                })[0].name
-            })
+        // adding DeathCause(name) attrib
+        data.forEach(obj => {
+            obj.deathCause = deathCauses.filter((obj2) => {
+                return obj.DeathCauseId === obj2.id
+            })[0].name
+        })
 
-            // // removing DeathCauseId attrib
-            // data = data.map(({ DeathCauseId, ...keepAttrs }) => keepAttrs)
+        // // removing DeathCauseId attrib
+        // data = data.map(({ DeathCauseId, ...keepAttrs }) => keepAttrs)
 
-            // // filtering by deathCauseName
-            // data = data.filter(function (obj) {
-            //     return deathCauseName.includes(String(obj.deathCause))
-            // })
+        // // filtering by deathCauseName
+        // data = data.filter(function (obj) {
+        //     return deathCauseName.includes(String(obj.deathCause))
+        // })
 
-            // renaming 'value' field to 'deaths'
-            data = data.map(({ value, ...rest }) => ({ ...rest, deaths: value }));
+        // renaming 'value' field to 'deaths'
+        data = data.map(({ value, ...rest }) => ({ ...rest, deaths: value }));
 
-            // adding 'id' field ... data order not considered
-            var id = 1
-            data.forEach(obj => {
-                obj.id = id
-                id += 1
-            })
+        // adding 'id' field ... data order not considered
+        var id = 1
+        data.forEach(obj => {
+            obj.id = id
+            id += 1
+        })
 
-            setCombinedData(data)
+        setCombinedData(data)
 
     }
 
@@ -498,12 +511,12 @@ function Homepage() {
         }).catch(err => {
             // console.log(err)
         })
-        setTimeout(()=> {
+        setTimeout(() => {
             // alert("Import zakończony.");
             window.location.reload(false);
-        },4000)
+        }, 4000)
     }
-    
+
     // example table's dataset
     const columns = [
         { field: 'id', headerName: 'ID', width: 60 },
@@ -527,31 +540,42 @@ function Homepage() {
     }
     return (
         <div className='home-container'>
-            <div className='filter-container'>
-                <div className='filters'>
-                </div>
-            </div>
-            <div className='main-container'>
-                <div className='chart-container'>
-                    <Area
-                        // dataset={filteredData}
-                        dataset={combinedData}  //upgrade; teraz nie trzeba klikać "zastosuj filtry" żeby filterki nad wykresem dobrze dziłąły ;p 
-                        // regions={regionName}
-                        regions={Array.from(new Set(regions.map(e => e.name)))} // upgrade
-                        // causes={deathCauseName}
-                        causes={Array.from(new Set(deathCauses.map(e => String(e.name))))} //upgrade
-                        years={year} />
-                </div>
-                <div className='data-container'>
-                    <Table
-                        rows={filteredData}
-                        columns={columns}
-                        pageSize={20} />
-                </div>
-            </div>
-            <div className='side-container'>
-                <div className='options-container'>
-                    <div className='filter first-filter'>
+            <Fab className='user-drawer-button' onClick={() => setIsUserDrawerOpen(true)}>
+                <AddIcon />
+            </Fab>
+            {authState.roles.some(e => e.RoleId === 2) && (
+                <Fab className='admin-drawer-button' onClick={() => setIsAdminDrawerOpen(true)}>
+                    <SettingsIcon />
+                </Fab>
+            )}
+            <Drawer
+                anchor='left'
+                open={isAdminDrawerOpen}
+                onClose={() => setIsAdminDrawerOpen(false)}>
+                <Box p={2} minWidth='350px' textAlign='center' role='presentation'>
+                    <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
+                        Zarządzanie bazą danych
+                    </Typography>
+                    <Stack spacing={2} justifyContent='center' alignItems='center'>
+                        <Button className='option-button' variant='contained' onClick={restoreDefaultData}> Przywróć domyślne dane</Button>
+                        <Input className='file-input' type="file" id="file" accept=".json, .xml, .csv" onChange={event => {
+                            const file = event.target.files[0];
+                            setFile(file);
+                            setImportJsonButtonState(false)
+                        }} />
+                        <Button id='import-json-button' className='import-confirm-button' variant='contained' onClick={send} disabled={importJsonButtonState}>Zaimportuj</Button>
+                    </Stack>
+                </Box>
+            </Drawer>
+            <Drawer
+                anchor='left'
+                open={isUserDrawerOpen}
+                onClose={() => setIsUserDrawerOpen(false)}>
+                <Box p={2} minWidth='350px' textAlign='center' role='presentation'>
+                    <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
+                        Wypełnianie tabeli
+                    </Typography>
+                    <Stack spacing={2} justifyContent='center' alignItems='center'>
                         <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="year-multiple-checkbox-label">Rok</InputLabel>
                             <Select
@@ -562,8 +586,7 @@ function Homepage() {
                                 onChange={handleYearChange}
                                 input={<OutlinedInput label="Rok" />}
                                 renderValue={(selected) => selected.join(', ')}
-                                MenuProps={MenuProps}
-                            >
+                                MenuProps={MenuProps}>
                                 {Array.from(new Set(populations.map(e => String(e.year)))).sort().map((name) => (
                                     <MenuItem key={name} value={name}>
                                         <Checkbox checked={year.indexOf(name) > -1} />
@@ -571,12 +594,8 @@ function Homepage() {
                                     </MenuItem>
                                 ))}
                             </Select>
-                            <div className=''>
-                                <button className='single-filter-button' onClick={changeSelectedYearFilters}>» zaznacz/odznacz wszystkie</button>
-                            </div>
+                            <span className='single-filter-button' onClick={changeSelectedYearFilters}>» zaznacz/odznacz wszystkie</span>
                         </FormControl>
-                    </div>
-                    <div className='filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="region-multiple-checkbox-label">Region</InputLabel>
                             <Select
@@ -596,12 +615,8 @@ function Homepage() {
                                     </MenuItem>
                                 ))}
                             </Select>
-                            <div className=''>
-                                <button className='single-filter-button' onClick={changeSelectedRegionFilters}>» zaznacz/odznacz wszystkie</button>
-                            </div>
+                            <span className='single-filter-button' onClick={changeSelectedRegionFilters}>» zaznacz/odznacz wszystkie</span>
                         </FormControl>
-                    </div>
-                    <div className='filter'>
                         <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="region-multiple-checkbox-label">Przyczyna zgonów</InputLabel>
                             <Select
@@ -621,70 +636,43 @@ function Homepage() {
                                     </MenuItem>
                                 ))}
                             </Select>
-                            <div className=''>
-                                <button className='single-filter-button' onClick={changeSelectedDeathCauseFilters}>» zaznacz/odznacz wszystkie</button>
-                            </div>
+                            <span className='single-filter-button' onClick={changeSelectedDeathCauseFilters}>» zaznacz/odznacz wszystkie</span>
                         </FormControl>
+                        <Button className='import-confirm-button' variant='contained' onClick={applyFilters}>Zastosuj filtry</Button>
+                    </Stack>
+                </Box>
+            </Drawer>
+            <div className='main-container'>
+                {authState.roles.some(e => e.RoleId === 1) && (
+                    <div className='admin-container'>
                     </div>
-                    <div className='option'>
-                        <button className='import-confirm-button' onClick={applyFilters}>Zastosuj filtry</button>
-                    </div>
+                )}
+                <div className='chart-container'>
+                    <Area
+                        // dataset={filteredData}
+                        dataset={combinedData}  //upgrade; teraz nie trzeba klikać "zastosuj filtry" żeby filterki nad wykresem dobrze dziłąły ;p 
+                        // regions={regionName}
+                        regions={Array.from(new Set(regions.map(e => e.name)))} // upgrade
+                        // causes={deathCauseName}
+                        causes={Array.from(new Set(deathCauses.map(e => String(e.name))))} //upgrade
+                        years={year} />
                 </div>
-
-                {!authState.status && (
-                    <>
-                        <div className='options-container'>
-                            <div className='option-group'>
-                                <h4>Zaloguj się aby uzyskać dostęp do zapisu prezentowanych danych</h4>
-                            </div>
-                        </div>
-                    </>
-                )}
-                {authState.status && (
-                    <>
-                        <div className='options-container'>
-                            {authState.roles.some(e => e.RoleId === 1) && (
-                                <>
-                                    <div className='option-group'>
-                                        <p className='option-group-header'>Opcje użytkownika</p>
-                                        <div className='option'>
-                                            <button className='option-button' onClick={exportToJSON}> Eksport do .json</button>
-                                        </div>
-                                        <div className='option'>
-                                            <button className='option-button' onClick={exportToXML}> Eksport do .xml</button>
-                                        </div>
-                                        <div className='option'>
-                                            <button className='option-button' onClick={exportToCSV}> Eksport do .csv</button>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                            {authState.roles.some(e => e.RoleId === 2) && (
-                                <>
-                                    <div className='option-group'>
-                                        <p className='option-group-header'>Opcje administratora</p>
-                                        <div className='option'>
-                                            <p className='option-label'>♦ Przywróć domyślne dane</p>
-                                            <button className='option-button' onClick={restoreDefaultData}> Przywróć domyślne dane</button>
-                                        </div>
-                                        <div className='option'>
-                                            <p className='option-label'>♦ Import z pliku .json / .xml / .csv</p>
-                                            <input className='file-input' type="file" id="file" accept=".json, .xml, .csv" onChange={event => {
-                                                const file = event.target.files[0];
-                                                setFile(file);
-                                                setImportJsonButtonState(false)
-                                            }} />
-                                            <button id='import-json-button' className='import-confirm-button' onClick={send} disabled={importJsonButtonState}>Zaimportuj</button>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-
-                        </div>
-                    </>
-                )}
+                <div className='divider'></div>
+                <div className='data-container'>
+                    {authState.roles.some(e => e.RoleId === 1) && (
+                        <Stack direction="row" spacing={2}>
+                            <Button variant="contained" onClick={exportToCSV} >Pobierz CSV</Button>
+                            <Button variant="contained" onClick={exportToJSON}>Pobierz JSON</Button>
+                            <Button variant="contained" onClick={exportToXML}>Pobierz XML</Button>
+                        </Stack>
+                    )}
+                    <Table
+                        rows={filteredData}
+                        columns={columns}
+                        pageSize={20} />
+                </div>
             </div>
-        </div>
+        </div >
     )
 }
 

@@ -1,152 +1,162 @@
-// mUI
+// MUI
 .MuiTablePagination-actions {
     button {
         width: 50%;
     }
 }
 
-.home-container {
-    display: flex;
-    padding: 1% 1% 1% 1%;
-}
-
 .span {
-    color:black !important;
-}
-.filter-container {
-    // width: 100%;
-    // display: flex;
-    margin-top: 10px;
-
-    .filters {
-        min-height: 60px;
-    }
-}
-
-.first-filter {
-    margin-top: 12px;
-}
-
-.filter {
-    vertical-align: center;
-}
-
-.black {
-    background-color: black;
+    color: black !important;
 }
 
 .single-filter-button {
-    font-weight: 100;
-    font-size: small;
-    background-color: transparent;
-    color: rgb(64, 75, 221);
-
+    margin-top: 10px;
+    color: black;
+    cursor: pointer;
 }
 
-.single-filter-button:hover {
-    background-color: rgb(99, 248, 198);
+.typo {
+    margin-bottom: 25px !important;
 }
 
+.divider {
+    width: 100%;
+    height: 2px;
+    background: #efefef;
+    margin: 3% 0
+}
 
-.main-container {
-    width: 70%;
-    // background-color: aqua;
+.home-container {
+    padding: 3% 5%;
+    position: relative;
 
-    .chart-container {
-        min-height: 100px;
-        // background-color: burlywood;
-        margin: 10px;
+    .user-drawer-button {
+        position: fixed;
+        bottom: 25px;
+        left: 3vw;
     }
 
-    .data-container {
-        min-height: 100px;
-        // background-color: rgb(217, 202, 231);
-        margin: 10px;
-    }
-}
-
-.import-confirm-button {
-    background-color: rgb(117, 116, 116);
-    width: 110px;
-    font-weight: 100;
-    margin-left: 10px;
-}
-
-.import-confirm-button:hover {
-    background-color: rgb(51, 51, 51);
-}
-
-.import-confirm-button:disabled {
-    background-color: rgb(221, 219, 219);
-}
-
-.import-confirm-button:hover:disabled {
-    background-color: rgb(221, 219, 219);
-}
-
-.file-input {
-    margin: 10px;
-    padding-top: 10px;
-    background-color: rgb(248, 248, 248);
-    border: 1px solid;
-    align-items: center;
-    text-align: center;
-}
-
-.side-container {
-    width: 30%;
-    background-color: bisque;
-    text-align: center;
-
-    .options-container {
-        background-color: rgb(255, 255, 255);
-        min-height: 100px;
-        margin: 10px;
-        border: 1px solid;
-
-        .option-group {
-            background-color: rgb(255, 255, 255);
-            border: 1px solid;
-            padding-top: 10px;
-            margin: 10px;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            min-width: 180px;
-
-
-        }
+    .admin-drawer-button {
+        position: fixed;
+        bottom: 100px;
+        left: 3vw;
     }
 }
 
-.option {
-    margin: 10px;
-
-    .option-button {
-        max-width: 180px;
-        background-color: rgb(117, 116, 116);
-    }
-
-    .option-button:hover {
-        background-color: rgb(51, 51, 51);
-    }
-}
-
-.option-group-header {
-    margin-top: 4px;
-    margin-bottom: 12px;
-    font-weight: bold;
-    font-size: large;
-}
-
-.option-label {
-    margin-top: 4px;
-    margin-bottom: 8px;
-    text-align: left;
-    padding-left: 20px;
-}
 
 
-.table,
-.table-cell {
-    border: 1px solid;
-}
+
+
+
+
+// --------------------------------------------------
+// .first-filter {
+//     margin-top: 12px;
+// }
+
+// .filter {
+//     vertical-align: center;
+// }
+
+// .single-filter-button {
+//     font-weight: 100;
+//     font-size: small;
+//     background-color: transparent;
+//     color: rgb(64, 75, 221);
+
+//     &:hover {
+//         background-color: transparent;
+//         text-decoration: underline;
+//     }
+
+
+// }
+
+// .main-container {
+//     width: 70%;
+
+//     .chart-container {
+//         min-height: 100px;
+//         margin: 10px;
+//     }
+
+//     .data-container {
+//         min-height: 100px;
+//         margin: 10px;
+//     }
+// }
+
+// .import-confirm-button {
+//     background-color: rgb(117, 116, 116);
+//     width: 110px;
+//     font-weight: 100;
+//     margin-left: 10px;
+// }
+
+// .import-confirm-button:hover {
+//     background-color: rgb(51, 51, 51);
+// }
+
+// .import-confirm-button:disabled {
+//     background-color: rgb(221, 219, 219);
+// }
+
+// .import-confirm-button:hover:disabled {
+//     background-color: rgb(221, 219, 219);
+// }
+
+// .file-input {
+//     margin: 10px;
+//     padding-top: 10px;
+//     background-color: rgb(248, 248, 248);
+//     border: 1px solid;
+//     align-items: center;
+//     text-align: center;
+// }
+
+// .side-container {
+//     width: 30%;
+//     text-align: center;
+
+//     a .options-container {
+//         min-height: 100px;
+//         margin: 10px;
+
+//         .option-group {
+//             padding-top: 10px;
+//             margin: 10px;
+//             margin-bottom: 10px;
+//             padding-bottom: 10px;
+//             min-width: 180px;
+
+
+//         }
+//     }
+// }
+
+// .option {
+//     margin: 10px;
+
+//     .option-button {
+//         max-width: 180px;
+//         background-color: rgb(117, 116, 116);
+//     }
+
+//     .option-button:hover {
+//         background-color: rgb(51, 51, 51);
+//     }
+// }
+
+// .option-group-header {
+//     margin-top: 4px;
+//     margin-bottom: 12px;
+//     font-weight: bold;
+//     font-size: large;
+// }
+
+// .option-label {
+//     margin-top: 4px;
+//     margin-bottom: 8px;
+//     text-align: left;
+//     padding-left: 20px;
+// }
