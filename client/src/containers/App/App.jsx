@@ -56,9 +56,9 @@ function App() {
         <Router>
           <NavBar isLoading={isLoading} />
           <Routes>
-          <Route path='/' element={<Homepage />}></Route>
             {(!isLoading &&
               <>
+                <Route path='/' element={<Homepage />}></Route>
                 <Route path='/login' element={<NotLoggedRoute><Login /></NotLoggedRoute>}></Route>
                 <Route path='/register' element={<NotLoggedRoute><Register /></NotLoggedRoute>}></Route>
               </>

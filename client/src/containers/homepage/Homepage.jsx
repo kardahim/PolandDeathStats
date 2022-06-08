@@ -68,11 +68,11 @@ function Homepage() {
         axios.post("/files/import", data).then((res) => {
             console.log(res)
             setTimeout(() => {
-                // alert("Import zakończony.");
+                alert("Import zakończony.");
                 window.location.reload(false);
             }, 4000)
         }).catch(err => {
-            // console.log(err)
+            console.log(err)
             alert("Import się nie powiódł!\n\nSprawdź plik!\n\nPrzywracanie danych domyślnych...")
             restoreDefaultData()
         })
@@ -387,12 +387,11 @@ function Homepage() {
 
     const restoreDefaultData = () => {
         let data = ""
-        axios.post("/files/restore", data)
-        // .then((res) => {
-        //     // console.log(res)
-        // }).catch(err => {
-        //     // console.log(err)
-        // })
+        axios.post("/files/restore", data).then((res) => {
+             console.log(res)
+        }).catch(err => {
+             console.log(err)
+        })
         setTimeout(() => {
             window.location.reload(false);
         }, 4000)

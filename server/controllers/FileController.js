@@ -419,7 +419,7 @@ module.exports = {
     // clears database and fills it with default data
     restoreDefaultData: async(req,res) => {
         await clearDB()              
-        fill()
+        await fill()
         console.log("restoration started and done...")
         res.status(200).json({ message: "Operation successful." })
     },
