@@ -21,6 +21,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./db/polanddeathstats_full.sql:/docker-entrypoint-initdb.d/polanddeathstats.sql
+      - mysql-data:/var/lib/mysql
     networks:
       - backend
   phpmyadmin:
@@ -74,6 +75,9 @@ services:
     networks:
       - frontend
     
+volumes:
+  mysql-data:
+  
 networks:
   backend:
     driver: bridge
