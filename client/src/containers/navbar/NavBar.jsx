@@ -1,11 +1,12 @@
 import { React } from 'react'
-import axios from 'axios';
 import './navBar.scss'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../../helpers/AuthContext'
 import { useState, useEffect } from "react"
+// axios
+import axios from '../../api/axios';
 
-function NavBar() {
+function NavBar(props) {
 
   const [authState, setAuthState] = useState({
     username: "",
@@ -15,7 +16,7 @@ function NavBar() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/users/auth', {
+      .get('/users/auth', {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         }
@@ -59,45 +60,31 @@ function NavBar() {
 
   return (
     <header>
-      <AuthContext.Provider value={{ authState, setAuthState }}>
-        <nav className='navbar'>
-          <Link to='/' className='navbar-branding'>&lt;Logo&gt; PolandDeathStats</Link>
-          <ul className='navbar-menu'>
-            {!authState.status && (
-              <>
-                <li className='navbar-item'>
-                  <Link to='/login' className='navbar-link'>Zaloguj się</Link>
-                </li>
-                <li className='navbar-item'>
-                  <Link to='/register' className='navbar-link'>Zarejestruj się</Link>
-                </li>
-              </>
-            )}
-            {authState.status && (
-              <>
-                <li className='navbar-item'>
-                  <Link to='/' onClick={logout} className='navbar-link'>Wyloguj się {authState.username}</Link>
-                </li>
-              </>
-            )}
-
-
-
-            {/* <li className='navbar-item'>
-                        <Link to='#' className='navbar-link'>Empty</Link>
-                    </li>
-                    <li className='navbar-item'>
-                        <Link to='#' className='navbar-link'>Empty</Link>
-                    </li>
-                    <li className='navbar-item'>
-                        <Link to='#' className='navbar-link'>Empty</Link>
-                    </li> */}
-          </ul>
-          <div className='hamburger' onClick={() => toogle()}>
-            <i className="fa-solid fa-bars"></i>
-          </div>
-        </nav>
-      </AuthContext.Provider>
+      <nav className='navbar'>
+        <Link to='/' className='navbar-branding'><i class="fa-solid fa-ribbon"></i> PolandDeathStats</Link>
+        <ul className='navbar-menu'>
+          {!authState.status && !props.isLoading && (
+            <>
+              <li className='navbar-item'>
+                <Link to='/login' className='navbar-link'>Zaloguj się</Link>
+              </li>
+              <li className='navbar-item'>
+                <Link to='/register' className='navbar-link'>Zarejestruj się</Link>
+              </li>
+            </>
+          )}
+          {authState.status && !props.isLoading && (
+            <>
+              <li className='navbar-item'>
+                <Link to='/' onClick={logout} className='navbar-link'>Wyloguj się {authState.username}</Link>
+              </li>
+            </>
+          )}
+        </ul>
+        <div className='hamburger' onClick={() => toogle()}>
+          <i className="fa-solid fa-bars"></i>
+        </div>
+      </nav>
     </header>
   )
 }

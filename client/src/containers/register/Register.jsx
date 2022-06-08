@@ -3,10 +3,11 @@ import './register.scss'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import TextField from '../../components/textField/TextField'
 import Button from '../../components/button/Button'
+// axios
+import axios from '../../api/axios';
 
 function Register() {
     let navigate = useNavigate();
@@ -39,12 +40,12 @@ function Register() {
     })
 
     const onSubmit = (data) => {
-        axios.get(`http://localhost:3001/users/email/${data.email}`).then((response) => {
+        axios.get(`/users/email/${data.email}`).then((response) => {
             if (response.data !== null) {
                 setEmailRegistered("Konto o podanym adresie email już istnieje");
             }
             else {
-                axios.post("http://localhost:3001/users/register", data).then(() => {
+                axios.post("/users/register", data).then(() => {
                     navigate(`/login`)
                 })
             }

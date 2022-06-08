@@ -1,6 +1,5 @@
 import { React, useState } from 'react'
 import { DataGrid, plPL } from '@mui/x-data-grid';
-import { Toolbar } from '@mui/material';
 
 function Table(props) {
 
@@ -10,8 +9,8 @@ function Table(props) {
         <div>
             <DataGrid
                 autoHeight
+                disableColumnMenu
                 disableSelectionOnClick
-                // disableColumnMenu
                 rows={props.rows}
                 columns={props.columns}
                 pageSize={pageSize}

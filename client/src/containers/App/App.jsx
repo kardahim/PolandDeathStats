@@ -1,18 +1,17 @@
 import './App.scss';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AuthContext } from '../../helpers/AuthContext'
-import { useState, useEffect, Suspense, lazy } from "react"
-import axios from 'axios';
+import { useState, useEffect } from "react"
 // import containers
+import Homepage from '../../containers/homepage/Homepage'
 import NavBar from '../../containers/navbar/NavBar'
 import Login from '../../containers/login/Login'
 import Register from '../../containers/register/Register'
-
-
-// imoer lazy containers
-const Homepage = lazy(() => import('../../containers/homepage/Homepage'))
+// axios
+import axios from '../../api/axios'
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
   const [authState, setAuthState] = useState({
     email: "",
     id: "0",
@@ -21,7 +20,7 @@ function App() {
   });
   useEffect(() => {
     axios
-      .get('http://localhost:3001/users/auth', {
+      .get('/users/auth', {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         }
@@ -29,41 +28,41 @@ function App() {
       .then((response) => {
         if (response.data.error) {
           setAuthState({ ...authState, status: false })
+          setIsLoading(false)
         }
         else {
-          // var tempRoles = []
-          // console.log(response.data.id)
-          axios.get(`http://localhost:3001/userroles/user/${response.data.id}`).then((resp) => {
-            // tempRoles = response.data
-            // console.log(resp.data)
+          axios.get(`/userroles/user/${response.data.id}`).then((resp) => {
             setAuthState(
               {
                 email: response.data.email,
                 id: response.data.id,
                 status: true,
                 roles: resp.data
-              }
-            )
-            // console.log(authState)
+              })
+            setIsLoading(false)
           })
-          // console.log(tempRoles)
-
-
         }
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // console.log(authState)
+  function NotLoggedRoute({ children }) {
+    const auth = authState.status
+    return auth ? <Navigate to='/' /> : children
+  }
 
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
-          <NavBar />
+          <NavBar isLoading={isLoading} />
           <Routes>
-            <Route path='/' element={<Homepage />}></Route>
-            <Route path='/login' element={<Login />}></Route>
-            <Route path='/register' element={<Register />}></Route>
+            {(!isLoading &&
+              <>
+                <Route path='/' element={<Homepage />}></Route>
+                <Route path='/login' element={<NotLoggedRoute><Login /></NotLoggedRoute>}></Route>
+                <Route path='/register' element={<NotLoggedRoute><Register /></NotLoggedRoute>}></Route>
+              </>
+            )}
           </Routes>
         </Router>
       </AuthContext.Provider>

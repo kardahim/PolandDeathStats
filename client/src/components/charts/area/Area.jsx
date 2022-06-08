@@ -65,7 +65,6 @@ function Area(props) {
                 setData1(data1)
                 // setData2(data2)
             }
-            // console.log('crash?')
         }, 300)
     })
 
