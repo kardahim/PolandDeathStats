@@ -25,6 +25,7 @@ const csv2json = (csv) => {
   
     return JSON.stringify(result);
 }
+// create default user_roles if the do not exist
 const createBuiltInRoles = async () => {
     const admin_role = await Role.findOne({ where: { name: "admin" } });
     const user_role = await Role.findOne({ where: { name: "user" } });
@@ -36,9 +37,8 @@ const createBuiltInRoles = async () => {
         const role = { 'name': "admin" }
         Role.create(role)
     }
-
 }
-
+// create default user accounts if the do not exist
 const createBuiltInUsers = async () => {
     var adminAcc = await User.findOne({ where: { email: "admin" }, attributes: { exclude: ['password'] } });
 
@@ -70,12 +70,11 @@ const createBuiltInUsers = async () => {
                 UserId: admin.id
             })
         },1000)
-        
     }
 }
 
 const fill = async () => {
-    // sets
+    // sets for temporary data
     const regions = new Set()
     const death_causes = new Set()
     const populations = new Set()
