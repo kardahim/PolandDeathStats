@@ -69,7 +69,11 @@ function Homepage() {
         data.append("file", file);
         console.log(data)
 
-        axios.post("http://localhost:3001/files/import", data).then((res) => {
+        axios.post("http://localhost:3001/files/import", data, {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            }
+        }).then((res) => {
             console.log(res)
             setTimeout(()=> {
                 // alert("Import zakończony.");
@@ -492,10 +496,14 @@ function Homepage() {
 
     const restoreDefaultData = () => {
         let data = ""
-        axios.post("http://localhost:3001/files/restore", data).then((res) => {
-            // console.log(res)
+        axios.post("http://localhost:3001/files/restore", data, {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            }
+          }).then((res) => {
+            console.log(res)
         }).catch(err => {
-            // console.log(err)
+            console.log(err)
         })
         setTimeout(()=> {
             // alert("Import zakończony.");
