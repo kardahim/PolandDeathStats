@@ -57,20 +57,11 @@ services:
       - backend
       - frontend
   client:
-    build: ./client
-    container_name: client_container
-    environment:
-      <<: *common-variables
-      NODE_PATH: src
-    ports:
-      - 3000:3000
+    image: nginx
     volumes:
-      - ./client/src:/app/src
-    links:
-      - server
-    command: npm start
-    networks:
-      - frontend
+    - ./client/build:/usr/share/nginx/html
+    ports:
+    - "3000:80"
     
 networks:
   backend:
