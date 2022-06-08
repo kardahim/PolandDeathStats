@@ -15,8 +15,6 @@ function json2csv(objArray) {
             str += '\n'
         }
     }
-
     return str;
 }
-
 export default json2csv;

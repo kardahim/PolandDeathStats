@@ -1,21 +1,11 @@
 import { React, useState, useEffect } from 'react'
-import {
-    YAxis,
-    XAxis,
-    HorizontalGridLines,
-    VerticalGridLines,
-    AreaSeries,
-    LineSeries,
-    Crosshair,
-    FlexibleWidthXYPlot,
-} from "react-vis";
+import { YAxis,XAxis,HorizontalGridLines,VerticalGridLines,AreaSeries,LineSeries,Crosshair,FlexibleWidthXYPlot } from "react-vis";
 import "react-vis/dist/style.css";
 // mui
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
 
 function Area(props) {
 
@@ -40,30 +30,23 @@ function Area(props) {
 
     const [currentCause, setCurrentCause] = useState('razem')
     const [currentRegion, setCurrentRegion] = useState('POLSKA')
-
     const [data1, setData1] = useState([])
-    // const [data2, setData2] = useState([])
+
     useEffect(() => {
         setTimeout(() => {
             let data1 = []
-            // let data2 = []
+            // eslint-disable-next-line
             props.dataset.map((v, k) => {
-                if (v.region === currentRegion && v.deathCause == currentCause && props.years.includes(`${v.year}`)) {
+                if (v.region === currentRegion && v.deathCause === currentCause && props.years.includes(`${v.year}`)) {
                     data1.push({ x: (`${v.year}`), y: v.deaths })
                     // data2.push({ x: (`${v.year}`), y: v.population })
-                }
+                }   
             })
             data1.sort((a, b) => {
                 return a.x - b.x;
             });
-            // console.log(props.years)
-            // console.log(data2)
-            // console.log(`array length: ${data.length}}`)
-            // console.log(props.dataset)
             if (data1.length > 0) {
-                // console.log("R")`
                 setData1(data1)
-                // setData2(data2)
             }
         }, 300)
     })

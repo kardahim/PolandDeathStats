@@ -1,40 +1,30 @@
 import React from 'react'
-// import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
 import { useContext, useState, useLayoutEffect } from 'react';
 import './homepage.scss'
-// import { resolveTo } from 'react-router/lib/router';
-// import components
 import Area from '../../components/charts/area/Area'
 import Table from '../../components/table/Table'
 import { CircularProgress } from '@mui/material';
-
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import Stack from '@mui/material/Stack';
-import Download from '@mui/icons-material/Download';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Drawer, Box, Typography } from '@mui/material'
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Input from '@mui/material/Input';
 // axios
 import axios from '../../api/axios';
-
 import { Button } from '@mui/material';
 
-import { years, regionNames, deathCauseNames } from './filter_conf'
+import { years } from './filter_conf'
 import json2xml from './functions/json2xml'
 import json2csv from './functions/json2csv'
-import { useFilePicker } from "use-file-picker";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -48,8 +38,6 @@ const MenuProps = {
 };
 
 function Homepage() {
-    // let navigate = useNavigate();
-    // const { setAuthState } = useContext(AuthContext);
     const [deathCauses, setDeathCauses] = useState([]);
     const [deaths, setDeaths] = useState([]);
     const [populations, setPopulations] = useState([]);
@@ -64,12 +52,7 @@ function Homepage() {
     const [deathCauseName, setDeathCauseName] = useState(['razem']);
     const [isLoading, setLoading] = useState(true);
 
-    const [uploadedJsonFile, setUploadedJsonFile] = useState([])
     const [importJsonButtonState, setImportJsonButtonState] = useState(true)
-    const [uploadedXmlFile, setUploadedXmlFile] = useState([])
-    const [importXmlButtonState, setImportXmlButtonState] = useState(true)
-    const [uploadedCsvFile, setUploadedCsvFile] = useState([])
-    const [importCsvButtonState, setImportCsvButtonState] = useState(true)
 
     const [file, setFile] = useState();
 
@@ -77,7 +60,6 @@ function Homepage() {
     const [isAdminDrawerOpen, setIsAdminDrawerOpen] = useState(false)
     const [isUserDrawerOpen, setIsUserDrawerOpen] = useState(false)
 
-    // comment to delete
     const send = event => {
         const data = new FormData();
         data.append("file", file);
@@ -96,27 +78,14 @@ function Homepage() {
         })
     }
 
-    const [openFileSelector, { filesContent, loading }] = useFilePicker({
-        accept: ".json, .xml, .csv"
-    });
-    // const [openXmlFileSelector, { xmlFilesContent, xmlLoading }] = useFilePicker({
-    //     accept: ".xml"
-    // });
-    // const [openCsvFileSelector, { csvFilesContent, csvLoading }] = useFilePicker({
-    //     accept: ".xml"
-    // });
-
     useLayoutEffect(() => {
         document.title = "PolandDeathStats"
-        // console.log(Array.from(new Set(populations.map(e => String(e.year)))).sort())
-        // console.log(years)
         function fetchData() {
             axios.get("/deaths").then((response) => {
                 setDeaths(response.data)
 
                 setTimeout(function () {
                     setLoading(false);
-                    // console.log('deaths[0]',deaths[0])
                 }, 1000);
                 if (!deaths) {
                     setLoading(true)
@@ -128,33 +97,9 @@ function Homepage() {
             })
             axios.get("/regions").then((response) => {
                 setRegions(response.data)
-                // setTimeout(()=> {
-                //     let newRegions = Array.from(new Set(regions.map(e => e.name))).sort()
-                //     setRegionName(newRegions)
-                // },2000)
             })
             axios.get("/deathcauses").then((response) => {
                 setDeathCauses(response.data)
-                // setTimeout(() => {
-                // let cont=true
-                // setTimeout(()=> {
-                //     let cause = Array.from(new Set(deathCauses.map(e => String(e.name))))
-                //     if(String(cause[0])){
-                //         setDeathCauseName(String(cause[0]))
-                //     }
-                // console.log("dcN,",deathCauseName)
-                // console.log("cause", String(cause[0]))
-                // },100)
-                // deathCauseNames.forEach(el => {
-                //     if (el && cont && Array.from(new Set(deathCauses.map(e => String(e.name)))).sort().includes(el)){
-                //         console.log(el)
-                //         setDeathCauseName()
-                //         cont=false
-                //     }
-                // })
-
-                // setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))).sort())
-                // }, 100)
             })
             axios.get("/populations").then((response) => {
                 setPopulations(response.data)
@@ -163,53 +108,31 @@ function Homepage() {
                 }, 100)
             })
 
-
         }
         fetchData()
-        // var y = Array.from(new Set(populations.map(e => e.year)))
-        // // console.log(y)
-        // setYear(y)
-        // setRegions(regions)
-        // setRegionName(regions[0])
 
     }, [isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
     var handleYearChange = async function (event) {
         var value = event.target.value;
         setYear(
-            // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value);
-        setTimeout(function () {
-            //do what you need here
-        }, 2000);
-        // await filterData()
     };
 
     var handleRegionChange = async function (event) {
         var value = event.target.value;
         setRegionName(
-            // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value);
-        setTimeout(function () {
-            //do what you need here
-        }, 2000);
-        // await filterData()
     };
 
     var handleDeathCauseNameChange = async function (event) {
         var value = event.target.value;
         setDeathCauseName(
-            // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value);
-        setTimeout(function () {
-            //do what you need here
-        }, 2000);
-        // await filterData()
     };
 
     // ustawia w 'filteredData' domyślne dane - wszystkie dane dla chorób na 1999 dla POLSKI
     const setDefaultData = async () => {
-
         var data = deaths
 
         // removing id, createdAt, updatedAt attribs
@@ -261,18 +184,11 @@ function Homepage() {
             obj.id = id
             id += 1
         })
-
-        // console.log(data[0])
         setFilteredData(data)
-        // console.log(filteredData)
     }
 
     const combineAllData = async () => {
         var data = deaths
-        // // filtering by years
-        // data = data.filter(function (obj) {
-        //     return year.includes(String(obj.year))
-        // })
 
         // removing id, createdAt, updatedAt attribs
         data = data.map(({ id, createdAt, updatedAt, ...keepAttrs }) => keepAttrs)
@@ -294,11 +210,6 @@ function Homepage() {
         // removing RegionId attrib
         data = data.map(({ RegionId, ...keepAttrs }) => keepAttrs)
 
-        // // filtering by regionName
-        // data = data.filter(function (obj) {
-        //     return regionName.includes(String(obj.region))
-        // })
-
         // adding DeathCause(name) attrib
         data.forEach(obj => {
             obj.deathCause = deathCauses.filter((obj2) => {
@@ -306,26 +217,16 @@ function Homepage() {
             })[0].name
         })
 
-        // // removing DeathCauseId attrib
-        // data = data.map(({ DeathCauseId, ...keepAttrs }) => keepAttrs)
-
-        // // filtering by deathCauseName
-        // data = data.filter(function (obj) {
-        //     return deathCauseName.includes(String(obj.deathCause))
-        // })
-
         // renaming 'value' field to 'deaths'
         data = data.map(({ value, ...rest }) => ({ ...rest, deaths: value }));
 
-        // adding 'id' field ... data order not considered
+        // adding 'id' field (data order not being considered)
         var id = 1
         data.forEach(obj => {
             obj.id = id
             id += 1
         })
-
         setCombinedData(data)
-
     }
 
     // zatwierdza ustawione filtry do połączonych danych zapisanych w 'filteredData'
@@ -335,10 +236,8 @@ function Homepage() {
             console.log("some filter is empty")
         }
         else {
-            // console.log('year', year)
-            // console.log('regionName', regionName)
-            // console.log('deathCauseName', deathCauseName)
             var data = deaths
+
             // filtering by years
             data = data.filter(function (obj) {
                 return year.includes(String(obj.year))
@@ -394,19 +293,8 @@ function Homepage() {
                 id += 1
             })
 
-            // console.log('data[0]',data[0])
-            // console.log('data[1]',data[1])
-
-            // console.log(data[1])
-
-            //sortowanie ???
-            // data.sort((a,b) => a.year - b.year)
-
             await setFilteredData(data)
-
-            // console.log(filteredData)
         }
-
     }
 
     const changeSelectedYearFilters = () => {
@@ -463,7 +351,6 @@ function Homepage() {
 
         var dataXml = json2xml(jsonData)
         dataXml = "<root>" + dataXml + "</root>"
-        // console.log(dataXml)
 
         if (dataXml.length > 0) {
             const xmlString = `data:text/xml;chatset=utf-8,${encodeURIComponent(
@@ -475,12 +362,6 @@ function Homepage() {
 
             link.click();
         }
-        // let parser = new DOMParser()
-        // var parsed = parser.parseFromString(dataXml,"text/xml")
-        // var reverse = xml2json(parsed," ")
-        // var reverse = xml2json(String(parsed))
-        // console.log(reverse)
-
     }
 
     const exportToCSV = () => {
@@ -506,13 +387,13 @@ function Homepage() {
 
     const restoreDefaultData = () => {
         let data = ""
-        axios.post("/files/restore", data).then((res) => {
-            // console.log(res)
-        }).catch(err => {
-            // console.log(err)
-        })
+        axios.post("/files/restore", data)
+        // .then((res) => {
+        //     // console.log(res)
+        // }).catch(err => {
+        //     // console.log(err)
+        // })
         setTimeout(() => {
-            // alert("Import zakończony.");
             window.location.reload(false);
         }, 4000)
     }

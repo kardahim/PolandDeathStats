@@ -1,5 +1,4 @@
 import React from 'react'
-// import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
 import { useContext, useEffect, useState } from 'react';
 import { Formik, Form } from 'formik'
@@ -11,7 +10,6 @@ import './login.scss'
 import axios from '../../api/axios';
 
 function Login() {
-    // let navigate = useNavigate();
     const { setAuthState } = useContext(AuthContext);
     const [error, setError] = useState("")
 
@@ -44,13 +42,10 @@ function Login() {
                     id: response.data.id,
                     status: true
                 });
-                // navigate(`/`)
                 window.location.pathname = "/"
             }
         }).catch(error => console.error(error))
-
     }
-
 
     return (
         <div className='login-container'>

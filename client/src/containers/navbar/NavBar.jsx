@@ -1,7 +1,6 @@
 import { React } from 'react'
 import './navBar.scss'
 import { Link } from 'react-router-dom'
-import { AuthContext } from '../../helpers/AuthContext'
 import { useState, useEffect } from "react"
 // axios
 import axios from '../../api/axios';
@@ -47,7 +46,7 @@ function NavBar(props) {
     window.location.pathname = "/"
   };
 
-  // hamburger function
+  // hamburger tooggle function
   function toogle() {
     document.querySelector(".navbar-menu").classList.toggle("active")
 
@@ -61,7 +60,7 @@ function NavBar(props) {
   return (
     <header>
       <nav className='navbar'>
-        <Link to='/' className='navbar-branding'><i class="fa-solid fa-ribbon"></i> PolandDeathStats</Link>
+        <Link to='/' className='navbar-branding'><i className="fa-solid fa-ribbon"></i> PolandDeathStats</Link>
         <ul className='navbar-menu'>
           {!authState.status && !props.isLoading && (
             <>
