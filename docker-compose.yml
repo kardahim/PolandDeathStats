@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  db:
+    volumes: 
+      - db_volume:/var/lib/mysql
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: poland_death_stats
+    networks:
+      - backend
+
+  express:
+    depends_on:
+      - db
+    build:
+      context: ./server
+    ports:
+      - 3001:3001
+    networks:
+      - backend
+      - frontend
+      
+  web:
+    image: nginx
+    volumes:
+    - ./client/build:/usr/share/nginx/html
+    ports:
+    - "3000:80"
+    
+networks:
+  backend:
+    driver: bridge
+  frontend:
+
+volumes:
+  db_volume:
