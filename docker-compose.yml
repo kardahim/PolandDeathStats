@@ -20,7 +20,7 @@ services:
       - 3306:3306
     restart: unless-stopped
     volumes:
-      - ./db/polanddeathstats.sql:/docker-entrypoint-initdb.d/polanddeathstats.sql
+      - ./db/polanddeathstats_full.sql:/docker-entrypoint-initdb.d/polanddeathstats.sql
     networks:
       - backend
   phpmyadmin:
@@ -40,6 +40,7 @@ services:
   server:
     build: ./server
     container_name: node_server_container
+    restart: always
     depends_on:
       - mysql-db
     environment:
@@ -58,6 +59,8 @@ services:
   client:
     build: ./client
     container_name: client_container
+    depends_on:
+      - server
     environment:
       <<: *common-variables
       NODE_PATH: src
