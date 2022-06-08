@@ -1,9 +1,13 @@
-FROM ubuntu:latest
+#FROM node:10-alpine
+FROM node:18-alpine
 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update -y && apt-get install -y nodejs npm;
+RUN mkdir -p /app
 WORKDIR /app
-COPY package.json .
+
+COPY package.json /app
+#COPY yarn.lock /app
+COPY . /app
+
 RUN npm install --legacy-peer-deps
 
-CMD npm run dev
+CMD ["npm", "start"]

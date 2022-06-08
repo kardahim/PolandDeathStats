@@ -3,7 +3,7 @@
     "username": "root",
     "password": "password",
     "database": "polanddeathstats",
-    "host": "db",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
