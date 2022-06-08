@@ -61,7 +61,7 @@ function NavBar(props) {
   return (
     <header>
       <nav className='navbar'>
-        <Link to='/' className='navbar-branding'>&lt;Logo&gt; PolandDeathStats</Link>
+        <Link to='/' className='navbar-branding'><i class="fa-solid fa-ribbon"></i> PolandDeathStats</Link>
         <ul className='navbar-menu'>
           {!authState.status && !props.isLoading && (
             <>
