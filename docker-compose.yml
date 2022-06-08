@@ -13,7 +13,7 @@ services:
     container_name: mysql_container
     environment:
       <<: *common-variables
-      # MYSQL_HOST: localhost
+      MYSQL_HOST: localhost
       MYSQL_ROOT_PASSWORD: password
 #      MYSQL_ALLOW_EMPTY_PASSWORD: 1
     ports:
@@ -39,9 +39,9 @@ services:
     networks:
       - backend
   server:
-    restart: always
     build: ./server
     container_name: node_server_container
+    restart: always
     depends_on:
       - mysql-db
     environment:
@@ -68,7 +68,12 @@ services:
     ports:
       - 3000:3000
     volumes:
-    - ./client/build:/usr/share/nginx/html
+      - ./client/src:/app/src
+    links:
+      - server
+    command: npm start
+    networks:
+      - frontend
     
 volumes:
   mysql-data:
