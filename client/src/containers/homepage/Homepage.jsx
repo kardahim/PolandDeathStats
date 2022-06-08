@@ -1,7 +1,14 @@
 import React from 'react'
 import { AuthContext } from '../../helpers/AuthContext'
 import { useContext, useState, useLayoutEffect } from 'react';
+// axios
+import axios from '../../api/axios';
+import { years } from './filter_conf'
+import json2xml from './functions/json2xml'
+import json2csv from './functions/json2csv'
+// stylesheets
 import './homepage.scss'
+// components etc.
 import Area from '../../components/charts/area/Area'
 import Table from '../../components/table/Table'
 import { CircularProgress } from '@mui/material';
@@ -18,14 +25,11 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Input from '@mui/material/Input';
-// axios
-import axios from '../../api/axios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import { Button } from '@mui/material';
 
-import { years } from './filter_conf'
-import json2xml from './functions/json2xml'
-import json2csv from './functions/json2csv'
-
+// Select menu properties
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -60,21 +64,40 @@ function Homepage() {
     const [isAdminDrawerOpen, setIsAdminDrawerOpen] = useState(false)
     const [isUserDrawerOpen, setIsUserDrawerOpen] = useState(false)
 
+    const [open, setOpen] = React.useState(false);
+    const [alertMessage, setAlertMessage] = useState("")
+    const [alertType, setAlertType] = useState("success")
+    const showAlert = () => {
+        setOpen(true);
+    };
+
+    const closeAlert = function (event, reason) {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
     const send = event => {
         const data = new FormData();
         data.append("file", file);
-        console.log(data)
-        console.log(authState)
-        axios.post("/files/import", data).then((res) => {
-            console.log(res)
-            setTimeout(() => {
-                alert("Import zakończony.");
+
+        axios.post("/files/import", data, {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            }
+        }).then((res) => {
+            setAlertType("success")
+            setAlertMessage("Import zakończony pomyślnie.")
+            showAlert()
+
+            setTimeout(()=> {
                 window.location.reload(false);
-            }, 4000)
+            },5000)
         }).catch(err => {
-            console.log(err)
-            alert("Import się nie powiódł!\n\nSprawdź plik!\n\nPrzywracanie danych domyślnych...")
-            restoreDefaultData()
+            setAlertType("error")
+            setAlertMessage(err.response.data.message)
+            showAlert()
         })
     }
 
@@ -115,23 +138,20 @@ function Homepage() {
 
     var handleYearChange = async function (event) {
         var value = event.target.value;
-        setYear(
-            typeof value === 'string' ? value.split(',') : value);
+        setYear(typeof value === 'string' ? value.split(',') : value);
     };
 
     var handleRegionChange = async function (event) {
         var value = event.target.value;
-        setRegionName(
-            typeof value === 'string' ? value.split(',') : value);
+        setRegionName(typeof value === 'string' ? value.split(',') : value);
     };
 
     var handleDeathCauseNameChange = async function (event) {
         var value = event.target.value;
-        setDeathCauseName(
-            typeof value === 'string' ? value.split(',') : value);
+        setDeathCauseName(typeof value === 'string' ? value.split(',') : value);
     };
 
-    // ustawia w 'filteredData' domyślne dane - wszystkie dane dla chorób na 1999 dla POLSKI
+    // set 'filteredData' <- default data
     const setDefaultData = async () => {
         var data = deaths
 
@@ -293,12 +313,12 @@ function Homepage() {
                 id += 1
             })
 
-            await setFilteredData(data)
+            setFilteredData(data)
         }
     }
 
     const changeSelectedYearFilters = () => {
-        if (year.length < years.length) {
+        if (year.length < Array.from(new Set(populations.map(e => String(e.year)))).length) {
             setYear(Array.from(new Set(populations.map(e => String(e.year)))).sort())
         }
         else {
@@ -387,17 +407,28 @@ function Homepage() {
 
     const restoreDefaultData = () => {
         let data = ""
-        axios.post("/files/restore", data).then((res) => {
-             console.log(res)
+        axios.post("/files/restore", data, {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            }
+        }).then((res) => {
+            //  console.log(res)
+            setAlertType("success")
+            setAlertMessage("Rozpoczęto przywracanie danych domyślnych.")
+            showAlert()
+             
         }).catch(err => {
-             console.log(err)
+            setAlertType("error")
+            setAlertMessage("Operacja się nie powiodła.")
+            showAlert()
         })
+        
         setTimeout(() => {
             window.location.reload(false);
-        }, 4000)
+        }, 7000)
     }
 
-    // example table's dataset
+    // table's column props
     const columns = [
         { field: 'id', headerName: 'ID', width: 60 },
         { field: 'year', headerName: 'Rok', type: 'string', width: 60 },
@@ -420,6 +451,11 @@ function Homepage() {
     }
     return (
         <div className='home-container'>
+            <Snackbar open={open} autoHideDuration={6000} onClose={closeAlert}>
+                <Alert onClose={closeAlert} severity={alertType} sx={{ width: '100%' }}>
+                {alertMessage}
+                </Alert>
+            </Snackbar>
             <Fab className='user-drawer-button' color='primary' onClick={() => setIsUserDrawerOpen(true)}>
                 <AddIcon />
             </Fab>
@@ -453,7 +489,7 @@ function Homepage() {
                 onClose={() => setIsUserDrawerOpen(false)}>
                 <Box p={2} minWidth='350px' textAlign='center' role='presentation'>
                     <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
-                        Wypełnianie tabeli
+                        Filtrowanie tabeli
                     </Typography>
                     <Stack spacing={2} justifyContent='center' alignItems='center'>
                         <FormControl sx={{ m: 1, width: 300 }}>
@@ -518,7 +554,19 @@ function Homepage() {
                             </Select>
                             <span className='single-filter-button' onClick={changeSelectedDeathCauseFilters}>» zaznacz/odznacz wszystkie</span>
                         </FormControl>
-                        <Button className='import-confirm-button' variant='contained' onClick={applyFilters}>Zastosuj filtry</Button>
+                        <Button variant='contained' onClick={applyFilters}>Zastosuj filtry</Button>
+                        {authState.roles.some(e => e.RoleId === 1) && (
+                            
+                            <div>
+                                <div className='divider'></div>
+                                <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
+                                    Pobieranie przefiltrowanych danych
+                                </Typography>
+                                <Button className='export-button' variant="contained" onClick={exportToCSV} >Pobierz CSV</Button>
+                                <Button className='export-button' variant="contained" onClick={exportToJSON}>Pobierz JSON</Button>
+                                <Button className='export-button' variant="contained" onClick={exportToXML}>Pobierz XML</Button>
+                            </div>
+                        )}
                     </Stack>
                 </Box>
             </Drawer>
@@ -529,8 +577,7 @@ function Homepage() {
                 )}
                 <div className='chart-container'>
                     <Area
-                        // dataset={filteredData}
-                        dataset={combinedData}  //upgrade; teraz nie trzeba klikać "zastosuj filtry" żeby filterki nad wykresem dobrze dziłąły ;p 
+                        dataset={combinedData}
                         // regions={regionName}
                         regions={Array.from(new Set(regions.map(e => e.name)))} // upgrade
                         // causes={deathCauseName}
@@ -539,13 +586,6 @@ function Homepage() {
                 </div>
                 <div className='divider'></div>
                 <div className='data-container'>
-                    {authState.roles.some(e => e.RoleId === 1) && (
-                        <Stack direction="row" spacing={2}>
-                            <Button variant="contained" onClick={exportToCSV} >Pobierz CSV</Button>
-                            <Button variant="contained" onClick={exportToJSON}>Pobierz JSON</Button>
-                            <Button variant="contained" onClick={exportToXML}>Pobierz XML</Button>
-                        </Stack>
-                    )}
                     <Table
                         rows={filteredData}
                         columns={columns}

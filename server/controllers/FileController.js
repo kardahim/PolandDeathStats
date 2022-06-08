@@ -420,7 +420,6 @@ module.exports = {
     restoreDefaultData: async(req,res) => {
         await clearDB()              
         await fill()
-        console.log("restoration started and done...")
         res.status(200).json({ message: "Operation successful." })
     },
 
@@ -431,144 +430,148 @@ module.exports = {
             // console.log(file)
             var data = file.buffer.toString('utf8'); 
             
-            try{
-                if(String(file.originalname).includes('.json') || String(file.originalname).includes('.xml') || String(file.originalname).includes('.csv')) {
-                    // clearing present data from database ( truncating tables: deaths, death causes, regions, populations)
+            if(String(file.originalname).includes('.json') || String(file.originalname).includes('.xml') || String(file.originalname).includes('.csv')) {
+                try{
+                    // creating sets for keeping temporary objects
+                    const regions = []
+                    const death_causes = []
+                    const populations = []
+                    const deaths = []
+        
+                    if(String(file.originalname).includes('.json') || String(file.originalname).includes('.csv')) {
+                        var jsonData = []
+                        if(String(file.originalname).includes('.json')) {  // the file in in .json format
+                            jsonData = JSON.parse(data)
+                        }
+                        else {  // the file in in .csv format
+                            jsonData = JSON.parse(csv2json(data))
+                        }
+        
+                        for(let i=0;i<jsonData.length;i++) {
+                            if(!regions.some(e => e.name === jsonData[i].region))
+                            {
+                                regions.push({
+                                    "id":regions.length+1,
+                                    "name": jsonData[i].region
+                                })
+                            }
+                            if(!death_causes.some(e => e.name === jsonData[i].deathCause)) {
+                                death_causes.push({
+                                    "id":death_causes.length+1,
+                                    "name":jsonData[i].deathCause
+                                })
+                            }
+                            if(!populations.some(e => e.value === jsonData[i].population)) {
+                                populations.push({
+                                    "year": jsonData[i].year,
+                                    "value": jsonData[i].population,
+                                    "RegionId": regions.find(elem => elem.name==jsonData[i].region).id
+                                })
+                            }
+                            deaths.push({
+                                'year': jsonData[i].year,
+                                'value': jsonData[i].deaths,
+                                'RegionId': regions.find(elem => elem.name==jsonData[i].region).id,
+                                'DeathCauseId': death_causes.find(elem => elem.name==jsonData[i].deathCause).id
+                            })
+                        }
+                    }
+                    else if(String(file.originalname).includes('.xml')) {  // the file in in .xml format
+                        var jsonData = XMLTOJSON.xml2json(data, {compact:true, spaces: 4})
+                        jsonData = JSON.parse(jsonData)
+        
+                        for(let i=0;i<jsonData.root.year.length;i++) {
+                            if(!regions.some(e => e.name === jsonData.root.region[i]._text))
+                            {
+                                regions.push({
+                                    "id":regions.length+1,
+                                    "name": jsonData.root.region[i]._text
+                                })
+                            }
+                            if(!death_causes.some(e => e.name === jsonData.root.deathCause[i]._text)) {
+                                death_causes.push({
+                                    "id":death_causes.length+1,
+                                    "name":jsonData.root.deathCause[i]._text
+                                })
+                            }
+                            if(!populations.some(e => e.value === jsonData.root.population[i]._text)) {
+                                populations.push({
+                                    "year": jsonData.root.year[i]._text,
+                                    "value": jsonData.root.population[i]._text,
+                                    "RegionId": regions.find(elem => elem.name==jsonData.root.region[i]._text).id
+                                })
+                            }
+                            deaths.push({
+                                'year': jsonData.root.year[i]._text,
+                                'value': jsonData.root.deaths[i]._text,
+                                'RegionId': regions.find(elem => elem.name==jsonData.root.region[i]._text).id,
+                                'DeathCauseId': death_causes.find(elem => elem.name==jsonData.root.deathCause[i]._text).id
+                            })
+                        }
+                    }
+        
                     clearDB()
+
+                    // adding prepared data to db
+                    setTimeout(async function () {
+                        var all = await Region.findAndCountAll()
+                        if (all.count === 0) {
+                            regions.forEach((value) => {
+                                const region = { 'id': value.id,'name': value.name }
+                                Region.create(region)
+                            })
+                        }
+                        // adding DeathCauses to db
+                        all = await DeathCause.findAndCountAll()
+                        if (all.count === 0) {
+                            death_causes.forEach((value) => {
+                                const deathCause = { 'id': value.id,'name': value.name }
+                                DeathCause.create(deathCause)
+                            })
+                        }
+                        // adding Deaths to db
+                        all = await Death.findAndCountAll()
+                        if (all.count === 0) {
+                            deaths.forEach((value) => {
+                                const death = {
+                                    'year': value.year,
+                                    'value': value.value,
+                                    'RegionId': value.RegionId,
+                                    'DeathCauseId': value.DeathCauseId
+                                }
+                                Death.create(death)
+                            })
+                        }
+                        // adding Populations to db
+                        all = await Population.findAndCountAll()
+                        if (all.count === 0) {
+                            populations.forEach((value) => {
+                                const population = {
+                                    'year': value.year,
+                                    'value': value.value,
+                                    'RegionId': value.RegionId,
+                                }
+                                Population.create(population)
+                            })
+                        }
+                    },2000)
+                    return res.status(200).json({
+                        message:'Import successful'
+                    })
                 }
-    
-                // creating sets for keeping temporary objects
-                const regions = []
-                const death_causes = []
-                const populations = []
-                const deaths = []
-    
-                if(String(file.originalname).includes('.json') || String(file.originalname).includes('.csv')) {
-                    var jsonData = []
-                    if(String(file.originalname).includes('.json')) {  // the file in in .json format
-                        jsonData = JSON.parse(data)
-                    }
-                    else {  // the file in in .csv format
-                        jsonData = JSON.parse(csv2json(data))
-                    }
-    
-                    for(let i=0;i<jsonData.length;i++) {
-                        if(!regions.some(e => e.name === jsonData[i].region))
-                        {
-                            regions.push({
-                                "id":regions.length+1,
-                                "name": jsonData[i].region
-                            })
-                        }
-                        if(!death_causes.some(e => e.name === jsonData[i].deathCause)) {
-                            death_causes.push({
-                                "id":death_causes.length+1,
-                                "name":jsonData[i].deathCause
-                            })
-                        }
-                        if(!populations.some(e => e.value === jsonData[i].population)) {
-                            populations.push({
-                                "year": jsonData[i].year,
-                                "value": jsonData[i].population,
-                                "RegionId": regions.find(elem => elem.name==jsonData[i].region).id
-                            })
-                        }
-                        deaths.push({
-                            'year': jsonData[i].year,
-                            'value': jsonData[i].deaths,
-                            'RegionId': regions.find(elem => elem.name==jsonData[i].region).id,
-                            'DeathCauseId': death_causes.find(elem => elem.name==jsonData[i].deathCause).id
-                        })
-                    }
+                catch (e){
+                    return res.status(400).json({
+                        message: 'Błąd przetwarzania pliku'
+                    })
                 }
-                else if(String(file.originalname).includes('.xml')) {  // the file in in .xml format
-                    var jsonData = XMLTOJSON.xml2json(data, {compact:true, spaces: 4})
-                    jsonData = JSON.parse(jsonData)
-    
-                    for(let i=0;i<jsonData.root.year.length;i++) {
-                        if(!regions.some(e => e.name === jsonData.root.region[i]._text))
-                        {
-                            regions.push({
-                                "id":regions.length+1,
-                                "name": jsonData.root.region[i]._text
-                            })
-                        }
-                        if(!death_causes.some(e => e.name === jsonData.root.deathCause[i]._text)) {
-                            death_causes.push({
-                                "id":death_causes.length+1,
-                                "name":jsonData.root.deathCause[i]._text
-                            })
-                        }
-                        if(!populations.some(e => e.value === jsonData.root.population[i]._text)) {
-                            populations.push({
-                                "year": jsonData.root.year[i]._text,
-                                "value": jsonData.root.population[i]._text,
-                                "RegionId": regions.find(elem => elem.name==jsonData.root.region[i]._text).id
-                            })
-                        }
-                        deaths.push({
-                            'year': jsonData.root.year[i]._text,
-                            'value': jsonData.root.deaths[i]._text,
-                            'RegionId': regions.find(elem => elem.name==jsonData.root.region[i]._text).id,
-                            'DeathCauseId': death_causes.find(elem => elem.name==jsonData.root.deathCause[i]._text).id
-                        })
-                    }
-                }
-    
-                // adding prepared data to db
-                setTimeout(async function () {
-                    var all = await Region.findAndCountAll()
-                    if (all.count === 0) {
-                        regions.forEach((value) => {
-                            const region = { 'id': value.id,'name': value.name }
-                            Region.create(region)
-                        })
-                    }
-                    // adding DeathCauses to db
-                    all = await DeathCause.findAndCountAll()
-                    if (all.count === 0) {
-                        death_causes.forEach((value) => {
-                            const deathCause = { 'id': value.id,'name': value.name }
-                            DeathCause.create(deathCause)
-                        })
-                    }
-                    // adding Deaths to db
-                    all = await Death.findAndCountAll()
-                    if (all.count === 0) {
-                        deaths.forEach((value) => {
-                            const death = {
-                                'year': value.year,
-                                'value': value.value,
-                                'RegionId': value.RegionId,
-                                'DeathCauseId': value.DeathCauseId
-                            }
-                            Death.create(death)
-                        })
-                    }
-                    // adding Populations to db
-                    all = await Population.findAndCountAll()
-                    if (all.count === 0) {
-                        populations.forEach((value) => {
-                            const population = {
-                                'year': value.year,
-                                'value': value.value,
-                                'RegionId': value.RegionId,
-                            }
-                            Population.create(population)
-                        })
-                    }
-                },2000)
-                return res.status(200).json({
-                    message:'import successful'
-                })
             }
-            catch (e){
+            else {
                 return res.status(400).json({
-                    message: 'file parsing error'
+                    message: 'File format not supported'
                 })
             }
         }
-        return res.json("import process finished")
+        return res.json("Import process finished")
     },
 
     // fills database with default data

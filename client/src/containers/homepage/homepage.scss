@@ -8,11 +8,17 @@
 .span {
     color: black !important;
 }
-
+.MuiListItemText-primary {
+    color: black !important;
+}
 .single-filter-button {
     margin-top: 10px;
     color: black;
     cursor: pointer;
+}
+
+.export-button {
+    margin-bottom: 16px !important;
 }
 
 .typo {

@@ -12,17 +12,17 @@ function json2xml(obj) {
      xml += obj[prop] instanceof Array ? '' : "<" + prop + ">";
      if (obj[prop] instanceof Array) {
        for (var array in obj[prop]) {
-         xml += "<" + prop + ">";
+         xml += "<" + prop + ">";// eslint-disable-next-line
          xml += json2xml(new Object(obj[prop][array]));
          xml += "</" + prop + ">";
        }
-     } else if (typeof obj[prop] == "object") {
+     } else if (typeof obj[prop] == "object") {// eslint-disable-next-line
        xml += json2xml(new Object(obj[prop]));
      } else {
        xml += obj[prop];
      }
      xml += obj[prop] instanceof Array ? '' : "</" + prop + ">";
-   }
+   }// eslint-disable-next-line
    var xml = xml.replace(/<\/?[0-9]{1,}>/g, '');
    return xml
  }
