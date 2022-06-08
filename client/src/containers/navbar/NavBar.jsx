@@ -1,9 +1,10 @@
 import { React } from 'react'
-import axios from 'axios';
 import './navBar.scss'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../../helpers/AuthContext'
 import { useState, useEffect } from "react"
+// axios
+import axios from '../../api/axios';
 
 function NavBar(props) {
 
@@ -15,7 +16,7 @@ function NavBar(props) {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/users/auth', {
+      .get('/users/auth', {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         }

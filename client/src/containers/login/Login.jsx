@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
 import { useContext, useEffect, useState } from 'react';
@@ -8,6 +7,8 @@ import * as Yup from 'yup'
 import TextField from '../../components/textField/TextField'
 import Button from '../../components/button/Button'
 import './login.scss'
+// axios
+import axios from '../../api/axios';
 
 function Login() {
     // let navigate = useNavigate();
@@ -32,7 +33,7 @@ function Login() {
     })
 
     const onSubmit = (data) => {
-        axios.post("http://localhost:3001/users/login", data).then((response) => {
+        axios.post("/users/login", data).then((response) => {
             if (response.data.error) {
                 setError(response.data.error)
             }

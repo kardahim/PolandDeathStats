@@ -1,13 +1,14 @@
 import './App.scss';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AuthContext } from '../../helpers/AuthContext'
-import { useState, useEffect, lazy } from "react"
-import axios from 'axios';
+import { useState, useEffect } from "react"
 // import containers
 import Homepage from '../../containers/homepage/Homepage'
 import NavBar from '../../containers/navbar/NavBar'
 import Login from '../../containers/login/Login'
 import Register from '../../containers/register/Register'
+// axios
+import axios from '../../api/axios'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +20,7 @@ function App() {
   });
   useEffect(() => {
     axios
-      .get('http://localhost:3001/users/auth', {
+      .get('/users/auth', {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         }
@@ -30,7 +31,7 @@ function App() {
           setIsLoading(false)
         }
         else {
-          axios.get(`http://localhost:3001/userroles/user/${response.data.id}`).then((resp) => {
+          axios.get(`/userroles/user/${response.data.id}`).then((resp) => {
             setAuthState(
               {
                 email: response.data.email,

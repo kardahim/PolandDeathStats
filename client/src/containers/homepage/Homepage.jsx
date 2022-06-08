@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../helpers/AuthContext'
 import { useContext, useState, useLayoutEffect } from 'react';
@@ -27,7 +26,8 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Input from '@mui/material/Input';
-
+// axios
+import axios from '../../api/axios';
 
 import { Button } from '@mui/material';
 
@@ -83,7 +83,7 @@ function Homepage() {
         data.append("file", file);
         console.log(data)
 
-        axios.post("http://localhost:3001/files/import", data).then((res) => {
+        axios.post("/files/import", data).then((res) => {
             console.log(res)
             setTimeout(() => {
                 // alert("Import zakończony.");
@@ -111,7 +111,7 @@ function Homepage() {
         // console.log(Array.from(new Set(populations.map(e => String(e.year)))).sort())
         // console.log(years)
         function fetchData() {
-            axios.get("http://localhost:3001/deaths").then((response) => {
+            axios.get("/deaths").then((response) => {
                 setDeaths(response.data)
 
                 setTimeout(function () {
@@ -126,14 +126,14 @@ function Homepage() {
                     combineAllData()
                 }
             })
-            axios.get("http://localhost:3001/regions").then((response) => {
+            axios.get("/regions").then((response) => {
                 setRegions(response.data)
                 // setTimeout(()=> {
                 //     let newRegions = Array.from(new Set(regions.map(e => e.name))).sort()
                 //     setRegionName(newRegions)
                 // },2000)
             })
-            axios.get("http://localhost:3001/deathcauses").then((response) => {
+            axios.get("/deathcauses").then((response) => {
                 setDeathCauses(response.data)
                 // setTimeout(() => {
                 // let cont=true
@@ -156,7 +156,7 @@ function Homepage() {
                 // setDeathCauseName(Array.from(new Set(deathCauses.map(e => String(e.name)))).sort())
                 // }, 100)
             })
-            axios.get("http://localhost:3001/populations").then((response) => {
+            axios.get("/populations").then((response) => {
                 setPopulations(response.data)
                 setTimeout(() => {
                     setYear(Array.from(new Set(populations.map(e => String(e.year)))).sort())
@@ -506,7 +506,7 @@ function Homepage() {
 
     const restoreDefaultData = () => {
         let data = ""
-        axios.post("http://localhost:3001/files/restore", data).then((res) => {
+        axios.post("/files/restore", data).then((res) => {
             // console.log(res)
         }).catch(err => {
             // console.log(err)
