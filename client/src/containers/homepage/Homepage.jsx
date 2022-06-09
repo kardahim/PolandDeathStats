@@ -84,16 +84,16 @@ function Homepage() {
 
         axios.post("/files/import", data, {
             headers: {
-              accessToken: localStorage.getItem("accessToken"),
+                accessToken: localStorage.getItem("accessToken"),
             }
         }).then((res) => {
             setAlertType("success")
             setAlertMessage("Import zakończony pomyślnie.")
             showAlert()
 
-            setTimeout(()=> {
+            setTimeout(() => {
                 window.location.reload(false);
-            },5000)
+            }, 5000)
         }).catch(err => {
             setAlertType("error")
             setAlertMessage(err.response.data.message)
@@ -409,20 +409,20 @@ function Homepage() {
         let data = ""
         axios.post("/files/restore", data, {
             headers: {
-              accessToken: localStorage.getItem("accessToken"),
+                accessToken: localStorage.getItem("accessToken"),
             }
         }).then((res) => {
             //  console.log(res)
             setAlertType("success")
             setAlertMessage("Rozpoczęto przywracanie danych domyślnych.")
             showAlert()
-             
+
         }).catch(err => {
             setAlertType("error")
             setAlertMessage("Operacja się nie powiodła.")
             showAlert()
         })
-        
+
         setTimeout(() => {
             window.location.reload(false);
         }, 7000)
@@ -453,7 +453,7 @@ function Homepage() {
         <div className='home-container'>
             <Snackbar open={open} autoHideDuration={6000} onClose={closeAlert}>
                 <Alert onClose={closeAlert} severity={alertType} sx={{ width: '100%' }}>
-                {alertMessage}
+                    {alertMessage}
                 </Alert>
             </Snackbar>
             <Fab className='user-drawer-button' color='primary' onClick={() => setIsUserDrawerOpen(true)}>
@@ -546,7 +546,7 @@ function Homepage() {
                                 MenuProps={MenuProps}
                             >
                                 {Array.from(new Set(deathCauses.map(e => String(e.name)))).map((name) => (
-                                    <MenuItem key={name} value={name}>
+                                    <MenuItem key={name} value={name} title={name}>
                                         <Checkbox checked={deathCauseName.indexOf(name) > -1} />
                                         <ListItemText primary={name} />
                                     </MenuItem>
@@ -556,7 +556,7 @@ function Homepage() {
                         </FormControl>
                         <Button variant='contained' onClick={applyFilters}>Zastosuj filtry</Button>
                         {authState.roles.some(e => e.RoleId === 1) && (
-                            
+
                             <div>
                                 <div className='divider'></div>
                                 <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
