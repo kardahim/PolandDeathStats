@@ -469,11 +469,17 @@ function Homepage() {
                 open={isAdminDrawerOpen}
                 onClose={() => setIsAdminDrawerOpen(false)}>
                 <Box p={2} minWidth='350px' textAlign='center' role='presentation'>
-                    <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
+                    <Typography variant='h5' component='div' fontFamily='Roboto' fontWeight='bold'>
                         Zarządzanie bazą danych
                     </Typography>
                     <Stack spacing={2} justifyContent='center' alignItems='center'>
+                        <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo-title'>
+                            Przwyracanie danych domyślnych
+                        </Typography>
                         <Button className='option-button' variant='contained' onClick={restoreDefaultData}> Przywróć domyślne dane</Button>
+                        <Typography variant='h6' component='div'  fontFamily='Roboto' fontWeight='bold' className='typo-title'>
+                            Import danych z pliku XML/JSON/CSV
+                        </Typography>
                         <Input className='file-input' type="file" id="file" accept=".json, .xml, .csv" onChange={event => {
                             const file = event.target.files[0];
                             setFile(file);
@@ -488,7 +494,7 @@ function Homepage() {
                 open={isUserDrawerOpen}
                 onClose={() => setIsUserDrawerOpen(false)}>
                 <Box p={2} minWidth='350px' textAlign='center' role='presentation'>
-                    <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
+                    <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo-main-ttile'>
                         Filtrowanie tabeli
                     </Typography>
                     <Stack spacing={2} justifyContent='center' alignItems='center'>
@@ -559,7 +565,7 @@ function Homepage() {
 
                             <div>
                                 <div className='divider'></div>
-                                <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo'>
+                                <Typography variant='h6' component='div' fontFamily='Roboto' fontWeight='bold' className='typo-main-title'>
                                     Pobieranie przefiltrowanych danych
                                 </Typography>
                                 <Button className='export-button' variant="contained" onClick={exportToCSV} >Pobierz CSV</Button>
@@ -578,10 +584,8 @@ function Homepage() {
                 <div className='chart-container'>
                     <Area
                         dataset={combinedData}
-                        // regions={regionName}
-                        regions={Array.from(new Set(regions.map(e => e.name)))} // upgrade
-                        // causes={deathCauseName}
-                        causes={Array.from(new Set(deathCauses.map(e => String(e.name))))} //upgrade
+                        regions={Array.from(new Set(regions.map(e => e.name)))}
+                        causes={Array.from(new Set(deathCauses.map(e => String(e.name))))}
                         years={year} />
                 </div>
                 <div className='divider'></div>
