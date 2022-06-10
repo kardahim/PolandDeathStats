@@ -25,6 +25,6 @@ function json2xml(obj) {
    }// eslint-disable-next-line
    var xml = xml.replace(/<\/?[0-9]{1,}>/g, '');
    return xml
- }
+}
  
 export default json2xml;
