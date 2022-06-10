@@ -7,6 +7,6 @@ COPY package.json /app
 
 COPY . /app
 
-RUN npm install --legacy-peer-deps && npm uninstall bcrypt && npm install bcrypt
+RUN npm install --legacy-peer-deps
 
 CMD npm start
